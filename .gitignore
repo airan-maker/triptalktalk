@@ -1,0 +1,26 @@
+# WordPress core (managed by Docker)
+wp-content/uploads/
+wp-content/plugins/
+wp-content/upgrade/
+
+# Docker volumes
+db_data/
+wordpress_data/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+debug.log

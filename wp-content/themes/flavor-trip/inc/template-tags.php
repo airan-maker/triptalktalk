@@ -1,0 +1,72 @@
+<?php
+/**
+ * 헬퍼 함수 (템플릿 태그)
+ *
+ * @package Flavor_Trip
+ */
+
+defined('ABSPATH') || exit;
+
+/**
+ * 페이지네이션
+ */
+function ft_pagination($query = null) {
+    if (!$query) {
+        global $wp_query;
+        $query = $wp_query;
+    }
+
+    if ($query->max_num_pages <= 1) return;
+
+    $paged = max(1, get_query_var('paged'));
+
+    echo '<nav class="pagination" aria-label="' . esc_attr__('페이지 네비게이션', 'flavor-trip') . '">';
+    echo paginate_links([
+        'total'     => $query->max_num_pages,
+        'current'   => $paged,
+        'mid_size'  => 2,
+        'prev_text' => '&laquo;',
+        'next_text' => '&raquo;',
+    ]);
+    echo '</nav>';
+}
+
+/**
+ * 읽기 시간 계산
+ */
+function ft_reading_time($post = null) {
+    $post = get_post($post);
+    if (!$post) return '';
+
+    $content = wp_strip_all_tags($post->post_content);
+    // 한글 기준 분당 500자
+    $char_count = mb_strlen($content, 'UTF-8');
+    $minutes = max(1, ceil($char_count / 500));
+
+    return sprintf(__('%d분 읽기', 'flavor-trip'), $minutes);
+}
+
+/**
+ * 가격대 라벨
+ */
+function ft_get_price_label($price) {
+    $labels = [
+        'budget'   => __('가성비', 'flavor-trip'),
+        'moderate' => __('보통', 'flavor-trip'),
+        'premium'  => __('프리미엄', 'flavor-trip'),
+        'luxury'   => __('럭셔리', 'flavor-trip'),
+    ];
+    return $labels[$price] ?? $price;
+}
+
+/**
+ * 난이도 라벨
+ */
+function ft_get_difficulty_label($difficulty) {
+    $labels = [
+        'easy'     => __('쉬움', 'flavor-trip'),
+        'moderate' => __('보통', 'flavor-trip'),
+        'hard'     => __('어려움', 'flavor-trip'),
+    ];
+    return $labels[$difficulty] ?? $difficulty;
+}
