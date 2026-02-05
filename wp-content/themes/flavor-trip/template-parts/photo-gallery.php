@@ -1,7 +1,8 @@
 <?php
 /**
- * ?�진 갤러�? *
- * @package TripTalk
+ * 사진 갤러리
+ *
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -12,7 +13,7 @@ if (empty($gallery_ids)) return;
 ?>
 
 <section class="itinerary-gallery" id="photo-gallery">
-    <h2 class="section-heading"><?php esc_html_e('?�토 갤러�?, 'flavor-trip'); ?></h2>
+    <h2 class="section-heading"><?php esc_html_e('포토 갤러리', 'flavor-trip'); ?></h2>
     <div class="gallery-grid">
         <?php foreach ($gallery_ids as $id) :
             $full  = wp_get_attachment_image_url($id, 'large');
@@ -24,7 +25,7 @@ if (empty($gallery_ids)) return;
             <a href="<?php echo esc_url($full); ?>"
                class="gallery-item"
                data-caption="<?php echo esc_attr($caption); ?>"
-               aria-label="<?php echo esc_attr($alt ?: __('갤러�??��?지', 'flavor-trip')); ?>">
+               aria-label="<?php echo esc_attr($alt ?: __('갤러리 이미지', 'flavor-trip')); ?>">
                 <img src="<?php echo esc_url($thumb); ?>"
                      alt="<?php echo esc_attr($alt); ?>"
                      loading="lazy"

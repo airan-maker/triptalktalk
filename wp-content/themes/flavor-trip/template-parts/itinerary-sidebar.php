@@ -1,8 +1,8 @@
 <?php
 /**
- * ?�정 메�? ?�이?�바
+ * 일정 메타 사이드바
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -17,7 +17,7 @@ $highlights  = get_post_meta($post_id, '_ft_highlights', true);
 ?>
 
 <div class="sidebar-card sidebar-card-info">
-    <h3 class="sidebar-card-title"><?php esc_html_e('?�행 ?�보', 'flavor-trip'); ?></h3>
+    <h3 class="sidebar-card-title"><?php esc_html_e('여행 정보', 'flavor-trip'); ?></h3>
     <dl class="info-list">
         <?php if ($dest_name) : ?>
             <dt><?php esc_html_e('목적지', 'flavor-trip'); ?></dt>
@@ -25,22 +25,22 @@ $highlights  = get_post_meta($post_id, '_ft_highlights', true);
         <?php endif; ?>
 
         <?php if ($duration) : ?>
-            <dt><?php esc_html_e('?�행 기간', 'flavor-trip'); ?></dt>
+            <dt><?php esc_html_e('여행 기간', 'flavor-trip'); ?></dt>
             <dd><?php echo esc_html($duration); ?></dd>
         <?php endif; ?>
 
         <?php if ($price) : ?>
-            <dt><?php esc_html_e('가격�?', 'flavor-trip'); ?></dt>
+            <dt><?php esc_html_e('가격대', 'flavor-trip'); ?></dt>
             <dd><?php echo esc_html(ft_get_price_label($price)); ?></dd>
         <?php endif; ?>
 
         <?php if ($difficulty) : ?>
-            <dt><?php esc_html_e('?�이??, 'flavor-trip'); ?></dt>
+            <dt><?php esc_html_e('난이도', 'flavor-trip'); ?></dt>
             <dd><?php echo esc_html(ft_get_difficulty_label($difficulty)); ?></dd>
         <?php endif; ?>
 
         <?php if ($best_season) : ?>
-            <dt><?php esc_html_e('추천 ?�기', 'flavor-trip'); ?></dt>
+            <dt><?php esc_html_e('추천 시기', 'flavor-trip'); ?></dt>
             <dd><?php echo esc_html($best_season); ?></dd>
         <?php endif; ?>
     </dl>
@@ -50,7 +50,7 @@ $highlights  = get_post_meta($post_id, '_ft_highlights', true);
     $highlight_items = array_map('trim', explode(',', $highlights));
     if ($highlight_items) : ?>
         <div class="sidebar-card sidebar-card-highlights">
-            <h3 class="sidebar-card-title"><?php esc_html_e('?�이?�이??, 'flavor-trip'); ?></h3>
+            <h3 class="sidebar-card-title"><?php esc_html_e('하이라이트', 'flavor-trip'); ?></h3>
             <ul class="highlights-list">
                 <?php foreach ($highlight_items as $item) : ?>
                     <li><?php echo esc_html($item); ?></li>
@@ -61,7 +61,7 @@ $highlights  = get_post_meta($post_id, '_ft_highlights', true);
 endif; ?>
 
 <div class="sidebar-card sidebar-card-share">
-    <h3 class="sidebar-card-title"><?php esc_html_e('공유?�기', 'flavor-trip'); ?></h3>
+    <h3 class="sidebar-card-title"><?php esc_html_e('공유하기', 'flavor-trip'); ?></h3>
     <div class="share-buttons">
         <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" class="share-btn share-facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
         <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" class="share-btn share-twitter" target="_blank" rel="noopener noreferrer">X</a>
@@ -70,7 +70,7 @@ endif; ?>
 </div>
 
 <?php
-// 관???�정
+// 관련 일정
 $destinations = get_the_terms($post_id, 'destination');
 if ($destinations && !is_wp_error($destinations)) :
     $related = new WP_Query([
@@ -85,7 +85,7 @@ if ($destinations && !is_wp_error($destinations)) :
     ]);
     if ($related->have_posts()) : ?>
         <div class="sidebar-card sidebar-card-related">
-            <h3 class="sidebar-card-title"><?php esc_html_e('관???�정', 'flavor-trip'); ?></h3>
+            <h3 class="sidebar-card-title"><?php esc_html_e('관련 일정', 'flavor-trip'); ?></h3>
             <ul class="related-list">
                 <?php while ($related->have_posts()) : $related->the_post(); ?>
                     <li>

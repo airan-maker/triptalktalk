@@ -1,51 +1,51 @@
 <?php
 /**
- * 커스?�마?��?: ?�셜 링크, 지??API, SEO ?�정
+ * 커스터마이저: 소셜 링크, 지도 API, SEO 설정
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
 
 add_action('customize_register', function (WP_Customize_Manager $wp_customize) {
 
-    // === ?�션: SEO ?�정 ===
+    // === 섹션: SEO 설정 ===
     $wp_customize->add_section('ft_seo', [
-        'title'    => __('SEO ?�정', 'flavor-trip'),
+        'title'    => __('SEO 설정', 'flavor-trip'),
         'priority' => 30,
     ]);
 
     $wp_customize->add_setting('ft_google_verify', ['sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('ft_google_verify', [
-        'label'   => __('Google ?�이???�증 코드', 'flavor-trip'),
+        'label'   => __('Google 사이트 인증 코드', 'flavor-trip'),
         'section' => 'ft_seo',
         'type'    => 'text',
     ]);
 
     $wp_customize->add_setting('ft_naver_verify', ['sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('ft_naver_verify', [
-        'label'   => __('Naver ?�이???�증 코드', 'flavor-trip'),
+        'label'   => __('Naver 사이트 인증 코드', 'flavor-trip'),
         'section' => 'ft_seo',
         'type'    => 'text',
     ]);
 
     $wp_customize->add_setting('ft_default_og_image', ['sanitize_callback' => 'esc_url_raw']);
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'ft_default_og_image', [
-        'label'   => __('기본 OG ?��?지', 'flavor-trip'),
-        'description' => __('개별 ?�???��?지가 ?�을 ???�용?�니?? (1200x630 권장)', 'flavor-trip'),
+        'label'   => __('기본 OG 이미지', 'flavor-trip'),
+        'description' => __('개별 대표 이미지가 없을 때 사용됩니다. (1200x630 권장)', 'flavor-trip'),
         'section' => 'ft_seo',
     ]));
 
-    // === ?�션: ?�셜 미디??===
+    // === 섹션: 소셜 미디어 ===
     $wp_customize->add_section('ft_social', [
-        'title'    => __('?�셜 미디??, 'flavor-trip'),
+        'title'    => __('소셜 미디어', 'flavor-trip'),
         'priority' => 35,
     ]);
 
     $social_fields = [
         'ft_social_instagram' => 'Instagram URL',
         'ft_social_youtube'   => 'YouTube URL',
-        'ft_social_blog'      => '블로�?URL',
+        'ft_social_blog'      => '블로그 URL',
     ];
 
     foreach ($social_fields as $id => $label) {
@@ -57,57 +57,57 @@ add_action('customize_register', function (WP_Customize_Manager $wp_customize) {
         ]);
     }
 
-    // === ?�션: 지??API ===
+    // === 섹션: 지도 API ===
     $wp_customize->add_section('ft_maps', [
-        'title'    => __('지???�정', 'flavor-trip'),
+        'title'    => __('지도 설정', 'flavor-trip'),
         'priority' => 40,
     ]);
 
     $wp_customize->add_setting('ft_kakao_map_key', ['sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('ft_kakao_map_key', [
-        'label'       => __('카카?�맵 JavaScript ????, 'flavor-trip'),
-        'description' => __('카카??개발???�이?�에??발급받�? JavaScript ??, 'flavor-trip'),
+        'label'       => __('카카오맵 JavaScript 앱 키', 'flavor-trip'),
+        'description' => __('카카오 개발자 사이트에서 발급받은 JavaScript 키', 'flavor-trip'),
         'section'     => 'ft_maps',
         'type'        => 'text',
     ]);
 
     $wp_customize->add_setting('ft_google_map_key', ['sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('ft_google_map_key', [
-        'label'       => __('Google Maps API ??(?�백)', 'flavor-trip'),
-        'description' => __('카카?�맵 ?��? ?�을 ???�용?�니??, 'flavor-trip'),
+        'label'       => __('Google Maps API 키 (폴백)', 'flavor-trip'),
+        'description' => __('카카오맵 키가 없을 때 사용됩니다', 'flavor-trip'),
         'section'     => 'ft_maps',
         'type'        => 'text',
     ]);
 
-    // === ?�션: ?�어�??�정 ===
+    // === 섹션: 히어로 설정 ===
     $wp_customize->add_section('ft_hero', [
-        'title'    => __('???�어�??�션', 'flavor-trip'),
+        'title'    => __('홈 히어로 섹션', 'flavor-trip'),
         'priority' => 45,
     ]);
 
     $wp_customize->add_setting('ft_hero_title', [
-        'default'           => 'Traveler\'s Real Talk',
+        'default'           => '맛있는 여행의 시작',
         'sanitize_callback' => 'sanitize_text_field',
     ]);
     $wp_customize->add_control('ft_hero_title', [
-        'label'   => __('?�어�??�목', 'flavor-trip'),
+        'label'   => __('히어로 제목', 'flavor-trip'),
         'section' => 'ft_hero',
         'type'    => 'text',
     ]);
 
     $wp_customize->add_setting('ft_hero_subtitle', [
-        'default'           => '?�행 ?�정???�마?�하�? ?�행?�의 진짜 ?�야기�? 만나보세??',
+        'default'           => '특별한 여행 일정을 만나보세요. 전문가가 설계한 코스로 잊지 못할 여행을 떠나세요.',
         'sanitize_callback' => 'sanitize_text_field',
     ]);
     $wp_customize->add_control('ft_hero_subtitle', [
-        'label'   => __('?�어�?부?�목', 'flavor-trip'),
+        'label'   => __('히어로 부제목', 'flavor-trip'),
         'section' => 'ft_hero',
         'type'    => 'textarea',
     ]);
 
     $wp_customize->add_setting('ft_hero_image', ['sanitize_callback' => 'esc_url_raw']);
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'ft_hero_image', [
-        'label'   => __('?�어�?배경 ?��?지', 'flavor-trip'),
+        'label'   => __('히어로 배경 이미지', 'flavor-trip'),
         'section' => 'ft_hero',
     ]));
 });

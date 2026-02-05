@@ -1,8 +1,8 @@
 <?php
 /**
- * ?�이?�바
+ * 사이드바
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;

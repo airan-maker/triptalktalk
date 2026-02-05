@@ -1,8 +1,8 @@
 <?php
 /**
- * ?�자�??�정 블록
+ * 일자별 일정 블록
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -27,7 +27,7 @@ $places = !empty($day['places']) ? array_map('trim', explode(',', $day['places']
 
         <?php if ($places) : ?>
             <div class="day-places">
-                <span class="places-label"><?php esc_html_e('주요 ?�소:', 'flavor-trip'); ?></span>
+                <span class="places-label"><?php esc_html_e('주요 장소:', 'flavor-trip'); ?></span>
                 <?php foreach ($places as $place) : ?>
                     <span class="place-tag"><?php echo esc_html($place); ?></span>
                 <?php endforeach; ?>
@@ -36,7 +36,7 @@ $places = !empty($day['places']) ? array_map('trim', explode(',', $day['places']
 
         <?php if (!empty($day['tip'])) : ?>
             <div class="day-tip">
-                <strong><?php esc_html_e('?�� ??', 'flavor-trip'); ?></strong>
+                <strong><?php esc_html_e('💡 팁:', 'flavor-trip'); ?></strong>
                 <?php echo esc_html($day['tip']); ?>
             </div>
         <?php endif; ?>

@@ -1,7 +1,8 @@
 <?php
 /**
- * ?“ê? ?œí”Œë¦? *
- * @package TripTalk
+ * ëŒ“ê¸€ í…œí”Œë¦¿
+ *
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -15,7 +16,7 @@ if (post_password_required()) {
     <?php if (have_comments()) : ?>
         <h2 class="comments-title">
             <?php printf(
-                esc_html(_n('?“ê? %dê°?, '?“ê? %dê°?, get_comments_number(), 'flavor-trip')),
+                esc_html(_n('ëŒ“ê¸€ %dê°œ', 'ëŒ“ê¸€ %dê°œ', get_comments_number(), 'flavor-trip')),
                 get_comments_number()
             ); ?>
         </h2>
@@ -35,8 +36,8 @@ if (post_password_required()) {
 
     <?php
     comment_form([
-        'title_reply'         => __('?“ê? ?¨ê¸°ê¸?, 'flavor-trip'),
-        'label_submit'        => __('?“ê? ?±ë¡', 'flavor-trip'),
+        'title_reply'         => __('ëŒ“ê¸€ ë‚¨ê¸°ê¸°', 'flavor-trip'),
+        'label_submit'        => __('ëŒ“ê¸€ ë“±ë¡', 'flavor-trip'),
         'comment_notes_after' => '',
     ]);
     ?>

@@ -1,8 +1,8 @@
 <?php
 /**
- * 블로�??�스??카드
+ * 블로그 포스트 카드
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -29,6 +29,6 @@ defined('ABSPATH') || exit;
 
         <p class="card-excerpt"><?php echo esc_html(get_the_excerpt()); ?></p>
 
-        <a href="<?php the_permalink(); ?>" class="card-link"><?php esc_html_e('??보기 ??, 'flavor-trip'); ?></a>
+        <a href="<?php the_permalink(); ?>" class="card-link"><?php esc_html_e('더 보기 →', 'flavor-trip'); ?></a>
     </div>
 </article>

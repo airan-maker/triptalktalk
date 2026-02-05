@@ -1,5 +1,5 @@
 /**
- * TripTalk — Lightbox Gallery
+ * Flavor Trip — Lightbox Gallery
  * 바닐라 JS, 키보드 접근성 지원
  */
 

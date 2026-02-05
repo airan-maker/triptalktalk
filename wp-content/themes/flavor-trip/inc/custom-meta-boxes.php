@@ -1,18 +1,19 @@
 <?php
 /**
- * 커스?� 메�?박스 + JS 리피?? *
- * @package TripTalk
+ * 커스텀 메타박스 + JS 리피터
+ *
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
 
 /**
- * 메�?박스 ?�록
+ * 메타박스 등록
  */
 add_action('add_meta_boxes', function () {
     add_meta_box(
         'ft_itinerary_details',
-        __('?�행 ?�정 ?�세 ?�보', 'flavor-trip'),
+        __('여행 일정 상세 정보', 'flavor-trip'),
         'ft_render_itinerary_meta_box',
         'travel_itinerary',
         'normal',
@@ -21,7 +22,7 @@ add_action('add_meta_boxes', function () {
 
     add_meta_box(
         'ft_itinerary_days',
-        __('?�자�??�정', 'flavor-trip'),
+        __('일자별 일정', 'flavor-trip'),
         'ft_render_days_meta_box',
         'travel_itinerary',
         'normal',
@@ -30,7 +31,7 @@ add_action('add_meta_boxes', function () {
 
     add_meta_box(
         'ft_itinerary_gallery',
-        __('?�토 갤러�?, 'flavor-trip'),
+        __('포토 갤러리', 'flavor-trip'),
         'ft_render_gallery_meta_box',
         'travel_itinerary',
         'side',
@@ -39,7 +40,7 @@ add_action('add_meta_boxes', function () {
 
     add_meta_box(
         'ft_itinerary_map',
-        __('지??좌표', 'flavor-trip'),
+        __('지도 좌표', 'flavor-trip'),
         'ft_render_map_meta_box',
         'travel_itinerary',
         'side',
@@ -48,17 +49,18 @@ add_action('add_meta_boxes', function () {
 });
 
 /**
- * ?�행 ?�정 ?�세 ?�보 메�?박스 ?�더�? */
+ * 여행 일정 상세 정보 메타박스 렌더링
+ */
 function ft_render_itinerary_meta_box($post) {
     wp_nonce_field('ft_itinerary_nonce', 'ft_itinerary_nonce_field');
 
     $fields = [
-        '_ft_destination_name' => ['label' => '목적지', 'type' => 'text', 'placeholder' => '?? ?�쿄, ?�본'],
-        '_ft_duration'         => ['label' => '?�행 기간', 'type' => 'text', 'placeholder' => '?? 3�?4??],
-        '_ft_price_range'      => ['label' => '가격�?', 'type' => 'select', 'options' => ['' => '?�택', 'budget' => '?�� 가?�비', 'moderate' => '?��?�� 보통', 'premium' => '?��?��?�� ?�리미엄', 'luxury' => '?��?��?��?�� ??���?]],
-        '_ft_difficulty'       => ['label' => '?�이??, 'type' => 'select', 'options' => ['' => '?�택', 'easy' => '?��?', 'moderate' => '보통', 'hard' => '?�려?�']],
-        '_ft_best_season'      => ['label' => '추천 ?�기', 'type' => 'text', 'placeholder' => '?? 3??5?? 9??11??],
-        '_ft_highlights'       => ['label' => '?�이?�이??, 'type' => 'textarea', 'placeholder' => '?�표�?구분 (?? ?�주�??�경, 츠키지 ?�장, ?�사쿠사 ?�원)'],
+        '_ft_destination_name' => ['label' => '목적지', 'type' => 'text', 'placeholder' => '예: 도쿄, 일본'],
+        '_ft_duration'         => ['label' => '여행 기간', 'type' => 'text', 'placeholder' => '예: 3박 4일'],
+        '_ft_price_range'      => ['label' => '가격대', 'type' => 'select', 'options' => ['' => '선택', 'budget' => '💰 가성비', 'moderate' => '💰💰 보통', 'premium' => '💰💰💰 프리미엄', 'luxury' => '💰💰💰💰 럭셔리']],
+        '_ft_difficulty'       => ['label' => '난이도', 'type' => 'select', 'options' => ['' => '선택', 'easy' => '쉬움', 'moderate' => '보통', 'hard' => '어려움']],
+        '_ft_best_season'      => ['label' => '추천 시기', 'type' => 'text', 'placeholder' => '예: 3월~5월, 9월~11월'],
+        '_ft_highlights'       => ['label' => '하이라이트', 'type' => 'textarea', 'placeholder' => '쉼표로 구분 (예: 신주쿠 야경, 츠키지 시장, 아사쿠사 사원)'],
     ];
 
     echo '<table class="form-table ft-meta-table">';
@@ -97,7 +99,8 @@ function ft_render_itinerary_meta_box($post) {
 }
 
 /**
- * ?�자�??�정 리피???�더�? */
+ * 일자별 일정 리피터 렌더링
+ */
 function ft_render_days_meta_box($post) {
     $days = get_post_meta($post->ID, '_ft_days', true);
     if (!is_array($days)) {
@@ -107,7 +110,7 @@ function ft_render_days_meta_box($post) {
     <div id="ft-days-repeater">
         <div id="ft-days-list">
             <?php if (empty($days)) : ?>
-                <p class="ft-no-days"><?php esc_html_e('?�래 버튼???�릭?�여 ?�정??추�??�세??', 'flavor-trip'); ?></p>
+                <p class="ft-no-days"><?php esc_html_e('아래 버튼을 클릭하여 일정을 추가하세요.', 'flavor-trip'); ?></p>
             <?php else : ?>
                 <?php foreach ($days as $i => $day) : ?>
                     <div class="ft-day-item" data-index="<?php echo esc_attr($i); ?>">
@@ -116,26 +119,26 @@ function ft_render_days_meta_box($post) {
                             <button type="button" class="ft-remove-day button-link-delete">&times;</button>
                         </div>
                         <p>
-                            <label>?�목</label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][title]" value="<?php echo esc_attr($day['title'] ?? ''); ?>" class="widefat" placeholder="?? ?�쿄 ?�착 & ?��????�험">
+                            <label>제목</label>
+                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][title]" value="<?php echo esc_attr($day['title'] ?? ''); ?>" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험">
                         </p>
                         <p>
-                            <label>?�세 ?�용</label>
-                            <textarea name="_ft_days[<?php echo esc_attr($i); ?>][description]" rows="4" class="widefat" placeholder="???�의 ?�정???�세???�성?�세??"><?php echo esc_textarea($day['description'] ?? ''); ?></textarea>
+                            <label>상세 내용</label>
+                            <textarea name="_ft_days[<?php echo esc_attr($i); ?>][description]" rows="4" class="widefat" placeholder="이 날의 일정을 상세히 작성하세요."><?php echo esc_textarea($day['description'] ?? ''); ?></textarea>
                         </p>
                         <p>
-                            <label>주요 ?�소</label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][places]" value="<?php echo esc_attr($day['places'] ?? ''); ?>" class="widefat" placeholder="?�표�?구분 (?? ?��????�크?�블, ?�라주쿠, 메이지 ?�궁)">
+                            <label>주요 장소</label>
+                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][places]" value="<?php echo esc_attr($day['places'] ?? ''); ?>" class="widefat" placeholder="쉼표로 구분 (예: 시부야 스크램블, 하라주쿠, 메이지 신궁)">
                         </p>
                         <p>
-                            <label>??/label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][tip]" value="<?php echo esc_attr($day['tip'] ?? ''); ?>" class="widefat" placeholder="?�행 ?�을 ?�력?�세??">
+                            <label>팁</label>
+                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][tip]" value="<?php echo esc_attr($day['tip'] ?? ''); ?>" class="widefat" placeholder="여행 팁을 입력하세요.">
                         </p>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <button type="button" id="ft-add-day" class="button button-primary"><?php esc_html_e('+ ?�정 추�?', 'flavor-trip'); ?></button>
+        <button type="button" id="ft-add-day" class="button button-primary"><?php esc_html_e('+ 일정 추가', 'flavor-trip'); ?></button>
     </div>
 
     <script>
@@ -154,10 +157,10 @@ function ft_render_days_meta_box($post) {
             item.innerHTML =
                 '<div class="ft-day-header"><strong>Day ' + (index + 1) + '</strong>' +
                 '<button type="button" class="ft-remove-day button-link-delete">&times;</button></div>' +
-                '<p><label>?�목</label><input type="text" name="_ft_days[' + index + '][title]" class="widefat" placeholder="?? ?�쿄 ?�착 & ?��????�험"></p>' +
-                '<p><label>?�세 ?�용</label><textarea name="_ft_days[' + index + '][description]" rows="4" class="widefat" placeholder="???�의 ?�정???�세???�성?�세??"></textarea></p>' +
-                '<p><label>주요 ?�소</label><input type="text" name="_ft_days[' + index + '][places]" class="widefat" placeholder="?�표�?구분"></p>' +
-                '<p><label>??/label><input type="text" name="_ft_days[' + index + '][tip]" class="widefat" placeholder="?�행 ?�을 ?�력?�세??"></p>';
+                '<p><label>제목</label><input type="text" name="_ft_days[' + index + '][title]" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험"></p>' +
+                '<p><label>상세 내용</label><textarea name="_ft_days[' + index + '][description]" rows="4" class="widefat" placeholder="이 날의 일정을 상세히 작성하세요."></textarea></p>' +
+                '<p><label>주요 장소</label><input type="text" name="_ft_days[' + index + '][places]" class="widefat" placeholder="쉼표로 구분"></p>' +
+                '<p><label>팁</label><input type="text" name="_ft_days[' + index + '][tip]" class="widefat" placeholder="여행 팁을 입력하세요."></p>';
             list.appendChild(item);
             index++;
         });
@@ -182,7 +185,8 @@ function ft_render_days_meta_box($post) {
 }
 
 /**
- * 갤러�?메�?박스 ?�더�? */
+ * 갤러리 메타박스 렌더링
+ */
 function ft_render_gallery_meta_box($post) {
     $gallery_ids = get_post_meta($post->ID, '_ft_gallery', true);
     if (!is_array($gallery_ids)) {
@@ -202,7 +206,7 @@ function ft_render_gallery_meta_box($post) {
                 <?php endif;
             endforeach; ?>
         </div>
-        <button type="button" id="ft-gallery-add" class="button"><?php esc_html_e('?��?지 ?�택', 'flavor-trip'); ?></button>
+        <button type="button" id="ft-gallery-add" class="button"><?php esc_html_e('이미지 선택', 'flavor-trip'); ?></button>
     </div>
 
     <script>
@@ -212,8 +216,8 @@ function ft_render_gallery_meta_box($post) {
             e.preventDefault();
             if (frame) { frame.open(); return; }
             frame = wp.media({
-                title: '갤러�??��?지 ?�택',
-                button: { text: '?�택' },
+                title: '갤러리 이미지 선택',
+                button: { text: '선택' },
                 multiple: true,
                 library: { type: 'image' }
             });
@@ -261,29 +265,31 @@ function ft_render_gallery_meta_box($post) {
 }
 
 /**
- * 지??좌표 메�?박스 ?�더�? */
+ * 지도 좌표 메타박스 렌더링
+ */
 function ft_render_map_meta_box($post) {
     $lat = get_post_meta($post->ID, '_ft_map_lat', true);
     $lng = get_post_meta($post->ID, '_ft_map_lng', true);
     $zoom = get_post_meta($post->ID, '_ft_map_zoom', true) ?: '12';
     ?>
     <p>
-        <label for="_ft_map_lat"><?php esc_html_e('?�도 (Latitude)', 'flavor-trip'); ?></label>
-        <input type="text" id="_ft_map_lat" name="_ft_map_lat" value="<?php echo esc_attr($lat); ?>" class="widefat" placeholder="?? 35.6762">
+        <label for="_ft_map_lat"><?php esc_html_e('위도 (Latitude)', 'flavor-trip'); ?></label>
+        <input type="text" id="_ft_map_lat" name="_ft_map_lat" value="<?php echo esc_attr($lat); ?>" class="widefat" placeholder="예: 35.6762">
     </p>
     <p>
         <label for="_ft_map_lng"><?php esc_html_e('경도 (Longitude)', 'flavor-trip'); ?></label>
-        <input type="text" id="_ft_map_lng" name="_ft_map_lng" value="<?php echo esc_attr($lng); ?>" class="widefat" placeholder="?? 139.6503">
+        <input type="text" id="_ft_map_lng" name="_ft_map_lng" value="<?php echo esc_attr($lng); ?>" class="widefat" placeholder="예: 139.6503">
     </p>
     <p>
-        <label for="_ft_map_zoom"><?php esc_html_e('�??�벨 (1~18)', 'flavor-trip'); ?></label>
+        <label for="_ft_map_zoom"><?php esc_html_e('줌 레벨 (1~18)', 'flavor-trip'); ?></label>
         <input type="number" id="_ft_map_zoom" name="_ft_map_zoom" value="<?php echo esc_attr($zoom); ?>" class="widefat" min="1" max="18">
     </p>
     <?php
 }
 
 /**
- * 메�? ?�이???�?? */
+ * 메타 데이터 저장
+ */
 add_action('save_post_travel_itinerary', function ($post_id) {
     if (!isset($_POST['ft_itinerary_nonce_field']) || !wp_verify_nonce($_POST['ft_itinerary_nonce_field'], 'ft_itinerary_nonce')) {
         return;
@@ -291,7 +297,7 @@ add_action('save_post_travel_itinerary', function ($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    // ?�일 ?�드
+    // 단일 필드
     $text_fields = ['_ft_destination_name', '_ft_duration', '_ft_best_season', '_ft_highlights'];
     foreach ($text_fields as $key) {
         if (isset($_POST[$key])) {
@@ -306,7 +312,7 @@ add_action('save_post_travel_itinerary', function ($post_id) {
         }
     }
 
-    // 지??좌표
+    // 지도 좌표
     if (isset($_POST['_ft_map_lat'])) {
         update_post_meta($post_id, '_ft_map_lat', sanitize_text_field($_POST['_ft_map_lat']));
     }
@@ -317,13 +323,15 @@ add_action('save_post_travel_itinerary', function ($post_id) {
         update_post_meta($post_id, '_ft_map_zoom', absint($_POST['_ft_map_zoom']));
     }
 
-    // 갤러�?    if (isset($_POST['_ft_gallery'])) {
+    // 갤러리
+    if (isset($_POST['_ft_gallery'])) {
         $gallery = sanitize_text_field($_POST['_ft_gallery']);
         $ids = $gallery ? array_map('absint', explode(',', $gallery)) : [];
         update_post_meta($post_id, '_ft_gallery', $ids);
     }
 
-    // ?�자�??�정 리피??    if (isset($_POST['_ft_days']) && is_array($_POST['_ft_days'])) {
+    // 일자별 일정 리피터
+    if (isset($_POST['_ft_days']) && is_array($_POST['_ft_days'])) {
         $days = [];
         foreach ($_POST['_ft_days'] as $day) {
             $days[] = [
@@ -339,7 +347,7 @@ add_action('save_post_travel_itinerary', function ($post_id) {
     }
 });
 
-// 미디???�로???�크립트 로드
+// 미디어 업로더 스크립트 로드
 add_action('admin_enqueue_scripts', function ($hook) {
     global $post_type;
     if ($post_type === 'travel_itinerary' && in_array($hook, ['post.php', 'post-new.php'])) {

@@ -1,14 +1,14 @@
 <?php
 /**
- * ???�어�??�션
+ * 홈 히어로 섹션
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
 
-$hero_title    = get_theme_mod('ft_hero_title', 'Traveler\'s Real Talk');
-$hero_subtitle = get_theme_mod('ft_hero_subtitle', '?�행 ?�정???�마?�하�? ?�행?�의 진짜 ?�야기�? 만나보세??');
+$hero_title    = get_theme_mod('ft_hero_title', '맛있는 여행의 시작');
+$hero_subtitle = get_theme_mod('ft_hero_subtitle', '특별한 여행 일정을 만나보세요. 전문가가 설계한 코스로 잊지 못할 여행을 떠나세요.');
 $hero_image    = get_theme_mod('ft_hero_image');
 ?>
 
@@ -19,7 +19,7 @@ $hero_image    = get_theme_mod('ft_hero_image');
         <p class="hero-subtitle"><?php echo esc_html($hero_subtitle); ?></p>
         <div class="hero-actions">
             <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="btn btn-primary btn-lg">
-                <?php esc_html_e('?�행 ?�정 ?�러보기', 'flavor-trip'); ?>
+                <?php esc_html_e('여행 일정 둘러보기', 'flavor-trip'); ?>
             </a>
             <?php get_search_form(); ?>
         </div>

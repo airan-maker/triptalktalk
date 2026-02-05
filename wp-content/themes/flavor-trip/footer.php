@@ -1,7 +1,8 @@
 <?php
 /**
- * ?�터 ?�플�? *
- * @package TripTalk
+ * 푸터 템플릿
+ *
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -46,7 +47,7 @@ defined('ABSPATH') || exit;
             </div>
 
             <div class="footer-destinations">
-                <h3 class="footer-title"><?php esc_html_e('?�기 ?�행지', 'flavor-trip'); ?></h3>
+                <h3 class="footer-title"><?php esc_html_e('인기 여행지', 'flavor-trip'); ?></h3>
                 <?php
                 $destinations = get_terms([
                     'taxonomy'   => 'destination',

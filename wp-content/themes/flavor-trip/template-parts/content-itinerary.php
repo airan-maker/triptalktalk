@@ -1,8 +1,8 @@
 <?php
 /**
- * ?�행 ?�정 카드
+ * 여행 일정 카드
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;

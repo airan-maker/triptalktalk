@@ -1,7 +1,8 @@
 <?php
 /**
- * ?�행 ?�정 ?�카?�브 ?�플�? *
- * @package TripTalk
+ * 여행 일정 아카이브 템플릿
+ *
+ * @package Flavor_Trip
  */
 
 get_header();
@@ -12,8 +13,8 @@ get_header();
         <?php get_template_part('template-parts/breadcrumbs'); ?>
 
         <header class="page-header">
-            <h1 class="page-title"><?php esc_html_e('?�행 ?�정', 'flavor-trip'); ?></h1>
-            <p class="page-description"><?php esc_html_e('?�양???�행 코스�??�색?�고 ?�만???�행??계획?�보?�요.', 'flavor-trip'); ?></p>
+            <h1 class="page-title"><?php esc_html_e('여행 일정', 'flavor-trip'); ?></h1>
+            <p class="page-description"><?php esc_html_e('다양한 여행 코스를 탐색하고 나만의 여행을 계획해보세요.', 'flavor-trip'); ?></p>
         </header>
 
         <div class="archive-filters">
@@ -25,8 +26,8 @@ get_header();
             ?>
             <?php if (!is_wp_error($destinations) && $destinations) : ?>
                 <div class="filter-group">
-                    <span class="filter-label"><?php esc_html_e('?�행지:', 'flavor-trip'); ?></span>
-                    <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="filter-tag <?php echo !$current_dest ? 'active' : ''; ?>"><?php esc_html_e('?�체', 'flavor-trip'); ?></a>
+                    <span class="filter-label"><?php esc_html_e('여행지:', 'flavor-trip'); ?></span>
+                    <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="filter-tag <?php echo !$current_dest ? 'active' : ''; ?>"><?php esc_html_e('전체', 'flavor-trip'); ?></a>
                     <?php foreach ($destinations as $dest) : ?>
                         <a href="<?php echo esc_url(get_term_link($dest)); ?>" class="filter-tag <?php echo $current_dest === $dest->slug ? 'active' : ''; ?>">
                             <?php echo esc_html($dest->name); ?>
@@ -36,7 +37,7 @@ get_header();
             <?php endif; ?>
             <?php if (!is_wp_error($styles) && $styles) : ?>
                 <div class="filter-group">
-                    <span class="filter-label"><?php esc_html_e('?��???', 'flavor-trip'); ?></span>
+                    <span class="filter-label"><?php esc_html_e('스타일:', 'flavor-trip'); ?></span>
                     <?php foreach ($styles as $style) : ?>
                         <a href="<?php echo esc_url(get_term_link($style)); ?>" class="filter-tag <?php echo $current_style === $style->slug ? 'active' : ''; ?>">
                             <?php echo esc_html($style->name); ?>

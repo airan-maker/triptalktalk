@@ -1,8 +1,8 @@
 <?php
 /**
- * ?¬í–‰ ?¼ì • ?ì„¸ ?˜ì´ì§€
+ * ì—¬í–‰ ì¼ì • ìƒì„¸ í˜ì´ì§€
  *
- * @package TripTalk
+ * @package Flavor_Trip
  */
 
 get_header();
@@ -39,15 +39,15 @@ while (have_posts()) : the_post();
                     $price = get_post_meta(get_the_ID(), '_ft_price_range', true);
                     ?>
                     <?php if ($duration) : ?>
-                        <span class="meta-item"><span class="meta-icon">?“…</span> <?php echo esc_html($duration); ?></span>
+                        <span class="meta-item"><span class="meta-icon">ğŸ“…</span> <?php echo esc_html($duration); ?></span>
                     <?php endif; ?>
                     <?php if ($difficulty) : ?>
-                        <span class="meta-item"><span class="meta-icon">â­?/span> <?php echo esc_html(ft_get_difficulty_label($difficulty)); ?></span>
+                        <span class="meta-item"><span class="meta-icon">â­</span> <?php echo esc_html(ft_get_difficulty_label($difficulty)); ?></span>
                     <?php endif; ?>
                     <?php if ($price) : ?>
-                        <span class="meta-item"><span class="meta-icon">?’°</span> <?php echo esc_html(ft_get_price_label($price)); ?></span>
+                        <span class="meta-item"><span class="meta-icon">ğŸ’°</span> <?php echo esc_html(ft_get_price_label($price)); ?></span>
                     <?php endif; ?>
-                    <span class="meta-item"><span class="meta-icon">?“</span> <?php echo esc_html(get_the_date()); ?></span>
+                    <span class="meta-item"><span class="meta-icon">ğŸ“</span> <?php echo esc_html(get_the_date()); ?></span>
                 </div>
             </header>
 
@@ -63,7 +63,7 @@ while (have_posts()) : the_post();
 
             <?php if (!empty($days)) : ?>
                 <section class="itinerary-days" id="daily-itinerary">
-                    <h2 class="section-heading"><?php esc_html_e('?¼ìë³??¼ì •', 'flavor-trip'); ?></h2>
+                    <h2 class="section-heading"><?php esc_html_e('ì¼ìë³„ ì¼ì •', 'flavor-trip'); ?></h2>
                     <div class="timeline">
                         <?php foreach ($days as $i => $day) :
                             set_query_var('ft_day_data', $day);
@@ -90,7 +90,7 @@ while (have_posts()) : the_post();
             $styles = get_the_terms(get_the_ID(), 'travel_style');
             if ($styles && !is_wp_error($styles)) : ?>
                 <div class="itinerary-styles">
-                    <h3><?php esc_html_e('?¬í–‰ ?¤í???, 'flavor-trip'); ?></h3>
+                    <h3><?php esc_html_e('ì—¬í–‰ ìŠ¤íƒ€ì¼', 'flavor-trip'); ?></h3>
                     <div class="tags">
                         <?php foreach ($styles as $style) : ?>
                             <a href="<?php echo esc_url(get_term_link($style)); ?>" class="tag tag-style"><?php echo esc_html($style->name); ?></a>
@@ -101,8 +101,8 @@ while (have_posts()) : the_post();
 
             <nav class="post-navigation">
                 <?php
-                previous_post_link('<div class="nav-prev">%link</div>', '??%title');
-                next_post_link('<div class="nav-next">%link</div>', '%title ??);
+                previous_post_link('<div class="nav-prev">%link</div>', 'â† %title');
+                next_post_link('<div class="nav-next">%link</div>', '%title â†’');
                 ?>
             </nav>
 

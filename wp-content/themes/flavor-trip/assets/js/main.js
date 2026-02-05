@@ -1,5 +1,5 @@
 /**
- * TripTalk — Main JS
+ * Flavor Trip — Main JS
  * 모바일 메뉴, 스티키 헤더, 부드러운 스크롤
  */
 

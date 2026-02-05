@@ -1,7 +1,8 @@
 <?php
 /**
- * ?�행지 카테고리 그리?? *
- * @package TripTalk
+ * 여행지 카테고리 그리드
+ *
+ * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
@@ -22,8 +23,8 @@ if (is_wp_error($destinations) || empty($destinations)) {
 
 <section class="section section-destinations">
     <div class="container">
-        <h2 class="section-title"><?php esc_html_e('?�기 ?�행지', 'flavor-trip'); ?></h2>
-        <p class="section-subtitle"><?php esc_html_e('?�디�??�나볼까??', 'flavor-trip'); ?></p>
+        <h2 class="section-title"><?php esc_html_e('인기 여행지', 'flavor-trip'); ?></h2>
+        <p class="section-subtitle"><?php esc_html_e('어디로 떠나볼까요?', 'flavor-trip'); ?></p>
 
         <div class="destination-grid">
             <?php foreach ($destinations as $dest) :
@@ -34,7 +35,7 @@ if (is_wp_error($destinations) || empty($destinations)) {
                     <div class="destination-overlay"></div>
                     <div class="destination-info">
                         <h3 class="destination-name"><?php echo esc_html($dest->name); ?></h3>
-                        <span class="destination-count"><?php printf(esc_html__('%d개의 ?�정', 'flavor-trip'), $dest->count); ?></span>
+                        <span class="destination-count"><?php printf(esc_html__('%d개의 일정', 'flavor-trip'), $dest->count); ?></span>
                     </div>
                 </a>
             <?php endforeach; ?>
