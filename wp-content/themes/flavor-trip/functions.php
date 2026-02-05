@@ -1,8 +1,8 @@
 <?php
 /**
- * Flavor Trip 테마 functions.php
+ * TripTalk ?�마 functions.php
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
@@ -11,7 +11,7 @@ define('FT_VERSION', '1.0.0');
 define('FT_DIR', get_template_directory());
 define('FT_URI', get_template_directory_uri());
 
-// 테마 모듈 로드
+// ?�마 모듈 로드
 $ft_includes = [
     'inc/theme-setup.php',
     'inc/enqueue-scripts.php',

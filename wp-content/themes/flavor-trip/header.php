@@ -1,8 +1,7 @@
 <?php
 /**
- * 헤더 템플릿
- *
- * @package Flavor_Trip
+ * ?�더 ?�플�? *
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
@@ -19,7 +18,7 @@ defined('ABSPATH') || exit;
 <?php wp_body_open(); ?>
 
 <a class="skip-link screen-reader-text" href="#main-content">
-    <?php esc_html_e('본문으로 건너뛰기', 'flavor-trip'); ?>
+    <?php esc_html_e('본문?�로 건너?�기', 'flavor-trip'); ?>
 </a>
 
 <header class="site-header" id="site-header">
@@ -34,7 +33,7 @@ defined('ABSPATH') || exit;
             <?php endif; ?>
         </div>
 
-        <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="<?php esc_attr_e('메뉴 열기', 'flavor-trip'); ?>">
+        <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="<?php esc_attr_e('메뉴 ?�기', 'flavor-trip'); ?>">
             <span class="hamburger"></span>
         </button>
 

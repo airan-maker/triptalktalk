@@ -1,8 +1,7 @@
 <?php
 /**
- * 일반 아카이브 템플릿
- *
- * @package Flavor_Trip
+ * ?�반 ?�카?�브 ?�플�? *
+ * @package TripTalk
  */
 
 get_header();

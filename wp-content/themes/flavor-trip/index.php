@@ -1,8 +1,7 @@
 <?php
 /**
- * 기본 폴백 템플릿
- *
- * @package Flavor_Trip
+ * 기본 ?�백 ?�플�? *
+ * @package TripTalk
  */
 
 get_header();

@@ -1,8 +1,8 @@
 <?php
 /**
- * 블로그 포스트 상세 페이지
+ * 블로�??�스???�세 ?�이지
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 get_header();
@@ -42,8 +42,8 @@ get_header();
 
                 <nav class="post-navigation">
                     <?php
-                    previous_post_link('<div class="nav-prev">%link</div>', '← %title');
-                    next_post_link('<div class="nav-next">%link</div>', '%title →');
+                    previous_post_link('<div class="nav-prev">%link</div>', '??%title');
+                    next_post_link('<div class="nav-next">%link</div>', '%title ??);
                     ?>
                 </nav>
 

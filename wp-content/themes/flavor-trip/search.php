@@ -1,8 +1,7 @@
 <?php
 /**
- * 검색 결과 템플릿
- *
- * @package Flavor_Trip
+ * 검??결과 ?�플�? *
+ * @package TripTalk
  */
 
 get_header();
@@ -14,7 +13,7 @@ get_header();
 
         <header class="page-header">
             <h1 class="page-title">
-                <?php printf(esc_html__('"%s" 검색 결과', 'flavor-trip'), get_search_query()); ?>
+                <?php printf(esc_html__('"%s" 검??결과', 'flavor-trip'), get_search_query()); ?>
             </h1>
             <span class="post-count"><?php printf(esc_html__('%d개의 결과', 'flavor-trip'), $wp_query->found_posts); ?></span>
         </header>

@@ -1,12 +1,11 @@
 <?php
 /**
- * Schema.org JSON-LD 마크업
- * - TouristTrip (여행 일정)
- * - Article (블로그 포스트)
- * - WebSite + SearchAction (홈페이지)
- * - BreadcrumbList (빵크럼에서 처리)
+ * Schema.org JSON-LD 마크?? * - TouristTrip (?�행 ?�정)
+ * - Article (블로�??�스??
+ * - WebSite + SearchAction (?�페?��?)
+ * - BreadcrumbList (빵크?�에??처리)
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
@@ -16,17 +15,16 @@ add_action('wp_head', 'ft_output_schema_markup');
 function ft_output_schema_markup() {
     $schemas = [];
 
-    // WebSite 스키마 (항상 출력)
+    // WebSite ?�키�?(??�� 출력)
     $schemas[] = ft_schema_website();
 
-    // 페이지별 스키마
-    if (is_singular('travel_itinerary')) {
+    // ?�이지�??�키�?    if (is_singular('travel_itinerary')) {
         $schemas[] = ft_schema_tourist_trip();
     } elseif (is_singular('post')) {
         $schemas[] = ft_schema_article();
     }
 
-    // null 제거 및 출력
+    // null ?�거 �?출력
     $schemas = array_filter($schemas);
     foreach ($schemas as $schema) {
         echo '<script type="application/ld+json">' . "\n";
@@ -36,8 +34,7 @@ function ft_output_schema_markup() {
 }
 
 /**
- * WebSite 스키마
- */
+ * WebSite ?�키�? */
 function ft_schema_website() {
     return [
         '@context' => 'https://schema.org',
@@ -56,7 +53,7 @@ function ft_schema_website() {
 }
 
 /**
- * TouristTrip 스키마 (여행 일정)
+ * TouristTrip ?�키�?(?�행 ?�정)
  */
 function ft_schema_tourist_trip() {
     $post_id    = get_the_ID();
@@ -74,7 +71,7 @@ function ft_schema_tourist_trip() {
         'url'         => get_permalink(),
     ];
 
-    // 여행지
+    // ?�행지
     if ($dest_name) {
         $schema['touristType'] = $dest_name;
         $lat = get_post_meta($post_id, '_ft_map_lat', true);
@@ -94,7 +91,7 @@ function ft_schema_tourist_trip() {
         $schema['itinerary'] = $place;
     }
 
-    // 일자별 일정
+    // ?�자�??�정
     if ($days) {
         $itinerary_items = [];
         foreach ($days as $i => $day) {
@@ -111,7 +108,7 @@ function ft_schema_tourist_trip() {
         }
     }
 
-    // 이미지
+    // ?��?지
     $images = [];
     if (has_post_thumbnail()) {
         $images[] = get_the_post_thumbnail_url($post_id, 'full');
@@ -124,7 +121,7 @@ function ft_schema_tourist_trip() {
         $schema['image'] = $images;
     }
 
-    // 날짜
+    // ?�짜
     $schema['datePublished'] = get_the_date('c');
     $schema['dateModified']  = get_the_modified_date('c');
 
@@ -132,7 +129,7 @@ function ft_schema_tourist_trip() {
 }
 
 /**
- * Article 스키마 (블로그 포스트)
+ * Article ?�키�?(블로�??�스??
  */
 function ft_schema_article() {
     $schema = [

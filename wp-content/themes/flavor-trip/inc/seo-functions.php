@@ -1,14 +1,14 @@
 <?php
 /**
- * SEO: Open Graph, Twitter Card, 메타 설명, 캐노니컬, robots
+ * SEO: Open Graph, Twitter Card, 메�? ?�명, 캐노?�컬, robots
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
 
 /**
- * SEO 메타 태그 출력
+ * SEO 메�? ?�그 출력
  */
 function ft_seo_meta_tags() {
     $description = ft_get_meta_description();
@@ -18,12 +18,12 @@ function ft_seo_meta_tags() {
     $og_type     = is_single() || is_singular('travel_itinerary') ? 'article' : 'website';
     $site_name   = get_bloginfo('name');
 
-    // 메타 설명
+    // 메�? ?�명
     if ($description) {
         echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
     }
 
-    // 캐노니컬
+    // 캐노?�컬
     if ($canonical) {
         echo '<link rel="canonical" href="' . esc_url($canonical) . '">' . "\n";
     }
@@ -66,7 +66,7 @@ function ft_seo_meta_tags() {
         echo '<meta name="twitter:image" content="' . esc_url($og_image) . '">' . "\n";
     }
 
-    // 사이트 인증 메타
+    // ?�이???�증 메�?
     $naver_verify = get_theme_mod('ft_naver_verify');
     $google_verify = get_theme_mod('ft_google_verify');
 
@@ -79,7 +79,7 @@ function ft_seo_meta_tags() {
 }
 
 /**
- * 메타 설명 생성
+ * 메�? ?�명 ?�성
  */
 function ft_get_meta_description() {
     if (is_singular()) {
@@ -102,14 +102,14 @@ function ft_get_meta_description() {
     }
 
     if (is_post_type_archive('travel_itinerary')) {
-        return __('다양한 여행 일정과 코스를 탐색하고 나만의 여행을 계획해보세요.', 'flavor-trip');
+        return __('?�양???�행 ?�정�?코스�??�색?�고 ?�만???�행??계획?�보?�요.', 'flavor-trip');
     }
 
     return '';
 }
 
 /**
- * OG 제목 생성
+ * OG ?�목 ?�성
  */
 function ft_get_og_title() {
     if (is_singular()) {
@@ -121,18 +121,18 @@ function ft_get_og_title() {
     }
 
     if (is_post_type_archive('travel_itinerary')) {
-        return __('여행 일정', 'flavor-trip');
+        return __('?�행 ?�정', 'flavor-trip');
     }
 
     if (is_search()) {
-        return sprintf(__('"%s" 검색 결과', 'flavor-trip'), get_search_query());
+        return sprintf(__('"%s" 검??결과', 'flavor-trip'), get_search_query());
     }
 
     return get_bloginfo('name');
 }
 
 /**
- * 캐노니컬 URL
+ * 캐노?�컬 URL
  */
 function ft_get_canonical_url() {
     if (is_singular()) {
@@ -155,7 +155,7 @@ function ft_get_canonical_url() {
 }
 
 /**
- * OG 이미지
+ * OG ?��?지
  */
 function ft_get_og_image() {
     if (is_singular() && has_post_thumbnail()) {
@@ -163,12 +163,12 @@ function ft_get_og_image() {
         if ($img) return $img[0];
     }
 
-    // 기본 OG 이미지 (커스터마이저)
+    // 기본 OG ?��?지 (커스?�마?��?)
     $default = get_theme_mod('ft_default_og_image');
     if ($default) return $default;
 
     return '';
 }
 
-// wp_head에서 기본 캐노니컬 제거 (중복 방지)
+// wp_head?�서 기본 캐노?�컬 ?�거 (중복 방�?)
 remove_action('wp_head', 'rel_canonical');

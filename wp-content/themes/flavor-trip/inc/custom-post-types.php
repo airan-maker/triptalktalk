@@ -1,8 +1,8 @@
 <?php
 /**
- * 커스텀 포스트 타입: 여행 일정
+ * 커스?� ?�스???�?? ?�행 ?�정
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
@@ -10,18 +10,18 @@ defined('ABSPATH') || exit;
 add_action('init', function () {
     register_post_type('travel_itinerary', [
         'labels' => [
-            'name'               => __('여행 일정', 'flavor-trip'),
-            'singular_name'      => __('여행 일정', 'flavor-trip'),
-            'add_new'            => __('새 일정 추가', 'flavor-trip'),
-            'add_new_item'       => __('새 여행 일정 추가', 'flavor-trip'),
-            'edit_item'          => __('여행 일정 편집', 'flavor-trip'),
-            'new_item'           => __('새 여행 일정', 'flavor-trip'),
-            'view_item'          => __('여행 일정 보기', 'flavor-trip'),
-            'search_items'       => __('여행 일정 검색', 'flavor-trip'),
-            'not_found'          => __('여행 일정이 없습니다.', 'flavor-trip'),
-            'not_found_in_trash' => __('휴지통에 여행 일정이 없습니다.', 'flavor-trip'),
-            'all_items'          => __('모든 일정', 'flavor-trip'),
-            'menu_name'          => __('여행 일정', 'flavor-trip'),
+            'name'               => __('?�행 ?�정', 'flavor-trip'),
+            'singular_name'      => __('?�행 ?�정', 'flavor-trip'),
+            'add_new'            => __('???�정 추�?', 'flavor-trip'),
+            'add_new_item'       => __('???�행 ?�정 추�?', 'flavor-trip'),
+            'edit_item'          => __('?�행 ?�정 ?�집', 'flavor-trip'),
+            'new_item'           => __('???�행 ?�정', 'flavor-trip'),
+            'view_item'          => __('?�행 ?�정 보기', 'flavor-trip'),
+            'search_items'       => __('?�행 ?�정 검??, 'flavor-trip'),
+            'not_found'          => __('?�행 ?�정???�습?�다.', 'flavor-trip'),
+            'not_found_in_trash' => __('?��??�에 ?�행 ?�정???�습?�다.', 'flavor-trip'),
+            'all_items'          => __('모든 ?�정', 'flavor-trip'),
+            'menu_name'          => __('?�행 ?�정', 'flavor-trip'),
         ],
         'public'             => true,
         'has_archive'        => true,
@@ -34,7 +34,7 @@ add_action('init', function () {
     ]);
 });
 
-// 퍼마링크 자동 flush
+// ?�마링크 ?�동 flush
 add_action('after_switch_theme', function () {
     flush_rewrite_rules();
 });

@@ -1,8 +1,8 @@
 <?php
 /**
- * 빵크럼 네비게이션 (렌더링)
+ * 빵크???�비게이??(?�더�?
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;

@@ -1,4 +1,4 @@
-# Flavor Trip - AWS Lightsail 배포 가이드
+# TripTalk - AWS Lightsail 배포 가이드
 
 ## 1. Lightsail 인스턴스 생성
 

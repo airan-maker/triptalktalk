@@ -1,8 +1,7 @@
 <?php
 /**
- * 홈페이지 템플릿
- *
- * @package Flavor_Trip
+ * ?�페?��? ?�플�? *
+ * @package TripTalk
  */
 
 get_header();
@@ -12,8 +11,8 @@ get_header();
 
 <section class="section section-itineraries">
     <div class="container">
-        <h2 class="section-title"><?php esc_html_e('추천 여행 일정', 'flavor-trip'); ?></h2>
-        <p class="section-subtitle"><?php esc_html_e('엄선된 여행 코스를 만나보세요', 'flavor-trip'); ?></p>
+        <h2 class="section-title"><?php esc_html_e('추천 ?�행 ?�정', 'flavor-trip'); ?></h2>
+        <p class="section-subtitle"><?php esc_html_e('?�선???�행 코스�?만나보세??, 'flavor-trip'); ?></p>
 
         <div class="posts-grid posts-grid--3">
             <?php
@@ -29,13 +28,13 @@ get_header();
                 endwhile;
                 wp_reset_postdata();
             else : ?>
-                <p class="no-content"><?php esc_html_e('아직 등록된 여행 일정이 없습니다.', 'flavor-trip'); ?></p>
+                <p class="no-content"><?php esc_html_e('?�직 ?�록???�행 ?�정???�습?�다.', 'flavor-trip'); ?></p>
             <?php endif; ?>
         </div>
 
         <div class="section-cta">
             <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="btn btn-outline">
-                <?php esc_html_e('모든 일정 보기 →', 'flavor-trip'); ?>
+                <?php esc_html_e('모든 ?�정 보기 ??, 'flavor-trip'); ?>
             </a>
         </div>
     </div>
@@ -45,8 +44,8 @@ get_header();
 
 <section class="section section-blog">
     <div class="container">
-        <h2 class="section-title"><?php esc_html_e('여행 이야기', 'flavor-trip'); ?></h2>
-        <p class="section-subtitle"><?php esc_html_e('생생한 여행 후기와 팁을 공유합니다', 'flavor-trip'); ?></p>
+        <h2 class="section-title"><?php esc_html_e('?�행 ?�야�?, 'flavor-trip'); ?></h2>
+        <p class="section-subtitle"><?php esc_html_e('?�생???�행 ?�기?� ?�을 공유?�니??, 'flavor-trip'); ?></p>
 
         <div class="posts-grid posts-grid--3">
             <?php
@@ -60,7 +59,7 @@ get_header();
                 endwhile;
                 wp_reset_postdata();
             else : ?>
-                <p class="no-content"><?php esc_html_e('아직 등록된 글이 없습니다.', 'flavor-trip'); ?></p>
+                <p class="no-content"><?php esc_html_e('?�직 ?�록??글???�습?�다.', 'flavor-trip'); ?></p>
             <?php endif; ?>
         </div>
     </div>

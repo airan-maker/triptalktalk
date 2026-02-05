@@ -5,7 +5,7 @@ REPO_URL="https://github.com/airan-maker/triptalktalk.git"
 PROJECT_DIR="/opt/wordpress-trip"
 
 echo "========================================="
-echo " Flavor Trip - Lightsail 배포 스크립트"
+echo " TripTalk - Lightsail 배포 스크립트"
 echo "========================================="
 
 # 1. Docker 설치

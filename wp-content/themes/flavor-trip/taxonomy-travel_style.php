@@ -1,8 +1,7 @@
 <?php
 /**
- * 여행 스타일별 아카이브 템플릿
- *
- * @package Flavor_Trip
+ * ?�행 ?��??�별 ?�카?�브 ?�플�? *
+ * @package TripTalk
  */
 
 get_header();
@@ -16,13 +15,13 @@ $term = get_queried_object();
 
         <header class="page-header">
             <h1 class="page-title">
-                <span class="term-label"><?php esc_html_e('여행 스타일', 'flavor-trip'); ?></span>
+                <span class="term-label"><?php esc_html_e('?�행 ?��???, 'flavor-trip'); ?></span>
                 <?php echo esc_html($term->name); ?>
             </h1>
             <?php if ($term->description) : ?>
                 <div class="archive-description"><?php echo wp_kses_post(wpautop($term->description)); ?></div>
             <?php endif; ?>
-            <span class="post-count"><?php printf(esc_html__('%d개의 일정', 'flavor-trip'), $term->count); ?></span>
+            <span class="post-count"><?php printf(esc_html__('%d개의 ?�정', 'flavor-trip'), $term->count); ?></span>
         </header>
 
         <?php if (have_posts()) : ?>

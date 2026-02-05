@@ -2,26 +2,25 @@
 /**
  * CSS/JS 로드 (조건부)
  *
- * @package Flavor_Trip
+ * @package TripTalk
  */
 
 defined('ABSPATH') || exit;
 
 add_action('wp_enqueue_scripts', function () {
-    // 메인 스타일
-    wp_enqueue_style('flavor-trip-style', get_stylesheet_uri(), [], FT_VERSION);
+    // 메인 ?��???    wp_enqueue_style('flavor-trip-style', get_stylesheet_uri(), [], FT_VERSION);
     wp_enqueue_style('ft-main', FT_URI . '/assets/css/main.css', ['flavor-trip-style'], FT_VERSION);
     wp_enqueue_style('ft-responsive', FT_URI . '/assets/css/responsive.css', ['ft-main'], FT_VERSION);
 
     // 메인 JS
     wp_enqueue_script('ft-main', FT_URI . '/assets/js/main.js', [], FT_VERSION, true);
 
-    // 여행 일정 상세 페이지 전용
+    // ?�행 ?�정 ?�세 ?�이지 ?�용
     if (is_singular('travel_itinerary')) {
         wp_enqueue_style('ft-itinerary', FT_URI . '/assets/css/itinerary.css', ['ft-main'], FT_VERSION);
         wp_enqueue_script('ft-gallery', FT_URI . '/assets/js/gallery.js', [], FT_VERSION, true);
 
-        // 지도 (좌표가 있는 경우만)
+        // 지??(좌표가 ?�는 경우�?
         $lat = get_post_meta(get_the_ID(), '_ft_map_lat', true);
         $lng = get_post_meta(get_the_ID(), '_ft_map_lng', true);
         if ($lat && $lng) {
