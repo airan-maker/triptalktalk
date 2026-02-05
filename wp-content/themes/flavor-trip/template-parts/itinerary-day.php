@@ -37,7 +37,7 @@ $places = !empty($day['places']) ? array_map('trim', explode(',', $day['places']
         <?php if (!empty($day['tip'])) : ?>
             <div class="day-tip">
                 <strong><?php esc_html_e('💡 팁:', 'flavor-trip'); ?></strong>
-                <?php echo esc_html($day['tip']); ?>
+                <?php echo wp_kses_post($day['tip']); ?>
             </div>
         <?php endif; ?>
     </div>

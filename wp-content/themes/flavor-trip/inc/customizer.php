@@ -79,6 +79,21 @@ add_action('customize_register', function (WP_Customize_Manager $wp_customize) {
         'type'        => 'text',
     ]);
 
+    // === 섹션: 제휴 마케팅 ===
+    $wp_customize->add_section('ft_affiliate', [
+        'title'       => __('제휴 마케팅', 'flavor-trip'),
+        'description' => __('제휴 링크에 사용할 ID를 설정합니다.', 'flavor-trip'),
+        'priority'    => 42,
+    ]);
+
+    $wp_customize->add_setting('ft_klook_aid', ['sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control('ft_klook_aid', [
+        'label'       => __('Klook AID (Affiliate ID)', 'flavor-trip'),
+        'description' => __('Klook 제휴 대시보드에서 확인한 AID 값', 'flavor-trip'),
+        'section'     => 'ft_affiliate',
+        'type'        => 'text',
+    ]);
+
     // === 섹션: 히어로 설정 ===
     $wp_customize->add_section('ft_hero', [
         'title'    => __('홈 히어로 섹션', 'flavor-trip'),

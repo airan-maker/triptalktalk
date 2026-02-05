@@ -70,3 +70,35 @@ function ft_get_difficulty_label($difficulty) {
     ];
     return $labels[$difficulty] ?? $difficulty;
 }
+
+/**
+ * Klook 제휴 링크 생성
+ *
+ * 커스터마이저에 설정된 AID를 자동으로 URL에 붙여줍니다.
+ *
+ * @param string $url   Klook 상품 URL
+ * @param string $label 링크 텍스트
+ * @return string       <a> 태그 HTML (AID 없으면 빈 문자열)
+ */
+function ft_klook_link($url, $label = '예약하기') {
+    $aid = get_theme_mod('ft_klook_aid', '');
+    if (empty($aid)) {
+        return '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer nofollow sponsored">' . esc_html($label) . '</a>';
+    }
+    $url = add_query_arg('aid', $aid, $url);
+    return '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer nofollow sponsored">' . esc_html($label) . '</a>';
+}
+
+/**
+ * Klook 제휴 URL만 반환 (태그 없이)
+ *
+ * @param string $url Klook 상품 URL
+ * @return string     AID가 붙은 URL
+ */
+function ft_klook_url($url) {
+    $aid = get_theme_mod('ft_klook_aid', '');
+    if (!empty($aid)) {
+        $url = add_query_arg('aid', $aid, $url);
+    }
+    return esc_url($url);
+}
