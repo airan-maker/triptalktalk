@@ -21,10 +21,27 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_style('ft-itinerary', FT_URI . '/assets/css/itinerary.css', ['ft-main'], FT_VERSION);
         wp_enqueue_script('ft-gallery', FT_URI . '/assets/js/gallery.js', [], FT_VERSION, true);
 
-        // 지도 (좌표가 있는 경우만)
+        // 지도 (단일 좌표 또는 spots 좌표가 있는 경우)
         $lat = get_post_meta(get_the_ID(), '_ft_map_lat', true);
         $lng = get_post_meta(get_the_ID(), '_ft_map_lng', true);
-        if ($lat && $lng) {
+
+        // spots에서 좌표 존재 여부 확인
+        $has_spot_coords = false;
+        $days = get_post_meta(get_the_ID(), '_ft_days', true);
+        if (is_array($days)) {
+            foreach ($days as $d) {
+                if (!empty($d['spots']) && is_array($d['spots'])) {
+                    foreach ($d['spots'] as $s) {
+                        if (!empty($s['lat']) && !empty($s['lng'])) {
+                            $has_spot_coords = true;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($lat && $lng || $has_spot_coords) {
             $kakao_key = get_theme_mod('ft_kakao_map_key');
             $google_key = get_theme_mod('ft_google_map_key');
 

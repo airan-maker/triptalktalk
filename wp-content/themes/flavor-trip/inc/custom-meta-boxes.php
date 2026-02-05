@@ -99,7 +99,7 @@ function ft_render_itinerary_meta_box($post) {
 }
 
 /**
- * 일자별 일정 리피터 렌더링
+ * 일자별 일정 리피터 렌더링 (Day > Spot 중첩 구조)
  */
 function ft_render_days_meta_box($post) {
     $days = get_post_meta($post->ID, '_ft_days', true);
@@ -116,58 +116,112 @@ function ft_render_days_meta_box($post) {
                     <div class="ft-day-item" data-index="<?php echo esc_attr($i); ?>">
                         <div class="ft-day-header">
                             <strong>Day <?php echo esc_html($i + 1); ?></strong>
-                            <button type="button" class="ft-remove-day button-link-delete">&times;</button>
+                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][title]" value="<?php echo esc_attr($day['title'] ?? ''); ?>" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험" style="flex:1;margin:0 12px;">
+                            <button type="button" class="ft-remove-day button-link-delete">일정 삭제</button>
                         </div>
-                        <p>
-                            <label>제목</label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][title]" value="<?php echo esc_attr($day['title'] ?? ''); ?>" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험">
-                        </p>
-                        <p>
-                            <label>상세 내용</label>
-                            <textarea name="_ft_days[<?php echo esc_attr($i); ?>][description]" rows="4" class="widefat" placeholder="이 날의 일정을 상세히 작성하세요."><?php echo esc_textarea($day['description'] ?? ''); ?></textarea>
-                        </p>
-                        <p>
-                            <label>주요 장소</label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][places]" value="<?php echo esc_attr($day['places'] ?? ''); ?>" class="widefat" placeholder="쉼표로 구분 (예: 시부야 스크램블, 하라주쿠, 메이지 신궁)">
-                        </p>
-                        <p>
-                            <label>팁</label>
-                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][tip]" value="<?php echo esc_attr($day['tip'] ?? ''); ?>" class="widefat" placeholder="여행 팁을 입력하세요.">
-                        </p>
+                        <?php if (!empty($day['spots']) && is_array($day['spots'])) : ?>
+                            <div class="ft-spots-list">
+                                <?php foreach ($day['spots'] as $j => $spot) : ?>
+                                    <div class="ft-spot-item" data-spot-index="<?php echo esc_attr($j); ?>">
+                                        <div class="ft-spot-header">
+                                            <span class="ft-spot-label">📍 <?php echo esc_html($j + 1); ?>.</span>
+                                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][spots][<?php echo esc_attr($j); ?>][name]" value="<?php echo esc_attr($spot['name'] ?? ''); ?>" class="ft-spot-name-input" placeholder="장소명">
+                                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][spots][<?php echo esc_attr($j); ?>][lat]" value="<?php echo esc_attr($spot['lat'] ?? ''); ?>" class="ft-spot-coord" placeholder="위도">
+                                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][spots][<?php echo esc_attr($j); ?>][lng]" value="<?php echo esc_attr($spot['lng'] ?? ''); ?>" class="ft-spot-coord" placeholder="경도">
+                                            <button type="button" class="ft-remove-spot button-link-delete">장소 삭제</button>
+                                        </div>
+                                        <div class="ft-spot-fields">
+                                            <textarea name="_ft_days[<?php echo esc_attr($i); ?>][spots][<?php echo esc_attr($j); ?>][description]" rows="2" class="widefat" placeholder="설명"><?php echo esc_textarea($spot['description'] ?? ''); ?></textarea>
+                                            <input type="text" name="_ft_days[<?php echo esc_attr($i); ?>][spots][<?php echo esc_attr($j); ?>][tip]" value="<?php echo esc_attr($spot['tip'] ?? ''); ?>" class="widefat" placeholder="팁 (선택)">
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else : ?>
+                            <div class="ft-spots-list"></div>
+                            <?php /* Legacy fields for backward compat display */ ?>
+                            <?php if (!empty($day['description']) || !empty($day['places']) || !empty($day['tip'])) : ?>
+                                <div class="ft-legacy-notice" style="background:#fff3cd;padding:8px 12px;border-radius:4px;font-size:12px;margin-bottom:8px;">구 데이터 (spots로 전환 권장): <?php echo esc_html($day['places'] ?? ''); ?></div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <button type="button" class="ft-add-spot button button-secondary">+ 장소 추가</button>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <button type="button" id="ft-add-day" class="button button-primary"><?php esc_html_e('+ 일정 추가', 'flavor-trip'); ?></button>
+        <button type="button" id="ft-add-day" class="button button-primary"><?php esc_html_e('+ 일정(Day) 추가', 'flavor-trip'); ?></button>
     </div>
 
     <script>
     (function() {
         var list = document.getElementById('ft-days-list');
-        var addBtn = document.getElementById('ft-add-day');
-        var index = <?php echo count($days); ?>;
+        var addDayBtn = document.getElementById('ft-add-day');
+        var dayIndex = <?php echo count($days); ?>;
 
-        addBtn.addEventListener('click', function() {
+        function createSpotHTML(dayIdx, spotIdx) {
+            return '<div class="ft-spot-item" data-spot-index="' + spotIdx + '">' +
+                '<div class="ft-spot-header">' +
+                    '<span class="ft-spot-label">📍 ' + (spotIdx + 1) + '.</span>' +
+                    '<input type="text" name="_ft_days[' + dayIdx + '][spots][' + spotIdx + '][name]" class="ft-spot-name-input" placeholder="장소명">' +
+                    '<input type="text" name="_ft_days[' + dayIdx + '][spots][' + spotIdx + '][lat]" class="ft-spot-coord" placeholder="위도">' +
+                    '<input type="text" name="_ft_days[' + dayIdx + '][spots][' + spotIdx + '][lng]" class="ft-spot-coord" placeholder="경도">' +
+                    '<button type="button" class="ft-remove-spot button-link-delete">장소 삭제</button>' +
+                '</div>' +
+                '<div class="ft-spot-fields">' +
+                    '<textarea name="_ft_days[' + dayIdx + '][spots][' + spotIdx + '][description]" rows="2" class="widefat" placeholder="설명"></textarea>' +
+                    '<input type="text" name="_ft_days[' + dayIdx + '][spots][' + spotIdx + '][tip]" class="widefat" placeholder="팁 (선택)">' +
+                '</div>' +
+            '</div>';
+        }
+
+        addDayBtn.addEventListener('click', function() {
             var noMsg = list.querySelector('.ft-no-days');
             if (noMsg) noMsg.remove();
 
             var item = document.createElement('div');
             item.className = 'ft-day-item';
-            item.dataset.index = index;
+            item.dataset.index = dayIndex;
             item.innerHTML =
-                '<div class="ft-day-header"><strong>Day ' + (index + 1) + '</strong>' +
-                '<button type="button" class="ft-remove-day button-link-delete">&times;</button></div>' +
-                '<p><label>제목</label><input type="text" name="_ft_days[' + index + '][title]" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험"></p>' +
-                '<p><label>상세 내용</label><textarea name="_ft_days[' + index + '][description]" rows="4" class="widefat" placeholder="이 날의 일정을 상세히 작성하세요."></textarea></p>' +
-                '<p><label>주요 장소</label><input type="text" name="_ft_days[' + index + '][places]" class="widefat" placeholder="쉼표로 구분"></p>' +
-                '<p><label>팁</label><input type="text" name="_ft_days[' + index + '][tip]" class="widefat" placeholder="여행 팁을 입력하세요."></p>';
+                '<div class="ft-day-header">' +
+                    '<strong>Day ' + (dayIndex + 1) + '</strong>' +
+                    '<input type="text" name="_ft_days[' + dayIndex + '][title]" class="widefat" placeholder="예: 도쿄 도착 & 시부야 탐험" style="flex:1;margin:0 12px;">' +
+                    '<button type="button" class="ft-remove-day button-link-delete">일정 삭제</button>' +
+                '</div>' +
+                '<div class="ft-spots-list"></div>' +
+                '<button type="button" class="ft-add-spot button button-secondary">+ 장소 추가</button>';
             list.appendChild(item);
-            index++;
+            dayIndex++;
         });
 
         list.addEventListener('click', function(e) {
             if (e.target.classList.contains('ft-remove-day')) {
                 e.target.closest('.ft-day-item').remove();
+            }
+            if (e.target.classList.contains('ft-remove-spot')) {
+                var spotItem = e.target.closest('.ft-spot-item');
+                var spotsList = spotItem.parentElement;
+                spotItem.remove();
+                // Renumber remaining spots
+                var spots = spotsList.querySelectorAll('.ft-spot-item');
+                var dayItem = spotsList.closest('.ft-day-item');
+                var dayIdx = dayItem.dataset.index;
+                spots.forEach(function(s, idx) {
+                    s.dataset.spotIndex = idx;
+                    s.querySelector('.ft-spot-label').textContent = '📍 ' + (idx + 1) + '.';
+                    s.querySelectorAll('input, textarea').forEach(function(input) {
+                        var name = input.getAttribute('name');
+                        if (name) {
+                            input.setAttribute('name', name.replace(/\[spots\]\[\d+\]/, '[spots][' + idx + ']'));
+                        }
+                    });
+                });
+            }
+            if (e.target.classList.contains('ft-add-spot')) {
+                var dayItem = e.target.closest('.ft-day-item');
+                var dayIdx = dayItem.dataset.index;
+                var spotsList = dayItem.querySelector('.ft-spots-list');
+                var spotIdx = spotsList.querySelectorAll('.ft-spot-item').length;
+                spotsList.insertAdjacentHTML('beforeend', createSpotHTML(dayIdx, spotIdx));
             }
         });
     })();
@@ -175,10 +229,18 @@ function ft_render_days_meta_box($post) {
 
     <style>
     .ft-day-item { background: #f9f9f9; border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 4px; }
-    .ft-day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .ft-day-header { display: flex; align-items: center; margin-bottom: 8px; }
+    .ft-day-header strong { white-space: nowrap; }
     .ft-day-item label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; }
-    .ft-day-item p { margin: 8px 0; }
-    .ft-remove-day { font-size: 18px; border: none; background: none; color: #b32d2e; cursor: pointer; padding: 0 4px; }
+    .ft-remove-day, .ft-remove-spot { font-size: 12px; border: none; background: none; color: #b32d2e; cursor: pointer; padding: 2px 6px; white-space: nowrap; }
+    .ft-spot-item { background: #fff; border: 1px solid #e0e0e0; padding: 8px 10px; margin-bottom: 6px; border-radius: 3px; border-left: 3px solid #2563eb; }
+    .ft-spot-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .ft-spot-label { font-weight: 700; font-size: 13px; white-space: nowrap; }
+    .ft-spot-name-input { flex: 1; }
+    .ft-spot-coord { width: 80px; }
+    .ft-spot-fields { display: flex; flex-direction: column; gap: 4px; }
+    .ft-spots-list { margin: 8px 0; }
+    .ft-add-spot { margin-top: 4px; }
     .ft-meta-table th { width: 120px; }
     </style>
     <?php
@@ -330,16 +392,32 @@ add_action('save_post_travel_itinerary', function ($post_id) {
         update_post_meta($post_id, '_ft_gallery', $ids);
     }
 
-    // 일자별 일정 리피터
+    // 일자별 일정 리피터 (Day > Spot 중첩 구조)
     if (isset($_POST['_ft_days']) && is_array($_POST['_ft_days'])) {
         $days = [];
         foreach ($_POST['_ft_days'] as $day) {
-            $days[] = [
-                'title'       => sanitize_text_field($day['title'] ?? ''),
-                'description' => sanitize_textarea_field($day['description'] ?? ''),
-                'places'      => sanitize_text_field($day['places'] ?? ''),
-                'tip'         => sanitize_text_field($day['tip'] ?? ''),
+            $day_data = [
+                'title' => sanitize_text_field($day['title'] ?? ''),
             ];
+            if (!empty($day['spots']) && is_array($day['spots'])) {
+                $spots = [];
+                foreach ($day['spots'] as $spot) {
+                    $spots[] = [
+                        'name'        => sanitize_text_field($spot['name'] ?? ''),
+                        'description' => wp_kses_post($spot['description'] ?? ''),
+                        'tip'         => wp_kses_post($spot['tip'] ?? ''),
+                        'lat'         => sanitize_text_field($spot['lat'] ?? ''),
+                        'lng'         => sanitize_text_field($spot['lng'] ?? ''),
+                    ];
+                }
+                $day_data['spots'] = $spots;
+            } else {
+                // Legacy fields
+                $day_data['description'] = sanitize_textarea_field($day['description'] ?? '');
+                $day_data['places']      = sanitize_text_field($day['places'] ?? '');
+                $day_data['tip']         = sanitize_text_field($day['tip'] ?? '');
+            }
+            $days[] = $day_data;
         }
         update_post_meta($post_id, '_ft_days', $days);
     } else {

@@ -185,7 +185,7 @@
         gap: 8px;
     }
 
-    /* Timeline */
+    /* Timeline (legacy) */
     .timeline {
         padding-left: 32px;
     }
@@ -196,6 +196,30 @@
 
     .timeline-content {
         padding: 16px;
+    }
+
+    /* Spots timeline (new) */
+    .spots-timeline {
+        padding-left: 20px;
+    }
+
+    .spot-content {
+        padding: 14px 16px;
+    }
+
+    .spot-card {
+        gap: 10px;
+    }
+
+    .spot-marker {
+        width: 26px;
+        height: 26px;
+    }
+
+    .spot-number {
+        width: 24px;
+        height: 24px;
+        font-size: 0.688rem;
     }
 
     /* Gallery */

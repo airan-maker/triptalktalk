@@ -114,6 +114,163 @@
 }
 
 /* ==========================================================================
+   Day > Spot (새 구조)
+   ========================================================================== */
+
+/* Day별 accent 색상 */
+.day-block { --day-accent: #2563eb; }
+.day-block[data-day="1"] { --day-accent: #2563eb; }
+.day-block[data-day="2"] { --day-accent: #10b981; }
+.day-block[data-day="3"] { --day-accent: #f59e0b; }
+.day-block[data-day="4"] { --day-accent: #8b5cf6; }
+.day-block[data-day="5"] { --day-accent: #ef4444; }
+.day-block[data-day="6"] { --day-accent: #06b6d4; }
+
+.day-block {
+    margin-bottom: 36px;
+}
+
+.day-block:last-child {
+    margin-bottom: 0;
+}
+
+.day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--day-accent);
+}
+
+.day-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--day-accent);
+    color: #fff;
+    font-size: 0.813rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.day-header-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ft-text, #1f2937);
+}
+
+/* Spots timeline */
+.spots-timeline {
+    position: relative;
+    padding-left: 28px;
+}
+
+.spots-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 16px;
+    bottom: 16px;
+    width: 2px;
+    background: var(--day-accent);
+    opacity: 0.25;
+}
+
+.spot-card {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.spot-card:last-child {
+    margin-bottom: 0;
+}
+
+.spot-marker {
+    position: relative;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.spot-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--day-accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 0 0 3px rgba(255,255,255,1), 0 0 0 5px var(--day-accent);
+    box-shadow: 0 0 0 3px #fff;
+}
+
+.spot-content {
+    flex: 1;
+    background: var(--ft-bg, #fff);
+    border: 1px solid var(--ft-border, #e5e7eb);
+    border-radius: var(--ft-radius-lg, 12px);
+    padding: 18px 20px;
+    border-left: 3px solid var(--day-accent);
+    transition: box-shadow 0.2s ease;
+}
+
+.spot-content:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.spot-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--ft-text, #1f2937);
+}
+
+.spot-description {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--ft-text, #374151);
+    margin: 0 0 10px;
+}
+
+.spot-description:last-child {
+    margin-bottom: 0;
+}
+
+.spot-description a {
+    color: var(--day-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.spot-tip {
+    padding: 10px 14px;
+    background: rgba(16, 185, 129, 0.08);
+    border-left: 3px solid var(--ft-accent, #10b981);
+    border-radius: 0 var(--ft-radius, 8px) var(--ft-radius, 8px) 0;
+    font-size: 0.813rem;
+    line-height: 1.6;
+    color: var(--ft-text, #374151);
+}
+
+.spot-tip a {
+    color: #059669;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
    Gallery Grid
    ========================================================================== */
 

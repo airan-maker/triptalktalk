@@ -61,16 +61,34 @@ while (have_posts()) : the_post();
                 <?php the_content(); ?>
             </div>
 
-            <?php if (!empty($days)) : ?>
+            <?php if (!empty($days)) :
+                // spots 구조 여부 확인
+                $has_spots = false;
+                foreach ($days as $d) {
+                    if (!empty($d['spots'])) { $has_spots = true; break; }
+                }
+            ?>
                 <section class="itinerary-days" id="daily-itinerary">
                     <h2 class="section-heading"><?php esc_html_e('일자별 일정', 'flavor-trip'); ?></h2>
-                    <div class="timeline">
-                        <?php foreach ($days as $i => $day) :
-                            set_query_var('ft_day_data', $day);
-                            set_query_var('ft_day_number', $i + 1);
-                            get_template_part('template-parts/itinerary-day');
-                        endforeach; ?>
-                    </div>
+                    <?php if ($has_spots) : ?>
+                        <div class="days-spots-container">
+                            <?php
+                            set_query_var('ft_spot_counter', 0);
+                            foreach ($days as $i => $day) :
+                                set_query_var('ft_day_data', $day);
+                                set_query_var('ft_day_number', $i + 1);
+                                get_template_part('template-parts/itinerary-day');
+                            endforeach; ?>
+                        </div>
+                    <?php else : ?>
+                        <div class="timeline">
+                            <?php foreach ($days as $i => $day) :
+                                set_query_var('ft_day_data', $day);
+                                set_query_var('ft_day_number', $i + 1);
+                                get_template_part('template-parts/itinerary-day');
+                            endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </section>
             <?php endif; ?>
 
@@ -79,10 +97,35 @@ while (have_posts()) : the_post();
                 get_template_part('template-parts/photo-gallery');
             endif; ?>
 
-            <?php if ($lat && $lng) :
+            <?php
+            // spots 좌표 수집
+            $all_spots = [];
+            if (!empty($days)) {
+                foreach ($days as $di => $d) {
+                    if (!empty($d['spots']) && is_array($d['spots'])) {
+                        $sn = 0;
+                        foreach ($d['spots'] as $s) {
+                            $sn++;
+                            if (!empty($s['lat']) && !empty($s['lng'])) {
+                                $all_spots[] = [
+                                    'day'  => $di + 1,
+                                    'n'    => $sn,
+                                    'name' => $s['name'] ?? '',
+                                    'lat'  => (float) $s['lat'],
+                                    'lng'  => (float) $s['lng'],
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            // spots 좌표가 있으면 지도 표시, 없으면 기존 단일 좌표 사용
+            if (!empty($all_spots) || ($lat && $lng)) :
                 set_query_var('ft_map_lat', $lat);
                 set_query_var('ft_map_lng', $lng);
                 set_query_var('ft_map_zoom', get_post_meta(get_the_ID(), '_ft_map_zoom', true) ?: 12);
+                set_query_var('ft_map_spots', $all_spots);
                 get_template_part('template-parts/map-placeholder');
             endif; ?>
 
