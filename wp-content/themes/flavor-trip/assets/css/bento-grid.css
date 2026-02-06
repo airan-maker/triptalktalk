@@ -440,20 +440,36 @@
 
 @media (max-width: 768px) {
     .archive-hero {
-        padding: 40px 0 60px;
+        padding: 40px 0 48px;
     }
 
     .archive-hero h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .archive-hero p {
-        font-size: 1rem;
-        margin-bottom: 24px;
+        font-size: 0.938rem;
+        margin-bottom: 20px;
+    }
+
+    /* 필터 섹션 개선 */
+    .bento-filters {
+        margin-bottom: 28px;
+    }
+
+    .filter-section {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .filter-section-label {
+        width: 100%;
+        flex-basis: 100%;
+        margin-bottom: 4px;
     }
 
     .filter-pill {
-        padding: 8px 16px;
+        padding: 8px 14px;
         font-size: 0.813rem;
     }
 
@@ -504,20 +520,108 @@
 
 @media (max-width: 480px) {
     .archive-hero {
-        padding: 32px 0 48px;
+        padding: 32px 0 40px;
     }
 
     .archive-hero h1 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+
+    .archive-hero p {
+        font-size: 0.875rem;
+        margin-bottom: 20px;
+    }
+
+    /* 검색바 - 돋보기 아이콘 버튼 */
+    .hero-search {
+        padding: 0 8px;
+    }
+
+    .hero-search .search-form {
+        padding: 4px 4px 4px 16px;
+        border-radius: 50px;
+    }
+
+    .hero-search .search-field {
+        padding: 12px 8px;
+        font-size: 0.875rem;
+    }
+
+    .hero-search .search-submit {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .hero-search .search-submit::before {
+        content: '';
+        width: 18px;
+        height: 18px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    /* 필터 섹션 - 세로 스크롤 개선 */
+    .bento-filters {
+        margin-bottom: 24px;
+    }
+
+    .filter-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 16px;
+        overflow: visible;
+        flex-wrap: wrap;
+    }
+
+    .filter-section-label {
+        width: 100%;
+        margin-bottom: 4px;
+        padding: 0;
+    }
+
+    .filter-section .filter-pills-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    /* 필터 pills를 래핑하도록 수정 */
+    .filter-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .filter-section-label {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .filter-pill {
+        flex-shrink: 0;
+        padding: 8px 14px;
+        font-size: 0.813rem;
     }
 
     .bento-grid {
         grid-template-columns: 1fr;
         grid-auto-rows: auto;
+        gap: 16px;
     }
 
     .bento-card {
-        min-height: 220px;
+        min-height: 200px;
     }
 
     .bento-card--featured,
@@ -528,27 +632,11 @@
     }
 
     .bento-card--featured {
-        min-height: 300px;
+        min-height: 260px;
     }
 
     .bento-card--featured .bento-card-excerpt {
         display: none;
-    }
-
-    .filter-section {
-        width: 100%;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .filter-section::-webkit-scrollbar {
-        display: none;
-    }
-
-    .filter-pill {
-        flex-shrink: 0;
     }
 }
 
