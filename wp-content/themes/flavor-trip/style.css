@@ -35,7 +35,7 @@ Flavor Trip — 맛있는 여행의 시작
     --ft-header-height: 80px;
     --ft-transition: 0.3s ease;
 
-    /* 폰트 변수 */
-    --ft-font-serif: 'Playfair Display', 'Noto Serif KR', Georgia, serif;
-    --ft-font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+    /* 폰트 변수 - Noto Sans KR (TripTalk Style) */
+    --ft-font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --ft-font-heading: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
 }

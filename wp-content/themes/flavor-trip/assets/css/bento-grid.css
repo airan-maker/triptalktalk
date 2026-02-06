@@ -60,7 +60,7 @@
 }
 
 .archive-hero h1 {
-    font-family: var(--ft-font-serif);
+    font-family: var(--ft-font-sans);
     font-size: 3rem;
     font-weight: 700;
     color: var(--ft-text);
@@ -293,7 +293,7 @@
 }
 
 .bento-card-title {
-    font-family: var(--ft-font-serif);
+    font-family: var(--ft-font-sans);
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.35;

@@ -7,7 +7,7 @@
 
 defined('ABSPATH') || exit;
 
-define('FT_VERSION', '2.0.0');
+define('FT_VERSION', '2.1.0');
 define('FT_DIR', get_template_directory());
 define('FT_URI', get_template_directory_uri());
 
