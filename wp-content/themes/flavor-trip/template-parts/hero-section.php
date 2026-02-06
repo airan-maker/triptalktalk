@@ -18,9 +18,6 @@ $hero_image    = get_theme_mod('ft_hero_image');
         <h1 class="hero-title"><?php echo esc_html($hero_title); ?></h1>
         <p class="hero-subtitle"><?php echo esc_html($hero_subtitle); ?></p>
         <div class="hero-actions">
-            <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="btn btn-primary btn-lg">
-                <?php esc_html_e('여행 일정 둘러보기', 'flavor-trip'); ?>
-            </a>
             <?php get_search_form(); ?>
         </div>
     </div>
