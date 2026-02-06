@@ -561,16 +561,9 @@
     }
 
     .hero-search .search-submit svg {
-        display: none;
-    }
-
-    .hero-search .search-submit::before {
-        content: '';
         width: 14px;
         height: 14px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
-        background-size: contain;
-        background-repeat: no-repeat;
+        stroke: white;
     }
 
     /* 필터 섹션 - 세로 스크롤 개선 */
