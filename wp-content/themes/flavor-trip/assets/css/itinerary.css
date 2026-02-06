@@ -555,15 +555,21 @@
         box-shadow: none;
     }
 
-    /* 번호 배지 숨기기 */
+    /* 번호 배지 - 작게 표시 */
     .spot-number-badge {
-        display: none;
+        display: flex;
+        width: 24px;
+        height: 24px;
+        font-size: 0.75rem;
+        position: absolute;
+        top: 16px;
+        left: 16px;
     }
 
-    /* 스팟 콘텐츠 전체 너비 */
+    /* 스팟 콘텐츠 - 번호 배지 공간 확보 */
     .spot-content {
         width: 100%;
-        padding: 0;
+        padding: 0 0 0 36px;
         box-shadow: none;
         border-radius: 0;
         background: transparent;
