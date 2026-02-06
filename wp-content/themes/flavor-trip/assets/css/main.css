@@ -747,7 +747,7 @@ a:hover {
 }
 
 .destination-card:hover::after {
-    background: linear-gradient(to top, rgba(14, 165, 233, 0.85) 0%, rgba(139, 92, 246, 0.4) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
 }
 
 .destination-overlay {
@@ -1237,32 +1237,87 @@ a:hover {
 
 .comments-area {
     margin-top: 48px;
-    padding-top: 32px;
-    background: var(--ft-bg-alt);
-    margin-left: -24px;
-    margin-right: -24px;
-    padding: 32px 24px;
+    background: var(--ft-bg);
+    padding: 32px;
     border-radius: var(--ft-radius-lg);
+    border: 1px solid var(--ft-border);
 }
 
 .comments-title {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.125rem;
+    font-weight: 600;
     margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ft-border);
 }
 
 .comment-list {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .comment-list .comment {
     padding: 20px 0;
+    border-bottom: 1px solid var(--ft-border);
+}
+
+.comment-list .comment:last-child {
+    border-bottom: none;
 }
 
 .comment-list .comment-body {
-    display: grid;
-    grid-template-columns: 48px 1fr;
+    display: flex;
     gap: 16px;
+}
+
+.comment-author .avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.comment-author .fn {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.comment-metadata {
+    font-size: 0.75rem;
+    color: var(--ft-text-light);
+    margin-top: 4px;
+}
+
+.comment-content {
+    margin-top: 8px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.comment-respond {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ft-border);
+}
+
+.comment-reply-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.comment-form label {
+    display: block;
+    font-size: 0.813rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--ft-text);
 }
 
 .comment-form input[type="text"],
@@ -1271,30 +1326,45 @@ a:hover {
 .comment-form textarea {
     width: 100%;
     padding: 12px 16px;
-    background: var(--ft-bg);
-    border: none;
-    border-radius: var(--ft-radius-lg);
+    background: var(--ft-bg-alt);
+    border: 1px solid var(--ft-border);
+    border-radius: 8px;
     font-family: inherit;
-    font-size: 0.938rem;
-    transition: box-shadow var(--ft-transition);
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .comment-form input:focus,
 .comment-form textarea:focus {
     outline: none;
-    box-shadow: inset 0 0 0 2px var(--ft-primary);
+    border-color: var(--ft-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.comment-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.comment-form .form-submit {
+    margin-top: 8px;
 }
 
 .comment-form .form-submit input {
     background: var(--ft-primary);
     color: white;
     border: none;
-    padding: 10px 24px;
-    border-radius: var(--ft-radius);
-    font-size: 0.938rem;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;
+    transition: background 0.2s;
+}
+
+.comment-form .form-submit input:hover {
+    background: #6d28d9;
 }
 
 /* ==========================================================================
@@ -1631,23 +1701,32 @@ a:hover {
         padding-bottom: 60px;
     }
 
+    .container {
+        padding: 0 24px;
+    }
+
     .section {
-        padding: 60px 0;
+        padding: 48px 0;
     }
 
     .section-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .section-subtitle {
-        margin-bottom: 40px;
-        font-size: 1rem;
+        margin-bottom: 32px;
+        font-size: 0.938rem;
+        padding: 0 8px;
     }
 
     .posts-grid,
     .posts-grid--3 {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
+    }
+
+    .post-card {
+        margin: 0;
     }
 
     .destination-grid {
@@ -1656,7 +1735,34 @@ a:hover {
     }
 
     .destination-card {
-        min-height: 220px;
+        min-height: 200px;
+        margin: 0;
+    }
+
+    .destination-info {
+        padding: 24px;
+    }
+
+    .destination-name {
+        font-size: 1.5rem;
+    }
+
+    /* 댓글 영역 모바일 */
+    .comments-area {
+        padding: 24px 20px;
+        margin: 0 -4px;
+    }
+
+    .comment-list .comment-body {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .comment-form input[type="text"],
+    .comment-form input[type="email"],
+    .comment-form input[type="url"],
+    .comment-form textarea {
+        padding: 14px;
     }
 
     .footer-grid {
