@@ -128,9 +128,8 @@ a:hover {
 .site-title {
     font-family: var(--ft-font-sans);
     font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .main-navigation {
@@ -1833,24 +1832,40 @@ a:hover {
     }
 
     .hero-actions .search-form {
-        flex-direction: column;
-        border-radius: 16px;
-        padding: 8px;
-        gap: 8px;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 50px;
+        padding: 4px 4px 4px 16px;
+        gap: 0;
     }
 
     .hero-actions .search-field {
-        width: 100%;
-        padding: 14px 16px;
-        text-align: center;
-        border-radius: 12px;
+        flex: 1;
+        padding: 8px 8px;
+        text-align: left;
+        border-radius: 0;
+        font-size: 0.875rem;
     }
 
     .hero-actions .search-submit {
-        width: 100%;
-        padding: 14px 20px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
         justify-content: center;
-        border-radius: 12px;
+        font-size: 0;
+    }
+
+    .hero-actions .search-submit::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
     }
 
     .hero-search {
@@ -1858,22 +1873,39 @@ a:hover {
     }
 
     .hero-search .search-form {
-        flex-direction: column;
-        border-radius: 16px;
-        padding: 8px;
-        gap: 8px;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 50px;
+        padding: 4px 4px 4px 16px;
+        gap: 0;
     }
 
     .hero-search .search-field {
-        width: 100%;
-        padding: 14px 16px;
-        text-align: center;
-        border-radius: 12px;
+        flex: 1;
+        padding: 8px 8px;
+        text-align: left;
+        border-radius: 0;
+        font-size: 0.875rem;
     }
 
     .hero-search .search-submit {
-        width: 100%;
-        padding: 14px 20px;
-        border-radius: 12px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+    }
+
+    .hero-search .search-submit::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
     }
 }

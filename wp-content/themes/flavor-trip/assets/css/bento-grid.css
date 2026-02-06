@@ -533,24 +533,24 @@
         margin-bottom: 20px;
     }
 
-    /* 검색바 - 돋보기 아이콘 버튼 */
+    /* 검색바 - 컴팩트 + 돋보기 아이콘 */
     .hero-search {
-        padding: 0 8px;
+        padding: 0 16px;
     }
 
     .hero-search .search-form {
-        padding: 4px 4px 4px 16px;
+        padding: 3px 3px 3px 14px;
         border-radius: 50px;
     }
 
     .hero-search .search-field {
-        padding: 12px 8px;
+        padding: 6px 8px;
         font-size: 0.875rem;
     }
 
     .hero-search .search-submit {
-        width: 44px;
-        height: 44px;
+        width: 32px;
+        height: 32px;
         padding: 0;
         border-radius: 50%;
         font-size: 0;
@@ -562,8 +562,8 @@
 
     .hero-search .search-submit::before {
         content: '';
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
         background-size: contain;
         background-repeat: no-repeat;
