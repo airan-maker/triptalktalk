@@ -1,122 +1,238 @@
 /* ==========================================================================
-   Bento Grid + Magazine Style — 여행 일정 아카이브
+   Immersive Bento Grid — 몰입감 있는 여행 아카이브
    ========================================================================== */
 
-/* Hero Header */
-.archive-hero {
-    position: relative;
-    background: linear-gradient(135deg, var(--ft-primary) 0%, var(--ft-primary-dark) 100%);
-    padding: 60px 0;
-    margin-bottom: 48px;
-    overflow: hidden;
+/* 경쾌한 색상 팔레트 오버라이드 */
+.archive-hero,
+.bento-filters,
+.bento-grid {
+    --accent-primary: #0EA5E9;    /* Sky blue */
+    --accent-secondary: #F97316;  /* Orange */
+    --accent-tertiary: #10B981;   /* Emerald */
+    --accent-purple: #8B5CF6;     /* Purple */
+    --accent-pink: #EC4899;       /* Pink */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.2);
 }
 
+/* ==========================================================================
+   Immersive Full-Screen Hero
+   ========================================================================== */
+
+.archive-hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+/* 배경 이미지/비디오 */
 .archive-hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
+    background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(0.7);
+    animation: slowZoom 30s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+/* 그라데이션 오버레이 */
+.archive-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(14, 165, 233, 0.3) 0%,
+        rgba(139, 92, 246, 0.3) 50%,
+        rgba(236, 72, 153, 0.2) 100%
+    );
 }
 
 .archive-hero .container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 20px;
 }
 
 .archive-hero-content {
-    max-width: 600px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .archive-hero h1 {
     font-family: var(--ft-font-serif);
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 3.5rem;
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .archive-hero p {
-    font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
+    margin-bottom: 32px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Filter Pills */
-.bento-filters {
+/* ==========================================================================
+   Glassmorphism Floating Search (Hero 내부용)
+   ========================================================================== */
+
+.hero-search {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hero-search .search-form {
     display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.hero-search .search-field {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 16px 24px;
+    font-size: 1rem;
+    color: #fff;
+    outline: none;
+}
+
+.hero-search .search-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.hero-search .search-submit {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+    border: none;
+    padding: 16px 32px;
+    border-radius: 100px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-search .search-submit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+}
+
+/* ==========================================================================
+   Glassmorphism Filter Pills
+   ========================================================================== */
+
+.bento-filters {
+    position: relative;
+    z-index: 10;
+    margin-top: -60px;
     margin-bottom: 40px;
-    padding: 24px;
-    background: var(--ft-bg);
-    border-radius: var(--ft-radius-lg);
-    box-shadow: var(--ft-shadow);
+    padding: 24px 32px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .filter-section {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
 }
 
 .filter-section-label {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--ft-text-light);
     margin-right: 8px;
+    padding: 8px 0;
 }
 
 .filter-pill {
     display: inline-flex;
     align-items: center;
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ft-text);
-    background: var(--ft-bg-alt);
-    border: 1px solid transparent;
+    background: #fff;
+    border: none;
     border-radius: 100px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .filter-pill:hover {
-    background: var(--ft-primary);
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.2);
+    color: var(--accent-primary);
 }
 
 .filter-pill.active {
-    background: var(--ft-primary);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
     color: #fff;
-    box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.35);
 }
 
-/* Bento Grid Container */
+/* ==========================================================================
+   Bento Grid — 경쾌한 스타일
+   ========================================================================== */
+
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 200px;
+    grid-auto-rows: 220px;
     gap: 16px;
-    margin-bottom: 48px;
+    margin-bottom: 60px;
 }
 
-/* Bento Card Base */
+/* Bento Card */
 .bento-card {
     position: relative;
-    border-radius: var(--ft-radius-lg);
+    border-radius: 20px;
     overflow: hidden;
-    background: var(--ft-bg-alt);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
 .bento-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--ft-shadow-lg);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .bento-card a {
@@ -138,24 +254,33 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bento-card:hover .bento-card-image img {
-    transform: scale(1.08);
+    transform: scale(1.15);
 }
 
-/* Card Overlay */
+/* Card Gradient Overlay */
 .bento-card-overlay {
     position: absolute;
     inset: 0;
     z-index: 2;
     background: linear-gradient(
         to top,
-        rgba(0, 0, 0, 0.85) 0%,
-        rgba(0, 0, 0, 0.4) 40%,
-        rgba(0, 0, 0, 0.1) 70%,
-        rgba(0, 0, 0, 0) 100%
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        transparent 100%
+    );
+    transition: opacity 0.3s ease;
+}
+
+.bento-card:hover .bento-card-overlay {
+    background: linear-gradient(
+        to top,
+        rgba(14, 165, 233, 0.9) 0%,
+        rgba(139, 92, 246, 0.5) 50%,
+        transparent 100%
     );
 }
 
@@ -166,39 +291,45 @@
     left: 0;
     right: 0;
     z-index: 3;
-    padding: 20px;
+    padding: 24px;
     color: #fff;
+    transform: translateY(10px);
+    transition: transform 0.3s ease;
+}
+
+.bento-card:hover .bento-card-content {
+    transform: translateY(0);
 }
 
 .bento-card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .bento-card-tag {
     display: inline-block;
-    padding: 4px 10px;
-    font-size: 0.688rem;
-    font-weight: 600;
+    padding: 5px 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(4px);
-    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    border-radius: 6px;
     color: #fff;
 }
 
 .bento-card-tag--dest {
-    background: var(--ft-primary);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
 }
 
 .bento-card-title {
     font-family: var(--ft-font-serif);
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.35;
     margin-bottom: 8px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -209,20 +340,27 @@
 .bento-card-excerpt {
     font-size: 0.875rem;
     line-height: 1.5;
-    opacity: 0.85;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    display: none;
+    margin-bottom: 8px;
+}
+
+.bento-card:hover .bento-card-excerpt {
+    opacity: 0.9;
+    transform: translateY(0);
 }
 
 .bento-card-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 0.75rem;
-    opacity: 0.8;
+    gap: 16px;
+    font-size: 0.8rem;
+    opacity: 0.85;
 }
 
 .bento-card-meta span {
@@ -230,6 +368,29 @@
     align-items: center;
     gap: 4px;
 }
+
+/* Badge (Duration) */
+.bento-card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ft-text);
+    border-radius: 100px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   Card Size Variations
+   ========================================================================== */
 
 /* Featured Card (Large) */
 .bento-card--featured {
@@ -242,18 +403,17 @@
 }
 
 .bento-card--featured .bento-card-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
     -webkit-line-clamp: 3;
 }
 
 .bento-card--featured .bento-card-excerpt {
     display: -webkit-box;
     font-size: 1rem;
-    margin-bottom: 12px;
 }
 
 .bento-card--featured .bento-card-meta {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
 }
 
 /* Wide Card */
@@ -262,7 +422,7 @@
 }
 
 .bento-card--wide .bento-card-title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
 }
 
 /* Tall Card */
@@ -271,11 +431,11 @@
 }
 
 .bento-card--tall .bento-card-content {
-    padding: 24px;
+    padding: 28px;
 }
 
 .bento-card--tall .bento-card-title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     -webkit-line-clamp: 3;
 }
 
@@ -283,62 +443,97 @@
     display: -webkit-box;
 }
 
-/* Destination Badge on Image */
-.bento-card-badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 4;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    background: #fff;
-    color: var(--ft-text);
-    border-radius: 100px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+/* ==========================================================================
+   Color Accents per Card (Optional - nth-child)
+   ========================================================================== */
+
+.bento-card:nth-child(5n+1):hover .bento-card-overlay {
+    background: linear-gradient(to top, rgba(14, 165, 233, 0.9) 0%, transparent 100%);
+}
+
+.bento-card:nth-child(5n+2):hover .bento-card-overlay {
+    background: linear-gradient(to top, rgba(249, 115, 22, 0.9) 0%, transparent 100%);
+}
+
+.bento-card:nth-child(5n+3):hover .bento-card-overlay {
+    background: linear-gradient(to top, rgba(16, 185, 129, 0.9) 0%, transparent 100%);
+}
+
+.bento-card:nth-child(5n+4):hover .bento-card-overlay {
+    background: linear-gradient(to top, rgba(139, 92, 246, 0.9) 0%, transparent 100%);
+}
+
+.bento-card:nth-child(5n+5):hover .bento-card-overlay {
+    background: linear-gradient(to top, rgba(236, 72, 153, 0.9) 0%, transparent 100%);
 }
 
 /* ==========================================================================
    Responsive
    ========================================================================== */
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .bento-grid {
         grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: 180px;
+        grid-auto-rows: 200px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .archive-hero {
+        min-height: 60vh;
+    }
+
+    .archive-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 200px;
     }
 
     .bento-card--featured {
         grid-column: span 2;
         grid-row: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .archive-hero {
+        min-height: 50vh;
+    }
+
+    .archive-hero::before {
+        background-attachment: scroll;
     }
 
     .archive-hero h1 {
         font-size: 2rem;
     }
-}
 
-@media (max-width: 768px) {
+    .archive-hero p {
+        font-size: 1rem;
+    }
+
+    .bento-filters {
+        margin-top: -40px;
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .filter-pill {
+        padding: 8px 16px;
+        font-size: 0.813rem;
+    }
+
     .bento-grid {
         grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 160px;
+        grid-auto-rows: 180px;
         gap: 12px;
     }
 
-    .bento-card--featured {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-
-    .bento-card--wide {
-        grid-column: span 2;
-    }
-
-    .bento-card--tall {
-        grid-row: span 2;
+    .bento-card {
+        border-radius: 16px;
     }
 
     .bento-card-content {
@@ -350,43 +545,35 @@
     }
 
     .bento-card--featured .bento-card-title {
-        font-size: 1.25rem;
+        font-size: 1.35rem;
     }
 
     .bento-card--featured .bento-card-content {
         padding: 20px;
     }
 
+    .bento-card-badge {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
     .archive-hero {
-        padding: 40px 0;
+        min-height: 45vh;
     }
 
     .archive-hero h1 {
         font-size: 1.75rem;
     }
 
-    .archive-hero p {
-        font-size: 1rem;
-    }
-
-    .bento-filters {
-        padding: 16px;
-        gap: 16px;
-    }
-
-    .filter-section {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
     .bento-grid {
         grid-template-columns: 1fr;
         grid-auto-rows: auto;
     }
 
     .bento-card {
-        min-height: 200px;
+        min-height: 220px;
     }
 
     .bento-card--featured,
@@ -397,10 +584,55 @@
     }
 
     .bento-card--featured {
-        min-height: 280px;
+        min-height: 300px;
     }
 
     .bento-card--featured .bento-card-excerpt {
         display: none;
+    }
+
+    .filter-section {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-section::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-pill {
+        flex-shrink: 0;
+    }
+}
+
+/* ==========================================================================
+   Scroll Animation (Optional Enhancement)
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+    .bento-card {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .bento-card:nth-child(1) { animation-delay: 0.1s; }
+    .bento-card:nth-child(2) { animation-delay: 0.15s; }
+    .bento-card:nth-child(3) { animation-delay: 0.2s; }
+    .bento-card:nth-child(4) { animation-delay: 0.25s; }
+    .bento-card:nth-child(5) { animation-delay: 0.3s; }
+    .bento-card:nth-child(6) { animation-delay: 0.35s; }
+    .bento-card:nth-child(7) { animation-delay: 0.4s; }
+    .bento-card:nth-child(8) { animation-delay: 0.45s; }
+    .bento-card:nth-child(n+9) { animation-delay: 0.5s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 }

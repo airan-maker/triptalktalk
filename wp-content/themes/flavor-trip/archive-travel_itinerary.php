@@ -17,8 +17,15 @@ $current_style = get_query_var('travel_style');
     <div class="container">
         <?php get_template_part('template-parts/breadcrumbs'); ?>
         <div class="archive-hero-content">
-            <h1><?php esc_html_e('여행 일정', 'flavor-trip'); ?></h1>
-            <p><?php esc_html_e('전 세계 다양한 여행 코스를 탐색하고 나만의 여행을 계획해보세요.', 'flavor-trip'); ?></p>
+            <h1><?php esc_html_e('어디로 떠나볼까요?', 'flavor-trip'); ?></h1>
+            <p><?php esc_html_e('전 세계 다양한 여행 코스를 탐색하고 나만의 완벽한 여행을 계획해보세요.', 'flavor-trip'); ?></p>
+            <div class="hero-search">
+                <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
+                    <input type="search" class="search-field" placeholder="<?php esc_attr_e('도시, 국가 또는 여행 스타일 검색...', 'flavor-trip'); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+                    <input type="hidden" name="post_type" value="travel_itinerary" />
+                    <button type="submit" class="search-submit"><?php esc_html_e('검색', 'flavor-trip'); ?></button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

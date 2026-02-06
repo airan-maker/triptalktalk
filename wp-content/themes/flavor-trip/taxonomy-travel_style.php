@@ -20,8 +20,15 @@ $all_styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true]);
             <?php if ($term->description) : ?>
                 <p><?php echo esc_html($term->description); ?></p>
             <?php else : ?>
-                <p><?php printf(esc_html__('%s 스타일의 여행 코스를 탐색해보세요.', 'flavor-trip'), $term->name); ?></p>
+                <p><?php printf(esc_html__('%s 스타일의 여행 코스를 탐색하고 나만의 여행을 찾아보세요.', 'flavor-trip'), $term->name); ?></p>
             <?php endif; ?>
+            <div class="hero-search">
+                <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
+                    <input type="search" class="search-field" placeholder="<?php esc_attr_e('여행지, 맛집, 액티비티 검색...', 'flavor-trip'); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+                    <input type="hidden" name="post_type" value="travel_itinerary" />
+                    <button type="submit" class="search-submit"><?php esc_html_e('검색', 'flavor-trip'); ?></button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
