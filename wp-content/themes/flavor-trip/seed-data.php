@@ -46,30 +46,81 @@ WP_CLI::log( '' );
 WP_CLI::log( '── 1단계: Destination 택소노미 생성 ──' );
 
 $destinations = [
+    '한국'     => [
+        'slug'     => 'korea',
+        'children' => [
+            '제주도' => 'jeju',
+            '서울' => 'seoul',
+            '부산' => 'busan',
+        ],
+    ],
     '일본'     => [
         'slug'     => 'japan',
         'children' => [
             '도쿄' => 'tokyo',
             '오사카' => 'osaka',
+            '후쿠오카' => 'fukuoka',
+            '교토' => 'kyoto',
+            '삿포로' => 'sapporo',
+            '오키나와' => 'okinawa',
+        ],
+    ],
+    '동아시아' => [
+        'slug'     => 'east-asia',
+        'children' => [
+            '홍콩' => 'hongkong',
+            '타이베이' => 'taipei',
+            '마카오' => 'macau',
         ],
     ],
     '동남아시아' => [
         'slug'     => 'southeast-asia',
         'children' => [
             '방콕' => 'bangkok',
+            '치앙마이' => 'chiangmai',
             '다낭' => 'danang',
+            '하노이' => 'hanoi',
+            '호치민' => 'hochiminh',
+            '싱가포르' => 'singapore',
+            '발리' => 'bali',
+            '세부' => 'cebu',
+            '보라카이' => 'boracay',
+            '푸켓' => 'phuket',
+            '코사무이' => 'kosamui',
+            '루앙프라방' => 'luangprabang',
         ],
     ],
     '유럽'     => [
         'slug'     => 'europe',
         'children' => [
             '파리' => 'paris',
+            '런던' => 'london',
+            '바르셀로나' => 'barcelona',
+            '로마' => 'rome',
+            '스위스' => 'switzerland',
+            '프라하' => 'prague',
+            '암스테르담' => 'amsterdam',
+            '비엔나' => 'vienna',
         ],
     ],
-    '한국'     => [
-        'slug'     => 'korea',
+    '북미'     => [
+        'slug'     => 'north-america',
         'children' => [
-            '제주도' => 'jeju',
+            '뉴욕' => 'new-york',
+            'LA' => 'los-angeles',
+            '샌프란시스코' => 'san-francisco',
+            '라스베이거스' => 'las-vegas',
+            '하와이' => 'hawaii',
+            '밴쿠버' => 'vancouver',
+        ],
+    ],
+    '오세아니아' => [
+        'slug'     => 'oceania',
+        'children' => [
+            '시드니' => 'sydney',
+            '멜버른' => 'melbourne',
+            '골드코스트' => 'gold-coast',
+            '뉴질랜드' => 'new-zealand',
         ],
     ],
 ];
@@ -115,13 +166,20 @@ WP_CLI::log( '── 2단계: Travel Style 택소노미 생성 ──' );
 
 $travel_styles = [
     '맛집투어'   => 'food-tour',
+    '맛집'       => 'food',
     '자연탐방'   => 'nature',
     '문화체험'   => 'culture',
+    '문화탐방'   => 'culture-tour',
     '가성비여행' => 'budget-travel',
     '럭셔리'     => 'luxury',
     '배낭여행'   => 'backpacking',
     '가족여행'   => 'family',
     '커플여행'   => 'couple',
+    '힐링여행'   => 'healing',
+    '액티비티'   => 'activity',
+    '쇼핑'       => 'shopping',
+    '휴양'       => 'resort',
+    '역사탐방'   => 'history',
 ];
 
 $style_term_ids = []; // name => term_id 매핑
