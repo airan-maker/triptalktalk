@@ -1748,18 +1748,10 @@ a:hover {
 }
 
 .day-tip-box {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
     padding: 20px 24px;
     background: var(--ft-bg-alt);
-    margin: 8px;
+    margin-top: 16px;
     border-radius: var(--ft-radius-lg);
-}
-
-.day-tip-icon {
-    font-size: 1.25rem;
-    flex-shrink: 0;
 }
 
 .day-tip-content strong {

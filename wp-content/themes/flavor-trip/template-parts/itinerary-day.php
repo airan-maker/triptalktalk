@@ -90,7 +90,6 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
 
     <?php if (!empty($day['tip'])) : ?>
         <div class="day-tip-box">
-            <span class="day-tip-icon">📌</span>
             <div class="day-tip-content">
                 <strong>이 날의 핵심 팁</strong>
                 <p><?php echo wp_kses_post($day['tip']); ?></p>
