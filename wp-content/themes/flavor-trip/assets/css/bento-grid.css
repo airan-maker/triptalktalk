@@ -67,6 +67,26 @@
     padding: 40px 20px;
 }
 
+/* Breadcrumbs in Hero - White text, no hover effect */
+.archive-hero .breadcrumbs {
+    margin-bottom: 20px;
+}
+
+.archive-hero .breadcrumbs,
+.archive-hero .breadcrumbs a,
+.archive-hero .breadcrumbs span {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.archive-hero .breadcrumbs a:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-decoration: none;
+}
+
+.archive-hero .breadcrumbs .separator {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
 .archive-hero-content {
     max-width: 800px;
     margin: 0 auto;
