@@ -87,7 +87,6 @@ a:hover {
     top: 0;
     z-index: 1000;
     background: var(--ft-bg);
-    border-bottom: 1px solid var(--ft-border);
     height: var(--ft-header-height);
     transition: all var(--ft-transition);
 }
@@ -157,7 +156,6 @@ a:hover {
     top: 100%;
     left: 0;
     background: var(--ft-bg);
-    border: 1px solid var(--ft-border);
     border-radius: var(--ft-radius);
     box-shadow: var(--ft-shadow-lg);
     min-width: 200px;
@@ -177,9 +175,8 @@ a:hover {
 
 /* Language Switcher */
 .language-switcher {
-    margin-left: 12px;
-    padding-left: 12px;
-    border-left: 1px solid var(--ft-border);
+    margin-left: 16px;
+    padding-left: 0;
 }
 
 .language-switcher .lang-list {
@@ -267,24 +264,26 @@ a:hover {
 
 .nav-search .search-field {
     width: 180px;
-    padding: 6px 12px;
-    border: 1px solid var(--ft-border);
+    padding: 8px 14px;
+    background: var(--ft-bg-alt);
+    border: none;
     border-radius: var(--ft-radius) 0 0 var(--ft-radius);
     font-size: 0.875rem;
     outline: none;
     font-family: inherit;
+    transition: background var(--ft-transition);
 }
 
 .nav-search .search-field:focus {
-    border-color: var(--ft-primary);
+    background: var(--ft-bg);
+    box-shadow: inset 0 0 0 2px var(--ft-primary);
 }
 
 .nav-search .search-submit {
-    padding: 6px 10px;
+    padding: 8px 12px;
     background: var(--ft-primary);
     color: white;
-    border: 1px solid var(--ft-primary);
-    border-left: 0;
+    border: none;
     border-radius: 0 var(--ft-radius) var(--ft-radius) 0;
     cursor: pointer;
     display: flex;
@@ -408,8 +407,7 @@ a:hover {
     font-size: 1.75rem;
     font-weight: 500;
     margin-bottom: 32px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--ft-border);
+    padding-bottom: 0;
 }
 
 .section-cta {
@@ -445,15 +443,13 @@ a:hover {
     background: var(--ft-bg);
     border-radius: var(--ft-radius-lg);
     overflow: hidden;
-    box-shadow: none;
-    border: 1px solid var(--ft-border);
+    box-shadow: var(--ft-shadow);
     transition: all var(--ft-transition);
 }
 
 .card:hover {
     transform: translateY(-8px);
     box-shadow: var(--ft-shadow-lg);
-    border-color: transparent;
 }
 
 /* 스태거드 레이아웃 호버 시 위치 보정 */
@@ -571,9 +567,8 @@ a:hover {
 .tag {
     display: inline-block;
     padding: 6px 14px;
-    background: transparent;
-    border: 1px solid var(--ft-border);
-    border-radius: 2px;
+    background: var(--ft-bg-alt);
+    border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--ft-text-light);
@@ -584,7 +579,6 @@ a:hover {
 
 .tag:hover {
     background: var(--ft-text);
-    border-color: var(--ft-text);
     color: white;
 }
 
@@ -594,14 +588,12 @@ a:hover {
 }
 
 .tag-destination {
-    background: transparent;
-    border-color: var(--ft-primary);
+    background: rgba(14, 165, 233, 0.1);
     color: var(--ft-primary);
 }
 
 .tag-style {
-    background: transparent;
-    border-color: var(--ft-secondary);
+    background: rgba(100, 116, 139, 0.1);
     color: var(--ft-secondary);
 }
 
@@ -614,13 +606,13 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: 14px 32px;
-    border-radius: 2px;
+    border-radius: 100px;
     font-size: 0.813rem;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
     transition: all var(--ft-transition);
-    border: 1px solid transparent;
+    border: none;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -629,19 +621,18 @@ a:hover {
 .btn-primary {
     background: var(--ft-text);
     color: white;
-    border-color: var(--ft-text);
 }
 
 .btn-primary:hover {
-    background: transparent;
-    border-color: var(--ft-text);
-    color: var(--ft-text);
+    background: var(--ft-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
 }
 
 .btn-outline {
-    background: transparent;
+    background: var(--ft-bg-alt);
     color: var(--ft-text);
-    border-color: var(--ft-text);
 }
 
 .btn-outline:hover {
@@ -837,11 +828,10 @@ a:hover {
 }
 
 .entry-content blockquote {
-    border-left: 4px solid var(--ft-primary);
-    padding: 16px 24px;
+    padding: 20px 28px;
     margin: 24px 0;
     background: var(--ft-bg-alt);
-    border-radius: 0 var(--ft-radius) var(--ft-radius) 0;
+    border-radius: var(--ft-radius-lg);
 }
 
 .entry-content img {
@@ -852,7 +842,6 @@ a:hover {
 .entry-footer {
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid var(--ft-border);
 }
 
 .entry-tags a {
@@ -873,7 +862,11 @@ a:hover {
     justify-content: space-between;
     margin-top: 40px;
     padding-top: 24px;
-    border-top: 1px solid var(--ft-border);
+    background: var(--ft-bg-alt);
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 24px;
+    border-radius: var(--ft-radius-lg);
 }
 
 .post-navigation a {
@@ -1019,16 +1012,15 @@ a:hover {
     margin-bottom: 32px;
     padding: 24px;
     background: var(--ft-bg);
-    border: 1px solid var(--ft-border);
     border-radius: var(--ft-radius-lg);
+    box-shadow: var(--ft-shadow);
 }
 
 .sidebar .widget-title {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--ft-border);
+    padding-bottom: 0;
 }
 
 .sidebar .widget ul {
@@ -1036,12 +1028,11 @@ a:hover {
 }
 
 .sidebar .widget li {
-    padding: 6px 0;
-    border-bottom: 1px solid var(--ft-border);
+    padding: 8px 0;
 }
 
 .sidebar .widget li:last-child {
-    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .sidebar .widget a {
@@ -1056,18 +1047,17 @@ a:hover {
 /* Sidebar Cards (Itinerary) */
 .sidebar-card {
     background: var(--ft-bg);
-    border: 1px solid var(--ft-border);
     border-radius: var(--ft-radius-lg);
     padding: 24px;
     margin-bottom: 24px;
+    box-shadow: var(--ft-shadow);
 }
 
 .sidebar-card-title {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--ft-border);
+    padding-bottom: 0;
 }
 
 .info-list {
@@ -1178,7 +1168,11 @@ a:hover {
 .comments-area {
     margin-top: 48px;
     padding-top: 32px;
-    border-top: 1px solid var(--ft-border);
+    background: var(--ft-bg-alt);
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 32px 24px;
+    border-radius: var(--ft-radius-lg);
 }
 
 .comments-title {
@@ -1193,7 +1187,6 @@ a:hover {
 
 .comment-list .comment {
     padding: 20px 0;
-    border-bottom: 1px solid var(--ft-border);
 }
 
 .comment-list .comment-body {
@@ -1207,18 +1200,19 @@ a:hover {
 .comment-form input[type="url"],
 .comment-form textarea {
     width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--ft-border);
-    border-radius: var(--ft-radius);
+    padding: 12px 16px;
+    background: var(--ft-bg);
+    border: none;
+    border-radius: var(--ft-radius-lg);
     font-family: inherit;
     font-size: 0.938rem;
-    transition: border-color var(--ft-transition);
+    transition: box-shadow var(--ft-transition);
 }
 
 .comment-form input:focus,
 .comment-form textarea:focus {
     outline: none;
-    border-color: var(--ft-primary);
+    box-shadow: inset 0 0 0 2px var(--ft-primary);
 }
 
 .comment-form .form-submit input {
@@ -1323,7 +1317,6 @@ a:hover {
 }
 
 .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.1);
     padding: 20px 0;
     font-size: 0.813rem;
     text-align: center;
@@ -1368,21 +1361,25 @@ a:hover {
 
 .error-search .search-field {
     flex: 1;
-    padding: 10px 16px;
-    border: 1px solid var(--ft-border);
-    border-radius: var(--ft-radius) 0 0 var(--ft-radius);
+    padding: 12px 18px;
+    background: var(--ft-bg-alt);
+    border: none;
+    border-radius: var(--ft-radius-lg) 0 0 var(--ft-radius-lg);
     font-size: 0.938rem;
     font-family: inherit;
     outline: none;
 }
 
+.error-search .search-field:focus {
+    box-shadow: inset 0 0 0 2px var(--ft-primary);
+}
+
 .error-search .search-submit {
-    padding: 10px 16px;
+    padding: 12px 18px;
     background: var(--ft-primary);
     color: white;
-    border: 1px solid var(--ft-primary);
-    border-left: 0;
-    border-radius: 0 var(--ft-radius) var(--ft-radius) 0;
+    border: none;
+    border-radius: 0 var(--ft-radius-lg) var(--ft-radius-lg) 0;
     cursor: pointer;
 }
 
@@ -1420,21 +1417,25 @@ a:hover {
 
 .no-results .search-field {
     flex: 1;
-    padding: 10px 16px;
-    border: 1px solid var(--ft-border);
-    border-radius: var(--ft-radius) 0 0 var(--ft-radius);
+    padding: 12px 18px;
+    background: var(--ft-bg-alt);
+    border: none;
+    border-radius: var(--ft-radius-lg) 0 0 var(--ft-radius-lg);
     font-size: 0.938rem;
     font-family: inherit;
     outline: none;
 }
 
+.no-results .search-field:focus {
+    box-shadow: inset 0 0 0 2px var(--ft-primary);
+}
+
 .no-results .search-submit {
-    padding: 10px 16px;
+    padding: 12px 18px;
     background: var(--ft-primary);
     color: white;
-    border: 1px solid var(--ft-primary);
-    border-left: 0;
-    border-radius: 0 var(--ft-radius) var(--ft-radius) 0;
+    border: none;
+    border-radius: 0 var(--ft-radius-lg) var(--ft-radius-lg) 0;
     cursor: pointer;
 }
 
@@ -1491,15 +1492,14 @@ a:hover {
 
 .day-block {
     background: var(--ft-bg);
-    border: 1px solid var(--ft-border);
     border-radius: var(--ft-radius-lg);
     overflow: hidden;
+    box-shadow: var(--ft-shadow);
 }
 
 .day-header {
     background: var(--ft-bg-alt);
     padding: 24px 28px;
-    border-bottom: 1px solid var(--ft-border);
 }
 
 .day-badge {
@@ -1539,12 +1539,10 @@ a:hover {
     display: grid;
     grid-template-columns: 100px 1fr;
     gap: 0;
-    border-bottom: 1px solid var(--ft-border);
     transition: background var(--ft-transition);
 }
 
 .spot-card:last-child {
-    border-bottom: none;
 }
 
 .spot-card:hover {
@@ -1580,7 +1578,6 @@ a:hover {
     justify-content: center;
     padding: 20px 16px;
     gap: 8px;
-    border-right: 1px solid var(--ft-border);
 }
 
 .spot-time {
@@ -1666,9 +1663,8 @@ a:hover {
     align-items: flex-start;
     gap: 8px;
     padding: 12px 16px;
-    background: rgba(124, 152, 133, 0.1);
-    border-radius: var(--ft-radius);
-    border-left: 3px solid var(--ft-accent);
+    background: rgba(16, 185, 129, 0.08);
+    border-radius: var(--ft-radius-lg);
 }
 
 .tip-icon {
@@ -1700,8 +1696,9 @@ a:hover {
     align-items: flex-start;
     gap: 12px;
     padding: 20px 24px;
-    background: rgba(139, 115, 85, 0.06);
-    border-top: 1px solid var(--ft-border);
+    background: var(--ft-bg-alt);
+    margin: 8px;
+    border-radius: var(--ft-radius-lg);
 }
 
 .day-tip-icon {
