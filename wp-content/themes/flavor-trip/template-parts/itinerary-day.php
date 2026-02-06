@@ -34,16 +34,13 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
         <?php foreach ($spots as $spot) :
             $type = $spot['type'] ?? 'place';
             $is_restaurant = ($type === 'restaurant');
-            $icon = $is_restaurant ? '🍽️' : '📍';
-            $type_label = $is_restaurant ? '식당' : '장소';
         ?>
             <div class="spot-card spot-card--<?php echo esc_attr($type); ?>">
+                <?php if (!empty($spot['time'])) : ?>
                 <div class="spot-time-col">
-                    <?php if (!empty($spot['time'])) : ?>
-                        <span class="spot-time"><?php echo esc_html($spot['time']); ?></span>
-                    <?php endif; ?>
-                    <span class="spot-icon"><?php echo $icon; ?></span>
+                    <span class="spot-time"><?php echo esc_html($spot['time']); ?></span>
                 </div>
+                <?php endif; ?>
                 <div class="spot-content">
                     <div class="spot-header">
                         <?php if (!empty($spot['name'])) : ?>

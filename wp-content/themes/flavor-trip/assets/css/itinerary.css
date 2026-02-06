@@ -181,14 +181,9 @@
     transform: translateY(-2px);
 }
 
-/* Time/Icon column inside card */
+/* Time badge */
 .spot-time-col {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 12px;
 }
 
 .spot-time {
@@ -202,10 +197,6 @@
     padding: 4px 12px;
     border-radius: 16px;
     letter-spacing: 0.02em;
-}
-
-.spot-icon {
-    font-size: 1rem;
 }
 
 .spot-name {
