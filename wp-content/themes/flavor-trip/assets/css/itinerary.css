@@ -12,15 +12,6 @@
     padding-left: 40px;
 }
 
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--ft-border);
-}
 
 .timeline-item {
     position: relative;
@@ -167,16 +158,6 @@
     padding-left: 28px;
 }
 
-.spots-timeline::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 16px;
-    bottom: 16px;
-    width: 2px;
-    background: var(--day-accent);
-    opacity: 0.25;
-}
 
 .spot-card {
     position: relative;
