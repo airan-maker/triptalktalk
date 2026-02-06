@@ -1,6 +1,6 @@
 <?php
 /**
- * 여행 스타일별 아카이브 템플릿
+ * 여행 스타일별 아카이브 템플릿 — Bento Grid
  *
  * @package Flavor_Trip
  */
@@ -8,34 +8,61 @@
 get_header();
 
 $term = get_queried_object();
+$destinations = get_terms(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0]);
+$all_styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true]);
 ?>
 
-<div class="container archive-layout">
-    <div class="content-area">
+<div class="archive-hero">
+    <div class="container">
         <?php get_template_part('template-parts/breadcrumbs'); ?>
-
-        <header class="page-header">
-            <h1 class="page-title">
-                <span class="term-label"><?php esc_html_e('여행 스타일', 'flavor-trip'); ?></span>
-                <?php echo esc_html($term->name); ?>
-            </h1>
+        <div class="archive-hero-content">
+            <h1><?php echo esc_html($term->name); ?></h1>
             <?php if ($term->description) : ?>
-                <div class="archive-description"><?php echo wp_kses_post(wpautop($term->description)); ?></div>
+                <p><?php echo esc_html($term->description); ?></p>
+            <?php else : ?>
+                <p><?php printf(esc_html__('%s 스타일의 여행 코스를 탐색해보세요.', 'flavor-trip'), $term->name); ?></p>
             <?php endif; ?>
-            <span class="post-count"><?php printf(esc_html__('%d개의 일정', 'flavor-trip'), $term->count); ?></span>
-        </header>
-
-        <?php if (have_posts()) : ?>
-            <div class="posts-grid posts-grid--3">
-                <?php while (have_posts()) : the_post(); ?>
-                    <?php get_template_part('template-parts/content', 'itinerary'); ?>
-                <?php endwhile; ?>
-            </div>
-            <?php ft_pagination(); ?>
-        <?php else : ?>
-            <?php get_template_part('template-parts/content', 'none'); ?>
-        <?php endif; ?>
+        </div>
     </div>
+</div>
+
+<div class="container">
+    <div class="bento-filters">
+        <?php if (!is_wp_error($destinations) && $destinations) : ?>
+            <div class="filter-section">
+                <span class="filter-section-label"><?php esc_html_e('여행지', 'flavor-trip'); ?></span>
+                <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="filter-pill">전체</a>
+                <?php foreach ($destinations as $dest) : ?>
+                    <a href="<?php echo esc_url(get_term_link($dest)); ?>" class="filter-pill"><?php echo esc_html($dest->name); ?></a>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="filter-section">
+            <span class="filter-section-label"><?php esc_html_e('스타일', 'flavor-trip'); ?></span>
+            <?php foreach ($all_styles as $style) : ?>
+                <a href="<?php echo esc_url(get_term_link($style)); ?>" class="filter-pill <?php echo $term->slug === $style->slug ? 'active' : ''; ?>">
+                    <?php echo esc_html($style->name); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <?php if (have_posts()) : ?>
+        <div class="bento-grid">
+            <?php
+            $counter = 0;
+            while (have_posts()) : the_post();
+                $counter++;
+                set_query_var('bento_counter', $counter);
+                get_template_part('template-parts/bento-card');
+            endwhile;
+            ?>
+        </div>
+        <?php ft_pagination(); ?>
+    <?php else : ?>
+        <?php get_template_part('template-parts/content', 'none'); ?>
+    <?php endif; ?>
 </div>
 
 <?php
