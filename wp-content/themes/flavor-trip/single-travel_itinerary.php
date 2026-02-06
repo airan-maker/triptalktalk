@@ -15,7 +15,9 @@ while (have_posts()) : the_post();
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('itinerary-single'); ?>>
-    <?php get_template_part('template-parts/breadcrumbs'); ?>
+    <div class="container">
+        <?php get_template_part('template-parts/breadcrumbs'); ?>
+    </div>
 
     <div class="container itinerary-layout">
         <div class="itinerary-content">
