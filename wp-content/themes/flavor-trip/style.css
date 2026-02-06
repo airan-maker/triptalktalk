@@ -17,20 +17,25 @@ Flavor Trip — 맛있는 여행의 시작
 */
 
 :root {
-    --ft-primary: #2563eb;
-    --ft-primary-dark: #1d4ed8;
-    --ft-secondary: #f59e0b;
-    --ft-accent: #10b981;
-    --ft-text: #1f2937;
-    --ft-text-light: #6b7280;
-    --ft-bg: #ffffff;
-    --ft-bg-alt: #f9fafb;
-    --ft-border: #e5e7eb;
-    --ft-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --ft-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --ft-radius: 8px;
-    --ft-radius-lg: 12px;
+    /* 매거진 스타일 색상 팔레트 */
+    --ft-primary: #8B7355;
+    --ft-primary-dark: #6B5344;
+    --ft-secondary: #C9A87C;
+    --ft-accent: #7C9885;
+    --ft-text: #2D2926;
+    --ft-text-light: #6B6560;
+    --ft-bg: #FAF9F6;
+    --ft-bg-alt: #F5F3EF;
+    --ft-border: #E8E4DE;
+    --ft-shadow: 0 2px 8px rgba(45, 41, 38, 0.06);
+    --ft-shadow-lg: 0 12px 32px rgba(45, 41, 38, 0.1);
+    --ft-radius: 4px;
+    --ft-radius-lg: 8px;
     --ft-max-width: 1200px;
-    --ft-header-height: 72px;
-    --ft-transition: 0.2s ease;
+    --ft-header-height: 80px;
+    --ft-transition: 0.3s ease;
+
+    /* 폰트 변수 */
+    --ft-font-serif: 'Playfair Display', 'Noto Serif KR', Georgia, serif;
+    --ft-font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
 }
