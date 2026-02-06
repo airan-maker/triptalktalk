@@ -389,43 +389,49 @@ a:hover {
     display: flex;
     max-width: 560px;
     width: 100%;
-    background: var(--ft-bg-alt);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
     padding: 6px;
-    box-shadow: var(--ft-shadow);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .hero-actions .search-field {
     flex: 1;
+    min-width: 0;
     padding: 14px 24px;
     background: transparent;
     border: none;
     font-size: 1rem;
     font-family: inherit;
     outline: none;
-    color: var(--ft-text);
+    color: #fff;
 }
 
 .hero-actions .search-field::placeholder {
-    color: var(--ft-text-light);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .hero-actions .search-submit {
     padding: 14px 28px;
-    background: var(--ft-primary);
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
     color: white;
     border: none;
     border-radius: 100px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     font-weight: 600;
-    transition: background 0.2s, transform 0.2s;
+    transition: all 0.2s ease;
 }
 
 .hero-actions .search-submit:hover {
-    background: var(--ft-primary-dark);
+    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
     transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
 }
 
 /* ==========================================================================
@@ -1787,20 +1793,22 @@ a:hover {
         margin-bottom: 32px;
     }
 
-    /* 모바일 검색바 - 컴팩트 + 돋보기 아이콘 (아카이브와 동일) */
+    /* 모바일 검색바 - 글래스모피즘 + 그라데이션 버튼 */
     .hero-actions .search-form {
-        padding: 3px 3px 3px 14px;
+        padding: 4px 4px 4px 16px;
         border-radius: 50px;
     }
 
     .hero-actions .search-field {
-        padding: 6px 8px;
+        flex: 1;
+        min-width: 0;
+        padding: 8px 8px;
         font-size: 0.875rem;
     }
 
     .hero-actions .search-submit {
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         padding: 0;
         border-radius: 50%;
         font-size: 0;
@@ -1808,12 +1816,17 @@ a:hover {
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    }
+
+    .hero-actions .search-submit:hover {
+        background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
     }
 
     .hero-actions .search-submit::before {
         content: '';
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
         background-size: contain;
         background-repeat: no-repeat;
