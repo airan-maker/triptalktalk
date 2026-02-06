@@ -526,25 +526,92 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
+    /* 스팟 카드 - 번호 배지 숨기고 전체 너비 */
     .spot-card {
         flex-direction: column;
-        gap: 12px;
-        padding: 16px;
+        gap: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid var(--tt-border);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
     }
 
+    .spot-card:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .spot-card:hover {
+        border-color: var(--tt-border);
+        box-shadow: none;
+    }
+
+    /* 번호 배지 숨기기 */
     .spot-number-badge {
-        width: 28px;
-        height: 28px;
-        font-size: 0.813rem;
+        display: none;
+    }
+
+    /* 스팟 콘텐츠 전체 너비 */
+    .spot-content {
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .spot-content:hover {
+        box-shadow: none;
+        transform: none;
+    }
+
+    /* 스팟 헤더에 번호 표시 */
+    .spot-header {
+        position: relative;
+    }
+
+    .spot-name {
+        font-size: 1.063rem;
+    }
+
+    .spot-time {
+        font-size: 0.75rem;
     }
 
     .day-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+
+    .day-badge {
+        font-size: 0.813rem;
+        padding: 6px 14px;
+    }
+
+    .day-header-title {
+        font-size: 1rem;
+    }
+
+    .day-block {
+        margin-bottom: 32px;
+    }
+
+    .spots-timeline {
+        gap: 0;
     }
 
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .day-tip-box {
+        padding: 16px;
+        margin-top: 16px;
     }
 }
