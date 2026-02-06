@@ -528,34 +528,45 @@
 @media (max-width: 768px) {
     /* 일정 컨테이너 패딩 */
     .itinerary-days {
-        padding: 0 4px;
+        padding: 0 12px;
     }
 
     .days-spots-container {
         padding: 0;
     }
 
-    /* 스팟 카드 - 카드 스타일 유지하면서 전체 너비 */
+    /* 스팟 타임라인 - 중앙 정렬 및 간격 */
+    .spots-timeline {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        border: none;
+        border-radius: 0;
+        overflow: visible;
+    }
+
+    /* 스팟 카드 - 중앙 배치, 개별 카드 스타일 */
     .spot-card {
         position: relative;
         flex-direction: row;
         align-items: flex-start;
         gap: 12px;
         padding: 16px;
+        width: 100%;
+        max-width: 100%;
         border: 1px solid var(--tt-border);
-        border-left: none;
-        border-right: none;
-        border-radius: 0;
+        border-radius: 12px;
         margin-bottom: 0;
         background: var(--tt-bg);
     }
 
     .spot-card:first-child {
-        border-top: none;
+        border-top: 1px solid var(--tt-border);
     }
 
     .spot-card:last-child {
-        border-bottom: none;
+        border-bottom: 1px solid var(--tt-border);
     }
 
     .spot-card:hover {
@@ -635,13 +646,6 @@
     .day-block {
         margin-bottom: 32px;
         border: none;
-    }
-
-    .spots-timeline {
-        gap: 0;
-        border: 1px solid var(--tt-border);
-        border-radius: 12px;
-        overflow: hidden;
     }
 
     .gallery-grid {
