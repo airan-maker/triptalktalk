@@ -496,14 +496,6 @@ a:hover {
     gap: 40px 32px;
 }
 
-/* 비대칭 스태거드 레이아웃 */
-.posts-grid--3 .card:nth-child(3n+2) {
-    transform: translateY(40px);
-}
-
-.posts-grid--3 .card:nth-child(3n) {
-    transform: translateY(20px);
-}
 
 .card {
     background: var(--ft-bg);
@@ -518,14 +510,6 @@ a:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* 스태거드 레이아웃 호버 시 위치 보정 */
-.posts-grid--3 .card:nth-child(3n+2):hover {
-    transform: translateY(32px);
-}
-
-.posts-grid--3 .card:nth-child(3n):hover {
-    transform: translateY(12px);
-}
 
 .card-image {
     display: block;
@@ -1801,19 +1785,6 @@ a:hover {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .posts-grid--3 .card:nth-child(3n+2),
-    .posts-grid--3 .card:nth-child(3n) {
-        transform: none;
-    }
-
-    .posts-grid--3 .card:nth-child(even) {
-        transform: translateY(24px);
-    }
-
-    .posts-grid--3 .card:nth-child(even):hover {
-        transform: translateY(16px);
-    }
-
     .destination-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1849,17 +1820,6 @@ a:hover {
     .posts-grid--3 {
         grid-template-columns: 1fr;
         gap: 24px;
-    }
-
-    .posts-grid--3 .card:nth-child(even),
-    .posts-grid--3 .card:nth-child(3n+2),
-    .posts-grid--3 .card:nth-child(3n) {
-        transform: none;
-    }
-
-    .posts-grid--3 .card:hover,
-    .posts-grid--3 .card:nth-child(even):hover {
-        transform: translateY(-4px);
     }
 
     .destination-grid {
