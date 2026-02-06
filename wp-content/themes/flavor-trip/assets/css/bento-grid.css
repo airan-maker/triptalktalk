@@ -560,6 +560,10 @@
         flex-shrink: 0;
     }
 
+    .hero-search .search-submit svg {
+        display: none;
+    }
+
     .hero-search .search-submit::before {
         content: '';
         width: 14px;
