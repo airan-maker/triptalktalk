@@ -72,11 +72,25 @@ a:hover {
 }
 
 .itinerary-layout {
-    display: grid;
-    grid-template-columns: 1fr 340px;
+    display: flex;
+    flex-direction: column;
     gap: 40px;
     padding-top: 20px;
     padding-bottom: 60px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 사이드바를 본문 아래로 배치 */
+.itinerary-layout .itinerary-content {
+    order: 1;
+}
+
+.itinerary-layout .itinerary-sidebar {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 /* ==========================================================================
@@ -1684,9 +1698,13 @@ a:hover {
         padding: 14px 24px;
     }
 
-    .itinerary-layout,
     .archive-layout,
     .single-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* 모바일: 사이드바 단일 컬럼 */
+    .itinerary-layout .itinerary-sidebar {
         grid-template-columns: 1fr;
     }
 
