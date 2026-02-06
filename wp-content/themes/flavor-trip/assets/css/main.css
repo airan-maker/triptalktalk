@@ -175,6 +175,45 @@ a:hover {
     font-size: 0.875rem;
 }
 
+/* Language Switcher */
+.language-switcher {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--ft-border);
+}
+
+.language-switcher .lang-list {
+    display: flex;
+    list-style: none;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.language-switcher .lang-list li {
+    display: inline-block;
+}
+
+.language-switcher .lang-list a {
+    display: block;
+    padding: 6px 10px;
+    font-size: 0.813rem;
+    color: var(--ft-text-light);
+    border-radius: var(--ft-radius);
+    transition: all var(--ft-transition);
+    text-transform: uppercase;
+}
+
+.language-switcher .lang-list a:hover {
+    background: var(--ft-bg-alt);
+    color: var(--ft-primary);
+}
+
+.language-switcher .lang-list .current-lang a {
+    background: var(--ft-primary);
+    color: #fff;
+}
+
 /* Hamburger */
 .menu-toggle {
     display: none;

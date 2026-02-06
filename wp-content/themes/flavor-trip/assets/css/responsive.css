@@ -104,6 +104,25 @@
         width: 100%;
     }
 
+    /* Language Switcher Mobile */
+    .language-switcher {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--ft-border);
+    }
+
+    .language-switcher .lang-list {
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .language-switcher .lang-list a {
+        padding: 8px 14px;
+    }
+
     /* Hero */
     .hero {
         min-height: 400px;
