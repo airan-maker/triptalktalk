@@ -1,6 +1,6 @@
 <?php
 /**
- * 일자별 일정 블록 (spots 구조 + 구 데이터 호환)
+ * 일자별 일정 블록 (type 구분: place/restaurant)
  *
  * @package Flavor_Trip
  */
@@ -11,41 +11,94 @@ $day    = get_query_var('ft_day_data', []);
 $number = get_query_var('ft_day_number', 1);
 
 if (!empty($day['spots']) && is_array($day['spots'])) :
-    // ── 새 구조: Day > Spot 카드 ──
-    $spot_counter = get_query_var('ft_spot_counter', 0);
+    // spots를 시간순 정렬
+    $spots = $day['spots'];
+    usort($spots, function($a, $b) {
+        $time_a = $a['time'] ?? '00:00';
+        $time_b = $b['time'] ?? '00:00';
+        return strcmp($time_a, $time_b);
+    });
 ?>
 <div class="day-block" data-day="<?php echo esc_attr($number); ?>">
     <div class="day-header">
         <span class="day-badge">Day <?php echo esc_html($number); ?></span>
         <?php if (!empty($day['title'])) : ?>
-            <span class="day-header-title"><?php echo esc_html(preg_replace('/^Day\s*\d+\s*[:：]\s*/u', '', $day['title'])); ?></span>
+            <h3 class="day-header-title"><?php echo esc_html(preg_replace('/^Day\s*\d+\s*[:：]\s*/u', '', $day['title'])); ?></h3>
+        <?php endif; ?>
+        <?php if (!empty($day['summary'])) : ?>
+            <p class="day-summary"><?php echo esc_html($day['summary']); ?></p>
         <?php endif; ?>
     </div>
+
     <div class="spots-timeline">
-        <?php foreach ($day['spots'] as $spot) :
-            $spot_counter++;
+        <?php foreach ($spots as $spot) :
+            $type = $spot['type'] ?? 'place';
+            $is_restaurant = ($type === 'restaurant');
+            $icon = $is_restaurant ? '🍽️' : '📍';
+            $type_label = $is_restaurant ? '식당' : '장소';
         ?>
-            <div class="spot-card">
-                <div class="spot-marker">
-                    <span class="spot-number"><?php echo esc_html($spot_counter); ?></span>
+            <div class="spot-card spot-card--<?php echo esc_attr($type); ?>">
+                <div class="spot-time-col">
+                    <?php if (!empty($spot['time'])) : ?>
+                        <span class="spot-time"><?php echo esc_html($spot['time']); ?></span>
+                    <?php endif; ?>
+                    <span class="spot-icon"><?php echo $icon; ?></span>
                 </div>
                 <div class="spot-content">
-                    <?php if (!empty($spot['name'])) : ?>
-                        <h4 class="spot-name"><?php echo esc_html($spot['name']); ?></h4>
-                    <?php endif; ?>
+                    <div class="spot-header">
+                        <?php if (!empty($spot['name'])) : ?>
+                            <h4 class="spot-name"><?php echo esc_html($spot['name']); ?></h4>
+                        <?php endif; ?>
+                        <?php if ($is_restaurant && !empty($spot['cuisine'])) : ?>
+                            <span class="spot-cuisine"><?php echo esc_html($spot['cuisine']); ?></span>
+                        <?php endif; ?>
+                        <?php if (!empty($spot['duration'])) : ?>
+                            <span class="spot-duration">⏱ <?php echo esc_html($spot['duration']); ?></span>
+                        <?php endif; ?>
+                    </div>
                     <?php if (!empty($spot['description'])) : ?>
                         <p class="spot-description"><?php echo wp_kses_post($spot['description']); ?></p>
                     <?php endif; ?>
+                    <?php if ($is_restaurant) : ?>
+                        <div class="spot-restaurant-meta">
+                            <?php if (!empty($spot['menu'])) : ?>
+                                <span class="spot-menu">추천: <?php echo esc_html($spot['menu']); ?></span>
+                            <?php endif; ?>
+                            <?php if (!empty($spot['price'])) : ?>
+                                <span class="spot-price"><?php echo esc_html($spot['price']); ?></span>
+                            <?php endif; ?>
+                            <?php if (!empty($spot['wait_tip'])) : ?>
+                                <span class="spot-wait-tip">⏰ <?php echo esc_html($spot['wait_tip']); ?></span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                     <?php if (!empty($spot['tip'])) : ?>
-                        <div class="spot-tip">💡 <?php echo wp_kses_post($spot['tip']); ?></div>
+                        <div class="spot-tip">
+                            <span class="tip-icon">💡</span>
+                            <span class="tip-text"><?php echo wp_kses_post($spot['tip']); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($spot['link'])) : ?>
+                        <a href="<?php echo esc_url($spot['link']); ?>" class="spot-link" target="_blank" rel="noopener">
+                            <?php echo $is_restaurant ? '예약하기 →' : '자세히 보기 →'; ?>
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+
+    <?php if (!empty($day['tip'])) : ?>
+        <div class="day-tip-box">
+            <span class="day-tip-icon">📌</span>
+            <div class="day-tip-content">
+                <strong>이 날의 핵심 팁</strong>
+                <p><?php echo wp_kses_post($day['tip']); ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
 <?php
-    set_query_var('ft_spot_counter', $spot_counter);
 else :
     // ── 구 구조: timeline-item 레이아웃 (호환) ──
     $places = !empty($day['places']) ? array_map('trim', explode(',', $day['places'])) : [];

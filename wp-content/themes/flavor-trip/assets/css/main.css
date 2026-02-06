@@ -1441,6 +1441,250 @@ a:hover {
 }
 
 /* ==========================================================================
+   Itinerary Day Block — Timeline Style
+   ========================================================================== */
+
+.days-spots-container {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.day-block {
+    background: var(--ft-bg);
+    border: 1px solid var(--ft-border);
+    border-radius: var(--ft-radius-lg);
+    overflow: hidden;
+}
+
+.day-header {
+    background: var(--ft-bg-alt);
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--ft-border);
+}
+
+.day-badge {
+    display: inline-block;
+    background: var(--ft-text);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.day-header-title {
+    font-family: var(--ft-font-serif);
+    font-size: 1.375rem;
+    font-weight: 500;
+    color: var(--ft-text);
+    margin: 0 0 8px 0;
+    display: block;
+}
+
+.day-summary {
+    font-size: 0.875rem;
+    color: var(--ft-text-light);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.spots-timeline {
+    padding: 0;
+}
+
+.spot-card {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--ft-border);
+    transition: background var(--ft-transition);
+}
+
+.spot-card:last-child {
+    border-bottom: none;
+}
+
+.spot-card:hover {
+    background: var(--ft-bg-alt);
+}
+
+/* Place 타입 */
+.spot-card--place .spot-time-col {
+    background: rgba(139, 115, 85, 0.08);
+}
+
+.spot-card--place .spot-icon {
+    color: var(--ft-primary);
+}
+
+/* Restaurant 타입 */
+.spot-card--restaurant .spot-time-col {
+    background: rgba(201, 168, 124, 0.15);
+}
+
+.spot-card--restaurant .spot-icon {
+    color: var(--ft-secondary);
+}
+
+.spot-card--restaurant .spot-name {
+    color: var(--ft-secondary);
+}
+
+.spot-time-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    gap: 8px;
+    border-right: 1px solid var(--ft-border);
+}
+
+.spot-time {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ft-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.spot-icon {
+    font-size: 1.25rem;
+}
+
+.spot-content {
+    padding: 20px 24px;
+}
+
+.spot-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    margin-bottom: 8px;
+}
+
+.spot-name {
+    font-family: var(--ft-font-serif);
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ft-text);
+}
+
+.spot-cuisine {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--ft-secondary);
+    color: white;
+    border-radius: 2px;
+    font-size: 0.688rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.spot-duration {
+    font-size: 0.75rem;
+    color: var(--ft-text-light);
+}
+
+.spot-description {
+    font-size: 0.875rem;
+    color: var(--ft-text-light);
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+}
+
+.spot-restaurant-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 0.813rem;
+}
+
+.spot-menu {
+    color: var(--ft-text);
+    font-weight: 500;
+}
+
+.spot-price {
+    color: var(--ft-secondary);
+    font-weight: 600;
+}
+
+.spot-wait-tip {
+    color: var(--ft-accent);
+    font-weight: 500;
+}
+
+.spot-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(124, 152, 133, 0.1);
+    border-radius: var(--ft-radius);
+    border-left: 3px solid var(--ft-accent);
+}
+
+.tip-icon {
+    flex-shrink: 0;
+}
+
+.tip-text {
+    font-size: 0.813rem;
+    color: var(--ft-text);
+    line-height: 1.6;
+}
+
+.spot-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: var(--ft-primary);
+    text-decoration: none;
+    transition: color var(--ft-transition);
+}
+
+.spot-link:hover {
+    color: var(--ft-primary-dark);
+}
+
+.day-tip-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px 24px;
+    background: rgba(139, 115, 85, 0.06);
+    border-top: 1px solid var(--ft-border);
+}
+
+.day-tip-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.day-tip-content strong {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.day-tip-content p {
+    font-size: 0.875rem;
+    color: var(--ft-text-light);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
    Responsive — Magazine Style
    ========================================================================== */
 
@@ -1539,5 +1783,41 @@ a:hover {
 
     .page-title {
         font-size: 1.5rem;
+    }
+
+    /* Spot card 모바일 */
+    .spot-card {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .spot-time-col {
+        padding: 16px 12px;
+    }
+
+    .spot-content {
+        padding: 16px;
+    }
+
+    .spot-name {
+        font-size: 1rem;
+    }
+
+    .spot-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .spot-restaurant-meta {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .day-header {
+        padding: 20px;
+    }
+
+    .day-header-title {
+        font-size: 1.125rem;
     }
 }
