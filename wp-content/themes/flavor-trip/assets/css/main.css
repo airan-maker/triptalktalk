@@ -1382,8 +1382,8 @@ a:hover {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
     padding-bottom: 60px;
 }
 
@@ -1456,6 +1456,27 @@ a:hover {
 
 .footer-destinations-list a:hover {
     background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.footer-styles-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.footer-styles-list a {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(124, 58, 237, 0.2);
+    border-radius: 20px;
+    font-size: 0.813rem;
+    color: #c4b5fd;
+}
+
+.footer-styles-list a:hover {
+    background: rgba(124, 58, 237, 0.4);
     color: white;
 }
 

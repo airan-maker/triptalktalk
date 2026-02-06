@@ -9,21 +9,41 @@
     // 모바일 메뉴 토글
     var menuToggle = document.querySelector('.menu-toggle');
     var navigation = document.getElementById('primary-nav');
+    var navOverlay = document.querySelector('.nav-overlay');
+
+    function closeMenu() {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        navigation.classList.remove('is-open');
+        if (navOverlay) navOverlay.classList.remove('is-visible');
+        document.body.classList.remove('menu-open');
+    }
+
+    function openMenu() {
+        menuToggle.setAttribute('aria-expanded', 'true');
+        navigation.classList.add('is-open');
+        if (navOverlay) navOverlay.classList.add('is-visible');
+        document.body.classList.add('menu-open');
+    }
 
     if (menuToggle && navigation) {
         menuToggle.addEventListener('click', function () {
             var isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', String(!isOpen));
-            navigation.classList.toggle('is-open');
-            document.body.classList.toggle('menu-open');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
+
+        // 오버레이 클릭 시 메뉴 닫기
+        if (navOverlay) {
+            navOverlay.addEventListener('click', closeMenu);
+        }
 
         // ESC로 메뉴 닫기
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && navigation.classList.contains('is-open')) {
-                menuToggle.setAttribute('aria-expanded', 'false');
-                navigation.classList.remove('is-open');
-                document.body.classList.remove('menu-open');
+                closeMenu();
                 menuToggle.focus();
             }
         });

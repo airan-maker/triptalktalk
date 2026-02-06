@@ -51,7 +51,7 @@ defined('ABSPATH') || exit;
                 <?php
                 $destinations = get_terms([
                     'taxonomy'   => 'destination',
-                    'number'     => 8,
+                    'number'     => 6,
                     'orderby'    => 'count',
                     'order'      => 'DESC',
                     'hide_empty' => true,
@@ -60,6 +60,25 @@ defined('ABSPATH') || exit;
                     <ul class="footer-destinations-list">
                         <?php foreach ($destinations as $dest) : ?>
                             <li><a href="<?php echo esc_url(get_term_link($dest)); ?>"><?php echo esc_html($dest->name); ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+
+            <div class="footer-styles">
+                <h3 class="footer-title"><?php esc_html_e('여행 스타일', 'flavor-trip'); ?></h3>
+                <?php
+                $styles = get_terms([
+                    'taxonomy'   => 'travel_style',
+                    'number'     => 6,
+                    'orderby'    => 'count',
+                    'order'      => 'DESC',
+                    'hide_empty' => true,
+                ]);
+                if (!is_wp_error($styles) && $styles) : ?>
+                    <ul class="footer-styles-list">
+                        <?php foreach ($styles as $style) : ?>
+                            <li><a href="<?php echo esc_url(get_term_link($style)); ?>"><?php echo esc_html($style->name); ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>

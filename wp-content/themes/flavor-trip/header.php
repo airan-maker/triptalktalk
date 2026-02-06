@@ -38,6 +38,8 @@ defined('ABSPATH') || exit;
             <span class="hamburger"></span>
         </button>
 
+        <div class="nav-overlay"></div>
+
         <nav id="primary-nav" class="main-navigation" aria-label="<?php esc_attr_e('메인 메뉴', 'flavor-trip'); ?>">
             <?php
             wp_nav_menu([
