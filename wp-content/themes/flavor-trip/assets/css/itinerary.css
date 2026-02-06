@@ -526,21 +526,27 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
-    /* 스팟 카드 - 번호 배지 숨기고 전체 너비 */
+    /* 일정 컨테이너 패딩 */
+    .itinerary-days {
+        padding: 0 4px;
+    }
+
+    .days-spots-container {
+        padding: 0;
+    }
+
+    /* 스팟 카드 - 카드 스타일 유지하면서 전체 너비 */
     .spot-card {
         flex-direction: column;
         gap: 0;
-        padding: 0;
-        border: none;
-        border-radius: 0;
-        border-bottom: 1px solid var(--tt-border);
-        padding-bottom: 20px;
-        margin-bottom: 20px;
+        padding: 16px;
+        border: 1px solid var(--tt-border);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        background: var(--tt-bg);
     }
 
     .spot-card:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
         margin-bottom: 0;
     }
 
@@ -568,17 +574,31 @@
         transform: none;
     }
 
-    /* 스팟 헤더에 번호 표시 */
     .spot-header {
         position: relative;
+        margin-bottom: 12px;
     }
 
     .spot-name {
         font-size: 1.063rem;
+        margin-bottom: 6px;
     }
 
-    .spot-time {
+    .spot-time,
+    .spot-duration {
         font-size: 0.75rem;
+    }
+
+    .spot-description {
+        font-size: 0.875rem;
+        line-height: 1.7;
+        margin-bottom: 12px;
+    }
+
+    .spot-tip {
+        padding: 14px 16px;
+        margin-top: 12px;
+        border-radius: 10px;
     }
 
     .day-header {
@@ -603,7 +623,7 @@
     }
 
     .spots-timeline {
-        gap: 0;
+        gap: 12px;
     }
 
     .gallery-grid {
