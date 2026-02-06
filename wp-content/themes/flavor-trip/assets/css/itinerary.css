@@ -1,8 +1,23 @@
 /* ==========================================================================
-   Itinerary Detail — Timeline, Gallery, Map
+   Itinerary Detail — TripTalk Style
    ========================================================================== */
 
-/* Timeline */
+/* Variables - TripTalk Purple Theme */
+:root {
+    --tt-primary: #7c3aed;
+    --tt-primary-light: #a78bfa;
+    --tt-primary-bg: rgba(124, 58, 237, 0.08);
+    --tt-text: #1f2937;
+    --tt-text-light: #6b7280;
+    --tt-bg: #ffffff;
+    --tt-bg-alt: #f9fafb;
+    --tt-border: #e5e7eb;
+    --tt-radius: 12px;
+    --tt-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --tt-shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Timeline Container */
 .itinerary-days {
     margin-bottom: 48px;
 }
@@ -11,7 +26,6 @@
     position: relative;
     padding-left: 40px;
 }
-
 
 .timeline-item {
     position: relative;
@@ -35,7 +49,7 @@
 
 .day-number {
     display: inline-block;
-    background: var(--ft-primary);
+    background: var(--tt-primary);
     color: white;
     font-size: 0.688rem;
     font-weight: 700;
@@ -47,23 +61,23 @@
 }
 
 .timeline-content {
-    background: var(--ft-bg);
-    border-radius: var(--ft-radius-lg);
+    background: var(--tt-bg);
+    border-radius: var(--tt-radius);
     padding: 24px;
-    box-shadow: var(--ft-shadow);
+    box-shadow: var(--tt-shadow);
 }
 
 .day-title {
     font-size: 1.125rem;
     font-weight: 700;
     margin-bottom: 12px;
-    color: var(--ft-text);
+    color: var(--tt-text);
 }
 
 .day-description {
     font-size: 0.938rem;
     line-height: 1.7;
-    color: var(--ft-text);
+    color: var(--tt-text);
     margin-bottom: 16px;
 }
 
@@ -82,14 +96,14 @@
 .places-label {
     font-size: 0.813rem;
     font-weight: 600;
-    color: var(--ft-text-light);
+    color: var(--tt-text-light);
 }
 
 .place-tag {
     display: inline-block;
     padding: 3px 10px;
-    background: rgba(37, 99, 235, 0.08);
-    color: var(--ft-primary);
+    background: var(--tt-primary-bg);
+    color: var(--tt-primary);
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
@@ -98,50 +112,43 @@
 .day-tip {
     padding: 12px 16px;
     background: rgba(16, 185, 129, 0.08);
-    border-radius: var(--ft-radius-lg);
+    border-radius: var(--tt-radius);
     font-size: 0.875rem;
-    color: var(--ft-text);
+    color: var(--tt-text);
 }
 
 /* ==========================================================================
-   Day > Spot (새 구조)
+   Day > Spot (TripTalk Style)
    ========================================================================== */
 
-/* Day별 accent 색상 */
-.day-block { --day-accent: #2563eb; }
-.day-block[data-day="1"] { --day-accent: #2563eb; }
-.day-block[data-day="2"] { --day-accent: #10b981; }
-.day-block[data-day="3"] { --day-accent: #f59e0b; }
-.day-block[data-day="4"] { --day-accent: #8b5cf6; }
-.day-block[data-day="5"] { --day-accent: #ef4444; }
-.day-block[data-day="6"] { --day-accent: #06b6d4; }
-
 .day-block {
-    margin-bottom: 36px;
+    margin-bottom: 40px;
 }
 
 .day-block:last-child {
     margin-bottom: 0;
 }
 
+/* Day Header */
 .day-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 20px;
-    padding-bottom: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--tt-border);
 }
 
 .day-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--day-accent);
+    background: var(--tt-primary);
     color: #fff;
-    font-size: 0.813rem;
+    font-size: 0.875rem;
     font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 20px;
+    padding: 8px 16px;
+    border-radius: 24px;
     white-space: nowrap;
     letter-spacing: 0.02em;
 }
@@ -149,68 +156,117 @@
 .day-header-title {
     font-size: 1.125rem;
     font-weight: 700;
-    color: var(--ft-text, #1f2937);
+    color: var(--tt-text);
+    margin: 0;
 }
 
-/* Spots timeline */
+.day-summary {
+    font-size: 0.875rem;
+    color: var(--tt-text-light);
+    margin: 0;
+}
+
+/* Spots Container */
 .spots-timeline {
-    position: relative;
-    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
+/* Spot Card - TripTalk Style */
 .spot-card {
-    position: relative;
-    display: block;
-    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--tt-bg);
+    border: 1px solid var(--tt-border);
+    border-radius: var(--tt-radius);
+    padding: 20px;
+    transition: all 0.2s ease;
 }
 
-.spot-card:last-child {
-    margin-bottom: 0;
+.spot-card:hover {
+    border-color: var(--tt-primary-light);
+    box-shadow: var(--tt-shadow-lg);
 }
 
-.spot-content {
-    background: var(--ft-bg, #fff);
-    border-radius: var(--ft-radius-lg, 12px);
-    padding: 18px 20px;
-    box-shadow: var(--ft-shadow);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.spot-content:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transform: translateY(-2px);
-}
-
-/* Time badge */
-.spot-time-col {
-    margin-bottom: 12px;
-}
-
-.spot-time {
-    display: inline-flex;
+/* Spot Number Circle */
+.spot-number-badge {
+    flex-shrink: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--day-accent);
+    width: 32px;
+    height: 32px;
+    background: var(--tt-primary);
     color: #fff;
-    font-size: 0.813rem;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 16px;
-    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: 50%;
+}
+
+/* Spot Content */
+.spot-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Spot Header with Name and Meta */
+.spot-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .spot-name {
     font-size: 1rem;
     font-weight: 700;
-    margin: 0 0 8px;
-    color: var(--ft-text, #1f2937);
+    margin: 0;
+    color: var(--tt-text);
 }
 
+.spot-time {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    background: var(--tt-primary-bg);
+    color: var(--tt-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 12px;
+}
+
+.spot-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: var(--tt-bg-alt);
+    color: var(--tt-text-light);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 12px;
+}
+
+.spot-cuisine {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    background: rgba(249, 115, 22, 0.1);
+    color: #ea580c;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 12px;
+}
+
+/* Spot Description */
 .spot-description {
     font-size: 0.875rem;
     line-height: 1.7;
-    color: var(--ft-text, #374151);
-    margin: 0 0 10px;
+    color: var(--tt-text-light);
+    margin: 0 0 12px;
 }
 
 .spot-description:last-child {
@@ -218,23 +274,102 @@
 }
 
 .spot-description a {
-    color: var(--day-accent);
+    color: var(--tt-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
 }
 
+/* Restaurant Meta */
+.spot-restaurant-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.spot-menu,
+.spot-price,
+.spot-wait-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--tt-bg-alt);
+    color: var(--tt-text-light);
+    font-size: 0.75rem;
+    border-radius: 8px;
+}
+
+/* Spot Tip Box */
 .spot-tip {
-    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 14px;
     background: rgba(16, 185, 129, 0.08);
-    border-radius: var(--ft-radius-lg, 8px);
+    border-radius: 10px;
     font-size: 0.813rem;
     line-height: 1.6;
-    color: var(--ft-text, #374151);
+    color: var(--tt-text);
+    margin-top: 12px;
+}
+
+.spot-tip .tip-icon {
+    flex-shrink: 0;
+}
+
+.spot-tip .tip-text {
+    flex: 1;
 }
 
 .spot-tip a {
     color: #059669;
     text-decoration: underline;
+}
+
+/* Spot Link */
+.spot-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: var(--tt-primary);
+    color: #fff;
+    font-size: 0.813rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.spot-link:hover {
+    background: #6d28d9;
+    color: #fff;
+}
+
+/* Day Tip Box */
+.day-tip-box {
+    margin-top: 20px;
+    padding: 18px 20px;
+    background: var(--tt-bg-alt);
+    border: 1px solid var(--tt-border);
+    border-radius: var(--tt-radius);
+}
+
+.day-tip-content strong {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--tt-text);
+    margin-bottom: 6px;
+}
+
+.day-tip-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--tt-text-light);
+    margin: 0;
 }
 
 /* ==========================================================================
@@ -253,7 +388,7 @@
 
 .gallery-item {
     display: block;
-    border-radius: var(--ft-radius);
+    border-radius: var(--tt-radius);
     overflow: hidden;
     aspect-ratio: 4 / 3;
     position: relative;
@@ -293,10 +428,10 @@
 .map-container {
     width: 100%;
     height: 400px;
-    border-radius: var(--ft-radius-lg);
+    border-radius: var(--tt-radius);
     overflow: hidden;
-    background: var(--ft-bg-alt);
-    box-shadow: var(--ft-shadow);
+    background: var(--tt-bg-alt);
+    box-shadow: var(--tt-shadow);
 }
 
 /* ==========================================================================
@@ -337,7 +472,7 @@
     max-width: 600px;
     padding: 8px 16px;
     background: rgba(0, 0, 0, 0.5);
-    border-radius: var(--ft-radius);
+    border-radius: var(--tt-radius);
 }
 
 .ft-lightbox-close {
@@ -384,4 +519,32 @@
     left: 24px;
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .spot-card {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .spot-number-badge {
+        width: 28px;
+        height: 28px;
+        font-size: 0.813rem;
+    }
+
+    .day-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

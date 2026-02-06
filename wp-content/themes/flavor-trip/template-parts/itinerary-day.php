@@ -31,26 +31,28 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
     </div>
 
     <div class="spots-timeline">
-        <?php foreach ($spots as $spot) :
+        <?php
+        $spot_index = 0;
+        foreach ($spots as $spot) :
+            $spot_index++;
             $type = $spot['type'] ?? 'place';
             $is_restaurant = ($type === 'restaurant');
         ?>
             <div class="spot-card spot-card--<?php echo esc_attr($type); ?>">
-                <?php if (!empty($spot['time'])) : ?>
-                <div class="spot-time-col">
-                    <span class="spot-time"><?php echo esc_html($spot['time']); ?></span>
-                </div>
-                <?php endif; ?>
+                <span class="spot-number-badge"><?php echo esc_html($spot_index); ?></span>
                 <div class="spot-content">
                     <div class="spot-header">
                         <?php if (!empty($spot['name'])) : ?>
                             <h4 class="spot-name"><?php echo esc_html($spot['name']); ?></h4>
                         <?php endif; ?>
+                        <?php if (!empty($spot['time'])) : ?>
+                            <span class="spot-time"><?php echo esc_html($spot['time']); ?></span>
+                        <?php endif; ?>
                         <?php if ($is_restaurant && !empty($spot['cuisine'])) : ?>
                             <span class="spot-cuisine"><?php echo esc_html($spot['cuisine']); ?></span>
                         <?php endif; ?>
                         <?php if (!empty($spot['duration'])) : ?>
-                            <span class="spot-duration">⏱ <?php echo esc_html($spot['duration']); ?></span>
+                            <span class="spot-duration"><?php echo esc_html($spot['duration']); ?></span>
                         <?php endif; ?>
                     </div>
                     <?php if (!empty($spot['description'])) : ?>
