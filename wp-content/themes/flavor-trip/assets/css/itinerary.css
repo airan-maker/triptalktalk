@@ -537,17 +537,25 @@
 
     /* 스팟 카드 - 카드 스타일 유지하면서 전체 너비 */
     .spot-card {
-        flex-direction: column;
-        gap: 0;
+        position: relative;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
         padding: 16px;
         border: 1px solid var(--tt-border);
-        border-radius: 12px;
-        margin-bottom: 12px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        margin-bottom: 0;
         background: var(--tt-bg);
     }
 
+    .spot-card:first-child {
+        border-top: none;
+    }
+
     .spot-card:last-child {
-        margin-bottom: 0;
+        border-bottom: none;
     }
 
     .spot-card:hover {
@@ -555,21 +563,21 @@
         box-shadow: none;
     }
 
-    /* 번호 배지 - 작게 표시 */
+    /* 번호 배지 - 인라인 표시 */
     .spot-number-badge {
         display: flex;
-        width: 24px;
-        height: 24px;
-        font-size: 0.75rem;
-        position: absolute;
-        top: 16px;
-        left: 16px;
+        position: static;
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        font-size: 0.813rem;
     }
 
-    /* 스팟 콘텐츠 - 번호 배지 공간 확보 */
+    /* 스팟 콘텐츠 */
     .spot-content {
-        width: 100%;
-        padding: 0 0 0 36px;
+        flex: 1;
+        width: auto;
+        padding: 0;
         box-shadow: none;
         border-radius: 0;
         background: transparent;
@@ -626,10 +634,14 @@
 
     .day-block {
         margin-bottom: 32px;
+        border: none;
     }
 
     .spots-timeline {
-        gap: 12px;
+        gap: 0;
+        border: 1px solid var(--tt-border);
+        border-radius: 12px;
+        overflow: hidden;
     }
 
     .gallery-grid {
