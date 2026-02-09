@@ -122,6 +122,88 @@ function ft_resolve_destination_slug($slug, $known_slugs) {
 }
 
 /**
+ * 여행지 이미지 배열 (중앙 관리)
+ *
+ * @param string $size 'full' (w=1200) 또는 'card' (w=800)
+ * @return array slug => URL
+ */
+function ft_get_destination_images($size = 'full') {
+    $w = ($size === 'card') ? 800 : 1200;
+
+    $base = [
+        // 지역 (부모)
+        'korea'          => 'photo-1517154421773-0529f29ea451',
+        'japan'          => 'photo-1493976040374-85c8e12f0c0e',
+        'east-asia'      => 'photo-1536599018102-9f803c140fc1',
+        'southeast-asia' => 'photo-1552465011-b4e21bf6e79a',
+        'europe'         => 'photo-1499856871958-5b9627545d1a',
+        'north-america'  => 'photo-1485738422979-f5c462d49f74',
+        'oceania'        => 'photo-1506973035872-a4ec16b8e8d9',
+        // 한국
+        'jeju'           => 'photo-1602934198239-ff2e47d124f8',
+        'seoul'          => 'photo-1538485399081-7191377e8241',
+        'busan'          => 'photo-1701172189149-450eecf09863',
+        // 일본
+        'tokyo'          => 'photo-1540959733332-eab4deabeeaf',
+        'osaka'          => 'photo-1590559899731-a382839e5549',
+        'fukuoka'        => 'photo-1576675784201-0e142b423952',
+        'kyoto'          => 'photo-1493976040374-85c8e12f0c0e',
+        'sapporo'        => 'photo-1519105467443-4779d0fb729d',
+        'hiroshima'      => 'photo-1697605623014-c68d4b666420',
+        'kanazawa'       => 'photo-1684695414445-685455eb85c5',
+        'okinawa'        => 'photo-1590077428593-a55bb07c4665',
+        // 동아시아
+        'hongkong'       => 'photo-1536599018102-9f803c140fc1',
+        'taipei'         => 'photo-1470004914212-05527e49370b',
+        'macau'          => 'photo-1544892419-0d45a9eb8c24',
+        // 동남아
+        'bangkok'        => 'photo-1563492065599-3520f775eeed',
+        'chiangmai'      => 'photo-1512553567410-96e6bf8d8b88',
+        'singapore'      => 'photo-1525625293386-3f8f99389edd',
+        'bali'           => 'photo-1537996194471-e657df975ab4',
+        'danang'         => 'photo-1559592413-7cec4d0cae2b',
+        'hanoi'          => 'photo-1583417319070-4a69db38a482',
+        'hochiminh'      => 'photo-1583417319070-4a69db38a482',
+        'cebu'           => 'photo-1505881502353-a1986add3762',
+        'nhatrang'       => 'photo-1503188991764-408493f288b9',
+        'vietnam'        => 'photo-1557750255-c76072572da4',
+        'boracay'        => 'photo-1507525428034-b723cf961d3e',
+        'phuket'         => 'photo-1589394815804-964ed0be2eb5',
+        'kosamui'        => 'photo-1552465011-b4e21bf6e79a',
+        'luangprabang'   => 'photo-1558431382-2bc7d0b53ca3',
+        // 유럽
+        'paris'          => 'photo-1502602898657-3e91760cbb34',
+        'london'         => 'photo-1513635269975-59663e0ac1ad',
+        'barcelona'      => 'photo-1583422409516-2895a77efded',
+        'rome'           => 'photo-1552832230-c0197dd311b5',
+        'switzerland'    => 'photo-1530122037265-a5f1f91d3b99',
+        'prague'         => 'photo-1541849546-216549ae216d',
+        'amsterdam'      => 'photo-1534351590666-13e3e96b5017',
+        'vienna'         => 'photo-1516550893923-42d28e5677af',
+        // 북미
+        'new-york'       => 'photo-1496442226666-8d4d0e62e6e9',
+        'los-angeles'    => 'photo-1534190760961-74e8c1c5c3da',
+        'san-francisco'  => 'photo-1501594907352-04cda38ebc29',
+        'las-vegas'      => 'photo-1605833556294-ea5c7a74f57d',
+        'hawaii'         => 'photo-1507876466758-bc54f384809c',
+        'vancouver'      => 'photo-1559511260-66a68e4c8b1b',
+        // 오세아니아
+        'sydney'         => 'photo-1506973035872-a4ec16b8e8d9',
+        'melbourne'      => 'photo-1514395462725-fb4566210144',
+        'gold-coast'     => 'photo-1506973035872-a4ec16b8e8d9',
+        'new-zealand'    => 'photo-1507699622108-4be3abd695ad',
+        // 기본
+        'default'        => 'photo-1488646953014-85cb44e25828',
+    ];
+
+    $images = [];
+    foreach ($base as $slug => $photo_id) {
+        $images[$slug] = "https://images.unsplash.com/{$photo_id}?w={$w}&q=80";
+    }
+    return $images;
+}
+
+/**
  * 여행지 기반 폴백 이미지 URL
  *
  * @param int $post_id 게시물 ID
@@ -130,40 +212,7 @@ function ft_resolve_destination_slug($slug, $known_slugs) {
 function ft_get_destination_image($post_id = null) {
     if (!$post_id) $post_id = get_the_ID();
 
-    $destination_images = [
-        'korea'          => 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=1200&q=80',
-        'japan'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80',
-        'east-asia'      => 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=1200&q=80',
-        'southeast-asia' => 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1200&q=80',
-        'europe'         => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1200&q=80',
-        'north-america'  => 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1200&q=80',
-        'oceania'        => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&q=80',
-        'jeju'           => 'https://images.unsplash.com/photo-1602934198239-ff2e47d124f8?w=1200&q=80',
-        'seoul'          => 'https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1200&q=80',
-        'busan'          => 'https://images.unsplash.com/photo-1701172189149-450eecf09863?w=1200&q=80',
-        'tokyo'          => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80',
-        'osaka'          => 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1200&q=80',
-        'fukuoka'        => 'https://images.unsplash.com/photo-1576675784201-0e142b423952?w=1200&q=80',
-        'kyoto'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80',
-        'paris'          => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80',
-        'london'         => 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&q=80',
-        'hawaii'         => 'https://images.unsplash.com/photo-1507876466758-bc54f384809c?w=1200&q=80',
-        'sydney'         => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&q=80',
-        'bangkok'        => 'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=1200&q=80',
-        'singapore'      => 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&q=80',
-        'taipei'         => 'https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1200&q=80',
-        'hongkong'       => 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=1200&q=80',
-        'new-york'       => 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200&q=80',
-        'cebu'           => 'https://images.unsplash.com/photo-1505881502353-a1986add3762?w=1200&q=80',
-        'danang'         => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=1200&q=80',
-        'bali'           => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&q=80',
-        'nhatrang'       => 'https://images.unsplash.com/photo-1503188991764-408493f288b9?w=1200&q=80',
-        'vietnam'        => 'https://images.unsplash.com/photo-1557750255-c76072572da4?w=1200&q=80',
-        'sapporo'        => 'https://images.unsplash.com/photo-1519105467443-4779d0fb729d?w=1200&q=80',
-        'hiroshima'      => 'https://images.unsplash.com/photo-1697605623014-c68d4b666420?w=1200&q=80',
-        'kanazawa'       => 'https://images.unsplash.com/photo-1684695414445-685455eb85c5?w=1200&q=80',
-        'default'        => 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80',
-    ];
+    $destination_images = ft_get_destination_images('full');
 
     $destinations = get_the_terms($post_id, 'destination');
     if (!$destinations || is_wp_error($destinations)) {

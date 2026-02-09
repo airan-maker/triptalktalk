@@ -32,6 +32,14 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_style('ft-bento-grid', FT_URI . '/assets/css/bento-grid.css', ['ft-main'], FT_VERSION);
     }
 
+    // 도시 가이드
+    if (is_singular('destination_guide') || is_post_type_archive('destination_guide')) {
+        wp_enqueue_style('ft-guide', FT_URI . '/assets/css/guide.css', ['ft-main'], FT_VERSION);
+    }
+    if (is_singular('destination_guide')) {
+        wp_enqueue_script('ft-guide', FT_URI . '/assets/js/guide.js', [], FT_VERSION, true);
+    }
+
     // 여행 일정 상세 페이지 전용
     if (is_singular('travel_itinerary')) {
         wp_enqueue_style('ft-itinerary', FT_URI . '/assets/css/itinerary.css', ['ft-main'], FT_VERSION);
@@ -78,7 +86,7 @@ add_action('wp_enqueue_scripts', function () {
 // 스크립트에 defer 속성 추가 (성능 최적화)
 add_filter('script_loader_tag', function ($tag, $handle) {
     // 외부 스크립트에는 적용하지 않음
-    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map'];
+    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map', 'ft-guide'];
     if (in_array($handle, $defer_handles, true)) {
         return str_replace(' src', ' defer src', $tag);
     }

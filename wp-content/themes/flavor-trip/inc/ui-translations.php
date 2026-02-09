@@ -135,6 +135,40 @@ function ft_get_ui_translations() {
             'de' => 'Keine Ergebnisse gefunden. Versuchen Sie andere Suchbegriffe.',
         ],
         '아직 게시된 콘텐츠가 없습니다.' => ['en' => 'No content available yet.', 'ja' => 'まだコンテンツがありません。', 'zh-cn' => '暂无内容。', 'fr' => 'Aucun contenu disponible.', 'de' => 'Noch keine Inhalte verfügbar.'],
+
+        // ── 도시 가이드 ──
+        '도시 가이드' => ['en' => 'City Guide', 'ja' => '都市ガイド', 'zh-cn' => '城市指南', 'fr' => 'Guide de la ville', 'de' => 'Stadtführer'],
+        '여행 스타일별 관광지/맛집/호텔 비교' => [
+            'en' => 'Compare attractions, restaurants & hotels by travel style',
+            'ja' => '旅行スタイル別の観光地・グルメ・ホテル比較',
+            'zh-cn' => '按旅行风格比较景点/餐厅/酒店',
+            'fr' => 'Comparez attractions, restaurants et hôtels par style de voyage',
+            'de' => 'Sehenswürdigkeiten, Restaurants & Hotels nach Reisestil vergleichen',
+        ],
+        '관광지' => ['en' => 'Attractions', 'ja' => '観光地', 'zh-cn' => '景点', 'fr' => 'Attractions', 'de' => 'Sehenswürdigkeiten'],
+        '식당'   => ['en' => 'Restaurants', 'ja' => 'レストラン', 'zh-cn' => '餐厅', 'fr' => 'Restaurants', 'de' => 'Restaurants'],
+        '호텔'   => ['en' => 'Hotels', 'ja' => 'ホテル', 'zh-cn' => '酒店', 'fr' => 'Hôtels', 'de' => 'Hotels'],
+        '이름'   => ['en' => 'Name', 'ja' => '名前', 'zh-cn' => '名称', 'fr' => 'Nom', 'de' => 'Name'],
+        '지역'   => ['en' => 'Area', 'ja' => 'エリア', 'zh-cn' => '地区', 'fr' => 'Zone', 'de' => 'Gebiet'],
+        '카테고리' => ['en' => 'Category', 'ja' => 'カテゴリー', 'zh-cn' => '分类', 'fr' => 'Catégorie', 'de' => 'Kategorie'],
+        '음식'   => ['en' => 'Cuisine', 'ja' => '料理', 'zh-cn' => '菜系', 'fr' => 'Cuisine', 'de' => 'Küche'],
+        '가격'   => ['en' => 'Price', 'ja' => '価格', 'zh-cn' => '价格', 'fr' => 'Prix', 'de' => 'Preis'],
+        '등급'   => ['en' => 'Grade', 'ja' => 'グレード', 'zh-cn' => '等级', 'fr' => 'Catégorie', 'de' => 'Klasse'],
+        '메모'   => ['en' => 'Note', 'ja' => 'メモ', 'zh-cn' => '备注', 'fr' => 'Note', 'de' => 'Hinweis'],
+        '가족'   => ['en' => 'Family', 'ja' => '家族', 'zh-cn' => '家庭', 'fr' => 'Famille', 'de' => 'Familie'],
+        '커플'   => ['en' => 'Couple', 'ja' => 'カップル', 'zh-cn' => '情侣', 'fr' => 'Couple', 'de' => 'Paar'],
+        '솔로'   => ['en' => 'Solo', 'ja' => 'ソロ', 'zh-cn' => '独行', 'fr' => 'Solo', 'de' => 'Solo'],
+        '친구'   => ['en' => 'Friends', 'ja' => '友達', 'zh-cn' => '朋友', 'fr' => 'Amis', 'de' => 'Freunde'],
+        '효도'   => ['en' => 'Filial', 'ja' => '親孝行', 'zh-cn' => '孝行', 'fr' => 'Piété filiale', 'de' => 'Familienehrung'],
+        '정렬하려면 열 제목을 클릭하세요' => [
+            'en' => 'Click column headers to sort',
+            'ja' => '列タイトルをクリックしてソート',
+            'zh-cn' => '点击列标题排序',
+            'fr' => 'Cliquez sur les en-têtes pour trier',
+            'de' => 'Klicken Sie auf Spaltenüberschriften zum Sortieren',
+        ],
+        '모든 가이드 보기 →' => ['en' => 'View All Guides →', 'ja' => 'すべてのガイドを見る →', 'zh-cn' => '查看所有指南 →', 'fr' => 'Voir tous les guides →', 'de' => 'Alle Guides ansehen →'],
+        '%d곳' => ['en' => '%d', 'ja' => '%d件', 'zh-cn' => '%d个', 'fr' => '%d', 'de' => '%d'],
     ];
 
     return $cache;

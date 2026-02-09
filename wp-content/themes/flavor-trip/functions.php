@@ -28,6 +28,8 @@ $ft_includes = [
     'inc/llms-txt.php',
     'inc/ui-translations.php',
     'inc/auto-translate-hook.php',
+    'inc/destination-guide-cpt.php',
+    'inc/destination-guide-meta.php',
 ];
 
 foreach ($ft_includes as $file) {

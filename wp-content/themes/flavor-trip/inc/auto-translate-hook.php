@@ -127,6 +127,13 @@ function ft_get_or_create_term($term, $taxonomy, $pll_slug, $gt_lang) {
             if ($translated_parent && $existing->parent != $translated_parent) {
                 wp_update_term($existing->term_id, $taxonomy, ['parent' => $translated_parent]);
             }
+            // Polylang 언어/연결 + ko_slug 메타 설정 (누락 방지)
+            pll_set_term_language($existing->term_id, $pll_slug);
+            $group = PLL()->model->term->get_translations($term->term_id);
+            $group['ko'] = $term->term_id;
+            $group[$pll_slug] = $existing->term_id;
+            PLL()->model->term->save_translations($term->term_id, $group);
+            update_term_meta($existing->term_id, '_ft_ko_slug', $term->slug);
             return $existing->term_id;
         }
         return 0;
@@ -205,6 +212,52 @@ function ft_translate_days($days, $gt_lang) {
     return $result;
 }
 
+// ── Translate guide meta ──
+function ft_translate_guide_meta($post_id, $gt_lang) {
+    $meta = [];
+
+    // Text fields
+    foreach (['_ft_guide_city', '_ft_guide_country', '_ft_guide_intro'] as $key) {
+        $val = get_post_meta($post_id, $key, true);
+        if ($val) {
+            usleep(300000);
+            $meta[$key] = ft_gt_translate($val, $gt_lang);
+        }
+    }
+
+    // Thumbnail
+    $thumb_id = get_post_meta($post_id, '_thumbnail_id', true);
+    if ($thumb_id) {
+        $meta['_thumbnail_id'] = $thumb_id;
+    }
+
+    // Guide data — translate names/areas/notes, copy ratings/prices
+    $data = get_post_meta($post_id, '_ft_guide_data', true);
+    if (!empty($data) && is_array($data)) {
+        $translated_data = [];
+        foreach (['places', 'restaurants', 'hotels'] as $section) {
+            if (empty($data[$section])) continue;
+            $translated_items = [];
+            foreach ($data[$section] as $item) {
+                $new_item = $item;
+                // Translate text fields
+                foreach (['name', 'area', 'note', 'cuisine', 'category'] as $f) {
+                    if (!empty($item[$f])) {
+                        usleep(300000);
+                        $new_item[$f] = ft_gt_translate($item[$f], $gt_lang);
+                    }
+                }
+                // grade/price/ratings are copied as-is
+                $translated_items[] = $new_item;
+            }
+            $translated_data[$section] = $translated_items;
+        }
+        $meta['_ft_guide_data'] = $translated_data;
+    }
+
+    return $meta;
+}
+
 // ── Main: translate a single post to one language ──
 function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
     // Title
@@ -267,6 +320,20 @@ function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
                 }
             }
         }
+    } elseif ($post->post_type === 'destination_guide') {
+        $guide_meta = ft_translate_guide_meta($post->ID, $gt_lang);
+        foreach ($guide_meta as $key => $value) {
+            update_post_meta($new_post_id, $key, $value);
+        }
+        $terms = wp_get_post_terms($post->ID, 'destination');
+        if ($terms && !is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                $trans_tid = ft_get_or_create_term($term, 'destination', $pll_slug, $gt_lang);
+                if ($trans_tid) {
+                    wp_set_post_terms($new_post_id, [$trans_tid], 'destination', true);
+                }
+            }
+        }
     } else {
         foreach (['category', 'post_tag'] as $tax) {
             $terms = wp_get_post_terms($post->ID, $tax);
@@ -290,7 +357,7 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
     if ($new_status !== 'publish') return;
 
     // Only for supported post types
-    if (!in_array($post->post_type, ['travel_itinerary', 'post'], true)) return;
+    if (!in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
 
     // Only if Polylang is active
     if (!function_exists('pll_get_post_language') || !function_exists('pll_set_post_language')) return;
@@ -351,7 +418,7 @@ add_action('admin_notices', function () {
     if (!$screen || $screen->base !== 'post') return;
 
     global $post;
-    if (!$post || !in_array($post->post_type, ['travel_itinerary', 'post'], true)) return;
+    if (!$post || !in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
 
     $lang = function_exists('pll_get_post_language') ? pll_get_post_language($post->ID) : '';
     if ($lang !== 'ko') return;
@@ -370,3 +437,25 @@ add_action('admin_notices', function () {
         echo '<div class="notice notice-info"><p>🔄 번역 대기 중: ' . implode(', ', $missing) . ' — 잠시 후 자동 생성됩니다.</p></div>';
     }
 });
+
+// ── 썸네일 변경 시 번역 포스트 자동 동기화 ──
+add_action('updated_post_meta', 'ft_sync_thumbnail_to_translations', 10, 4);
+add_action('added_post_meta', 'ft_sync_thumbnail_to_translations', 10, 4);
+
+function ft_sync_thumbnail_to_translations($meta_id, $post_id, $meta_key, $meta_value) {
+    if ($meta_key !== '_thumbnail_id') return;
+    if (!function_exists('PLL')) return;
+
+    $post_type = get_post_type($post_id);
+    if (!in_array($post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
+
+    $lang = pll_get_post_language($post_id);
+    if ($lang !== 'ko') return;
+
+    $translations = PLL()->model->post->get_translations($post_id);
+    foreach ($translations as $lang_slug => $trans_id) {
+        if ($trans_id != $post_id) {
+            update_post_meta($trans_id, '_thumbnail_id', $meta_value);
+        }
+    }
+}

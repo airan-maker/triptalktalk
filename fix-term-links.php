@@ -92,7 +92,40 @@ foreach ($post_types as $post_type) {
     }
 }
 
-echo "\n";
-echo "Fixed {$fixed_links} term links\n";
+echo "\nFixed {$fixed_links} term links\n";
 echo "Set {$fixed_meta} _ft_ko_slug meta entries\n";
+
+// ── Part 2: 한국어 포스트 썸네일을 번역 포스트에 동기화 ──
+echo "\n=== 썸네일 동기화 ===\n";
+$synced_thumbs = 0;
+
+foreach ($post_types as $post_type) {
+    $ko_posts = get_posts([
+        'post_type'   => $post_type,
+        'numberposts' => -1,
+        'post_status' => 'publish',
+    ]);
+
+    foreach ($ko_posts as $ko_post) {
+        $post_lang = pll_get_post_language($ko_post->ID);
+        if ($post_lang && $post_lang !== 'ko') continue;
+
+        $thumb_id = get_post_meta($ko_post->ID, '_thumbnail_id', true);
+        if (!$thumb_id) continue;
+
+        $post_translations = PLL()->model->post->get_translations($ko_post->ID);
+        foreach ($post_translations as $lang => $trans_post_id) {
+            if ($lang === 'ko' || $trans_post_id == $ko_post->ID) continue;
+
+            $trans_thumb = get_post_meta($trans_post_id, '_thumbnail_id', true);
+            if ($trans_thumb != $thumb_id) {
+                update_post_meta($trans_post_id, '_thumbnail_id', $thumb_id);
+                $synced_thumbs++;
+                echo "  THUMB: post {$ko_post->ID} → {$trans_post_id} ({$lang}): thumbnail {$thumb_id}\n";
+            }
+        }
+    }
+}
+
+echo "\nSynced {$synced_thumbs} thumbnails\n";
 echo "\n=== 완료! ===\n";

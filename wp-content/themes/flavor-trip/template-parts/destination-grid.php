@@ -7,45 +7,8 @@
 
 defined('ABSPATH') || exit;
 
-// 지역별 대표 이미지 (Unsplash)
-$destination_images = [
-    // 지역 (부모)
-    'korea'          => 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&q=80',
-    'japan'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80',
-    'east-asia'      => 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80',
-    'southeast-asia' => 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80',
-    'europe'         => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80',
-    'north-america'  => 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=800&q=80',
-    'oceania'        => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
-    // 도시
-    'jeju'           => 'https://images.unsplash.com/photo-1602934198239-ff2e47d124f8?w=800&q=80',
-    'seoul'          => 'https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80',
-    'busan'          => 'https://images.unsplash.com/photo-1701172189149-450eecf09863?w=800&q=80',
-    'tokyo'          => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80',
-    'osaka'          => 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80',
-    'kyoto'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80',
-    'fukuoka'        => 'https://images.unsplash.com/photo-1576675784201-0e142b423952?w=800&q=80',
-    'hongkong'       => 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80',
-    'taipei'         => 'https://images.unsplash.com/photo-1470004914212-05527e49370b?w=800&q=80',
-    'bangkok'        => 'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80',
-    'singapore'      => 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&q=80',
-    'bali'           => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80',
-    'danang'         => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&q=80',
-    'paris'          => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80',
-    'london'         => 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80',
-    'rome'           => 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80',
-    'barcelona'      => 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&q=80',
-    'new-york'       => 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80',
-    'los-angeles'    => 'https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=800&q=80',
-    'hawaii'         => 'https://images.unsplash.com/photo-1507876466758-bc54f384809c?w=800&q=80',
-    'sydney'         => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
-    'nhatrang'       => 'https://images.unsplash.com/photo-1503188991764-408493f288b9?w=800&q=80',
-    'sapporo'        => 'https://images.unsplash.com/photo-1519105467443-4779d0fb729d?w=800&q=80',
-    'hiroshima'      => 'https://images.unsplash.com/photo-1697605623014-c68d4b666420?w=800&q=80',
-    'kanazawa'       => 'https://images.unsplash.com/photo-1684695414445-685455eb85c5?w=800&q=80',
-    'vietnam'        => 'https://images.unsplash.com/photo-1557750255-c76072572da4?w=800&q=80',
-    'default'        => 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
-];
+// 지역별 대표 이미지 (중앙 관리)
+$destination_images = ft_get_destination_images('card');
 
 $destinations = get_terms([
     'taxonomy'   => 'destination',
