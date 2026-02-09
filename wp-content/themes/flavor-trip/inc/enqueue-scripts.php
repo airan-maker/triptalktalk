@@ -41,10 +41,12 @@ add_action('wp_enqueue_scripts', function () {
 
         // 구글맵 + 가이드 맵 JS
         $google_key = get_theme_mod('ft_google_map_key');
+        $guide_map_deps = ['ft-guide'];
         if ($google_key) {
             wp_enqueue_script('google-maps-guide', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr($google_key), [], null, true);
+            $guide_map_deps[] = 'google-maps-guide';
         }
-        wp_enqueue_script('ft-guide-map', FT_URI . '/assets/js/guide-map.js', ['ft-guide'], FT_VERSION, true);
+        wp_enqueue_script('ft-guide-map', FT_URI . '/assets/js/guide-map.js', $guide_map_deps, FT_VERSION, true);
 
         // 가이드 데이터를 JS에 전달
         $guide_data = get_post_meta(get_the_ID(), '_ft_guide_data', true);

@@ -5,7 +5,7 @@
  *
  * @package Flavor_Trip
  */
-(function () {
+function initFtGuideMap() {
     'use strict';
 
     var mapEl = document.getElementById('ft-guide-map');
@@ -234,4 +234,19 @@
         });
     });
 
-})();
+}
+
+// Google Maps API 로드 완료 후 실행 보장
+if (typeof google !== 'undefined' && google.maps) {
+    initFtGuideMap();
+} else {
+    // Google Maps가 아직 로드되지 않았으면 대기
+    var _ftGmapCheck = setInterval(function () {
+        if (typeof google !== 'undefined' && google.maps) {
+            clearInterval(_ftGmapCheck);
+            initFtGuideMap();
+        }
+    }, 100);
+    // 10초 후 포기
+    setTimeout(function () { clearInterval(_ftGmapCheck); }, 10000);
+}
