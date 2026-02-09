@@ -14,9 +14,19 @@ $dest_name  = get_post_meta(get_the_ID(), '_ft_destination_name', true);
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('card card-itinerary'); ?>>
-    <?php if (has_post_thumbnail()) : ?>
+    <?php
+    $has_thumb = has_post_thumbnail();
+    $fallback_img = '';
+    if (!$has_thumb && function_exists('ft_get_destination_image')) {
+        $fallback_img = ft_get_destination_image(get_the_ID());
+    }
+    if ($has_thumb || $fallback_img) : ?>
         <a href="<?php the_permalink(); ?>" class="card-image">
-            <?php the_post_thumbnail('ft-card', ['loading' => 'lazy']); ?>
+            <?php if ($has_thumb) : ?>
+                <?php the_post_thumbnail('ft-card', ['loading' => 'lazy']); ?>
+            <?php else : ?>
+                <img src="<?php echo esc_url($fallback_img); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
+            <?php endif; ?>
             <?php if ($duration) : ?>
                 <span class="card-badge"><?php echo esc_html($duration); ?></span>
             <?php endif; ?>

@@ -87,7 +87,7 @@ function ft_resolve_destination_slug($slug, $known_slugs) {
         return $slug;
     }
 
-    // 2) 언어 접미사 제거 시도 (긴 것부터)
+    // 2) 언어 접미사 제거 시도 (긴 것부터, 로마자 슬러그용)
     $lang_suffixes = ['-en-au', '-zh-cn', '-zh-hk', '-zh-tw', '-en', '-ja', '-fr', '-de'];
     foreach ($lang_suffixes as $suffix) {
         if (str_ends_with($slug, $suffix)) {
@@ -98,16 +98,22 @@ function ft_resolve_destination_slug($slug, $known_slugs) {
         }
     }
 
-    // 3) Polylang 폴백 (제대로 링크된 경우)
-    if (function_exists('pll_get_term')) {
-        $term = get_term_by('slug', $slug, 'destination');
-        if ($term && !is_wp_error($term)) {
-            $ko_term_id = pll_get_term($term->term_id, 'ko');
-            if ($ko_term_id && $ko_term_id !== $term->term_id) {
-                $ko_term = get_term($ko_term_id);
-                if ($ko_term && !is_wp_error($ko_term) && isset($known_slugs[$ko_term->slug])) {
-                    return $ko_term->slug;
-                }
+    // 3) _ft_ko_slug 메타 (CJK 언어 등 슬러그 역매핑 불가 시)
+    $term = get_term_by('slug', $slug, 'destination');
+    if ($term && !is_wp_error($term)) {
+        $ko_slug = get_term_meta($term->term_id, '_ft_ko_slug', true);
+        if ($ko_slug && isset($known_slugs[$ko_slug])) {
+            return $ko_slug;
+        }
+    }
+
+    // 4) Polylang 직접 조회 (제대로 링크된 경우)
+    if ($term && function_exists('pll_get_term')) {
+        $ko_term_id = pll_get_term($term->term_id, 'ko');
+        if ($ko_term_id && $ko_term_id !== $term->term_id) {
+            $ko_term = get_term($ko_term_id);
+            if ($ko_term && !is_wp_error($ko_term) && isset($known_slugs[$ko_term->slug])) {
+                return $ko_term->slug;
             }
         }
     }

@@ -193,6 +193,8 @@ function translate_and_link_terms($post_id, $new_post_id, $taxonomy, $pll_slug, 
                 $existing[$pll_slug] = $new_term_id;
                 PLL()->model->term->save_translations($term->term_id, $existing);
                 wp_set_post_terms($new_post_id, array($new_term_id), $taxonomy, true);
+                // 한국어 원본 슬러그 저장 (CJK 이미지 매핑용)
+                update_term_meta($new_term_id, '_ft_ko_slug', $term->slug);
             }
         }
     }
