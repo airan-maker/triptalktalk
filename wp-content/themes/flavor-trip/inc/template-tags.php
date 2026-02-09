@@ -157,6 +157,11 @@ function ft_get_destination_image($post_id = null) {
         'cebu'           => 'https://images.unsplash.com/photo-1505881502353-a1986add3762?w=1200&q=80',
         'danang'         => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=1200&q=80',
         'bali'           => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&q=80',
+        'nhatrang'       => 'https://images.unsplash.com/photo-1573790387438-4da905039392?w=1200&q=80',
+        'vietnam'        => 'https://images.unsplash.com/photo-1557750255-c76072572da4?w=1200&q=80',
+        'sapporo'        => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80',
+        'hiroshima'      => 'https://images.unsplash.com/photo-1576153192621-7a3be10b356e?w=1200&q=80',
+        'kanazawa'       => 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&q=80',
         'default'        => 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80',
     ];
 

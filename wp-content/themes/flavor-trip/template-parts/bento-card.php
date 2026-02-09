@@ -30,6 +30,8 @@ $destination_images = [
     'fukuoka'        => 'https://images.unsplash.com/photo-1576675784201-0e142b423952?w=800&q=80',
     'kyoto'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80',
     'sapporo'        => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+    'hiroshima'      => 'https://images.unsplash.com/photo-1576153192621-7a3be10b356e?w=800&q=80',
+    'kanazawa'       => 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80',
     'okinawa'        => 'https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=800&q=80',
     // 동아시아
     'hongkong'       => 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=800&q=80',
@@ -44,6 +46,8 @@ $destination_images = [
     'hanoi'          => 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80',
     'hochiminh'      => 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80',
     'cebu'           => 'https://images.unsplash.com/photo-1505881502353-a1986add3762?w=800&q=80',
+    'nhatrang'       => 'https://images.unsplash.com/photo-1573790387438-4da905039392?w=800&q=80',
+    'vietnam'        => 'https://images.unsplash.com/photo-1557750255-c76072572da4?w=800&q=80',
     'boracay'        => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
     'phuket'         => 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80',
     'kosamui'        => 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80',
