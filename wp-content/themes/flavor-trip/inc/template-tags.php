@@ -132,7 +132,7 @@ function ft_get_destination_image($post_id = null) {
         'europe'         => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1200&q=80',
         'north-america'  => 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1200&q=80',
         'oceania'        => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&q=80',
-        'jeju'           => 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=80',
+        'jeju'           => 'https://images.unsplash.com/photo-1602934198239-ff2e47d124f8?w=1200&q=80',
         'seoul'          => 'https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1200&q=80',
         'busan'          => 'https://images.unsplash.com/photo-1701172189149-450eecf09863?w=1200&q=80',
         'tokyo'          => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80',
