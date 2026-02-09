@@ -1,9 +1,9 @@
 <?php
 /**
- * Auto-translate travel itineraries using Google Translate API (free)
+ * Auto-translate travel itineraries and blog posts using Google Translate API (free)
  * Run: wp eval-file auto-translate.php --allow-root
  *
- * Creates translated copies of all Korean travel_itinerary posts
+ * Creates translated copies of all Korean travel_itinerary and post
  * and links them via Polylang.
  */
 
@@ -198,101 +198,156 @@ function translate_and_link_terms($post_id, $new_post_id, $taxonomy, $pll_slug, 
     }
 }
 
-// ── Main ──
-echo "=== 자동 번역 시작 ===\n\n";
+// ── Translate a single post (any post type) ──
+function translate_single_post($post, $pll_slug, $gt_lang) {
+    global $DELAY_MS;
 
-$posts = get_posts(array(
-    'post_type'   => 'travel_itinerary',
-    'numberposts' => -1,
-    'post_status' => 'publish',
-));
+    // Translate title
+    $translated_title = gt_translate($post->post_title, $gt_lang);
+    usleep($DELAY_MS);
 
-echo "한국어 원본: " . count($posts) . "개\n";
-echo "번역 대상: " . count($LANG_MAP) . "개 언어\n\n";
-
-$total = count($posts) * count($LANG_MAP);
-$done = 0;
-
-foreach ($posts as $post) {
-    $post_lang = pll_get_post_language($post->ID);
-    if ($post_lang && $post_lang !== 'ko') continue;
-
-    echo "── {$post->post_title} (ID:{$post->ID}) ──\n";
-
-    // Get existing translations for this post
-    $existing_translations = PLL()->model->post->get_translations($post->ID);
-
-    foreach ($LANG_MAP as $pll_slug => $gt_lang) {
-        $done++;
-
-        // Skip if translation already exists
-        if (!empty($existing_translations[$pll_slug])) {
-            echo "  [{$done}/{$total}] {$pll_slug}: 이미 존재 (ID:{$existing_translations[$pll_slug]})\n";
-            continue;
-        }
-
-        echo "  [{$done}/{$total}] {$pll_slug}: 번역 중... ";
-
-        // Translate title
-        $translated_title = gt_translate($post->post_title, $gt_lang);
+    // Translate content (split long content into chunks for API limits)
+    $translated_content = '';
+    if (!empty($post->post_content)) {
+        $translated_content = gt_translate_long_text($post->post_content, $gt_lang);
         usleep($DELAY_MS);
+    }
 
-        // Translate content
-        $translated_content = '';
-        if (!empty($post->post_content)) {
-            $translated_content = gt_translate($post->post_content, $gt_lang);
-            usleep($DELAY_MS);
-        }
+    // Translate excerpt
+    $translated_excerpt = '';
+    if (!empty($post->post_excerpt)) {
+        $translated_excerpt = gt_translate($post->post_excerpt, $gt_lang);
+        usleep($DELAY_MS);
+    }
 
-        // Translate excerpt
-        $translated_excerpt = '';
-        if (!empty($post->post_excerpt)) {
-            $translated_excerpt = gt_translate($post->post_excerpt, $gt_lang);
-            usleep($DELAY_MS);
-        }
+    // Create translated post
+    $new_post_id = wp_insert_post(array(
+        'post_type'    => $post->post_type,
+        'post_title'   => $translated_title,
+        'post_content' => $translated_content,
+        'post_excerpt' => $translated_excerpt,
+        'post_status'  => 'publish',
+        'post_author'  => $post->post_author,
+    ));
 
-        // Create translated post
-        $new_post_id = wp_insert_post(array(
-            'post_type'    => 'travel_itinerary',
-            'post_title'   => $translated_title,
-            'post_content' => $translated_content,
-            'post_excerpt' => $translated_excerpt,
-            'post_status'  => 'publish',
-            'post_author'  => $post->post_author,
-        ));
+    if (is_wp_error($new_post_id)) return false;
 
-        if (is_wp_error($new_post_id)) {
-            echo "실패!\n";
-            continue;
-        }
+    // Set language
+    pll_set_post_language($new_post_id, $pll_slug);
 
-        // Set language
-        pll_set_post_language($new_post_id, $pll_slug);
+    // Link translation
+    $translations = PLL()->model->post->get_translations($post->ID);
+    $translations['ko'] = $post->ID;
+    $translations[$pll_slug] = $new_post_id;
+    PLL()->model->post->save_translations($post->ID, $translations);
 
-        // Link translation
-        $translations = PLL()->model->post->get_translations($post->ID);
-        $translations['ko'] = $post->ID;
-        $translations[$pll_slug] = $new_post_id;
-        PLL()->model->post->save_translations($post->ID, $translations);
+    // Copy thumbnail
+    $thumbnail_id = get_post_meta($post->ID, '_thumbnail_id', true);
+    if ($thumbnail_id) {
+        update_post_meta($new_post_id, '_thumbnail_id', $thumbnail_id);
+    }
 
-        // Translate meta
+    // Post-type-specific handling
+    if ($post->post_type === 'travel_itinerary') {
+        // Translate itinerary meta
         $translated_meta = translate_itinerary_meta($post->ID, $gt_lang);
         foreach ($translated_meta as $key => $value) {
             update_post_meta($new_post_id, $key, $value);
         }
-
-        // Translate and link taxonomy terms
+        // Translate and link custom taxonomies
         translate_and_link_terms($post->ID, $new_post_id, 'destination', $pll_slug, $gt_lang);
         translate_and_link_terms($post->ID, $new_post_id, 'travel_style', $pll_slug, $gt_lang);
-
-        echo "완료 (ID:{$new_post_id}) \"{$translated_title}\"\n";
+    } else {
+        // Blog post: translate and link categories and tags
+        translate_and_link_terms($post->ID, $new_post_id, 'category', $pll_slug, $gt_lang);
+        translate_and_link_terms($post->ID, $new_post_id, 'post_tag', $pll_slug, $gt_lang);
     }
 
-    echo "\n";
+    return array('id' => $new_post_id, 'title' => $translated_title);
+}
+
+// ── Translate long text (split by paragraphs to avoid API limits) ──
+function gt_translate_long_text($text, $gt_lang) {
+    global $DELAY_MS;
+
+    // If short enough, translate directly
+    if (mb_strlen($text) <= 4000) {
+        return gt_translate($text, $gt_lang);
+    }
+
+    // Split by double newline (paragraph breaks)
+    $paragraphs = preg_split('/(\n\s*\n)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $translated = '';
+
+    foreach ($paragraphs as $para) {
+        if (empty(trim($para)) || preg_match('/^\s+$/', $para)) {
+            $translated .= $para;
+            continue;
+        }
+        usleep($DELAY_MS);
+        $translated .= gt_translate($para, $gt_lang);
+    }
+
+    return $translated;
+}
+
+// ── Main ──
+echo "=== 자동 번역 시작 ===\n\n";
+
+$post_types = array('travel_itinerary', 'post');
+
+foreach ($post_types as $post_type) {
+    $posts = get_posts(array(
+        'post_type'   => $post_type,
+        'numberposts' => -1,
+        'post_status' => 'publish',
+    ));
+
+    // Filter to Korean only
+    $ko_posts = array();
+    foreach ($posts as $p) {
+        $lang = pll_get_post_language($p->ID);
+        if (!$lang || $lang === 'ko') $ko_posts[] = $p;
+    }
+
+    $type_label = ($post_type === 'travel_itinerary') ? '여행 일정' : '블로그 글';
+    echo "━━ {$type_label} ({$post_type}) ━━\n";
+    echo "한국어 원본: " . count($ko_posts) . "개 / 번역 대상: " . count($LANG_MAP) . "개 언어\n\n";
+
+    $total = count($ko_posts) * count($LANG_MAP);
+    $done = 0;
+
+    foreach ($ko_posts as $post) {
+        echo "── {$post->post_title} (ID:{$post->ID}) ──\n";
+
+        $existing_translations = PLL()->model->post->get_translations($post->ID);
+
+        foreach ($LANG_MAP as $pll_slug => $gt_lang) {
+            $done++;
+
+            if (!empty($existing_translations[$pll_slug])) {
+                echo "  [{$done}/{$total}] {$pll_slug}: 이미 존재 (ID:{$existing_translations[$pll_slug]})\n";
+                continue;
+            }
+
+            echo "  [{$done}/{$total}] {$pll_slug}: 번역 중... ";
+
+            $result = translate_single_post($post, $pll_slug, $gt_lang);
+
+            if ($result) {
+                echo "완료 (ID:{$result['id']}) \"{$result['title']}\"\n";
+            } else {
+                echo "실패!\n";
+            }
+        }
+
+        echo "\n";
+    }
 }
 
 echo "=== 자동 번역 완료! ===\n";
 
-// Summary
-$total_posts = wp_count_posts('travel_itinerary');
-echo "총 여행 일정: {$total_posts->publish}개 (원본 + 번역)\n";
+$itinerary_count = wp_count_posts('travel_itinerary');
+$post_count = wp_count_posts('post');
+echo "총 여행 일정: {$itinerary_count->publish}개 (원본 + 번역)\n";
+echo "총 블로그 글: {$post_count->publish}개 (원본 + 번역)\n";
