@@ -36,7 +36,36 @@ while (have_posts()) : the_post();
             <?php endif; ?>
         </header>
 
-        <?php if (has_post_thumbnail()) : ?>
+        <?php
+        // 구글맵: 좌표가 있는 아이템이 하나라도 있으면 지도 표시
+        $all_items = [];
+        foreach ($places as $item) {
+            if (!empty($item['lat']) && !empty($item['lng'])) {
+                $item['_type'] = 'places';
+                $all_items[] = $item;
+            }
+        }
+        foreach ($restaurants as $item) {
+            if (!empty($item['lat']) && !empty($item['lng'])) {
+                $item['_type'] = 'restaurants';
+                $all_items[] = $item;
+            }
+        }
+        foreach ($hotels as $item) {
+            if (!empty($item['lat']) && !empty($item['lng'])) {
+                $item['_type'] = 'hotels';
+                $all_items[] = $item;
+            }
+        }
+
+        if (!empty($all_items)) : ?>
+            <div id="ft-guide-map" class="guide-map-container"></div>
+            <div class="guide-map-legend">
+                <span class="legend-item legend-places"><span class="legend-dot"></span> <?php esc_html_e('관광지', 'flavor-trip'); ?></span>
+                <span class="legend-item legend-restaurants"><span class="legend-dot"></span> <?php esc_html_e('식당', 'flavor-trip'); ?></span>
+                <span class="legend-item legend-hotels"><span class="legend-dot"></span> <?php esc_html_e('호텔', 'flavor-trip'); ?></span>
+            </div>
+        <?php elseif (has_post_thumbnail()) : ?>
             <div class="itinerary-featured-image" style="margin-bottom:2rem;">
                 <?php the_post_thumbnail('ft-hero', ['loading' => 'eager']); ?>
             </div>

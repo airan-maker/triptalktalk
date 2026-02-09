@@ -31,6 +31,152 @@
     line-height: 1.7;
 }
 
+/* ── 구글맵 ── */
+.guide-map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--ft-border, #e2e8f0);
+}
+
+.guide-map-legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    color: var(--ft-text-light, #64748b);
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-places .legend-dot { background: #2563eb; }
+.legend-restaurants .legend-dot { background: #f59e0b; }
+.legend-hotels .legend-dot { background: #8b5cf6; }
+
+/* ── InfoWindow ── */
+.guide-info-window {
+    max-width: 320px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ft-text, #1e293b);
+}
+
+.giw-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--ft-text, #1e293b);
+}
+
+.giw-meta {
+    font-size: 0.8rem;
+    color: var(--ft-text-light, #64748b);
+    margin: 0 0 8px;
+}
+
+.giw-detail {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+}
+
+.giw-section {
+    margin: 0 0 8px;
+}
+
+.giw-section strong {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--ft-primary);
+    margin-bottom: 2px;
+}
+
+.giw-section p {
+    margin: 0;
+    font-size: 0.83rem;
+}
+
+.giw-ratings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin: 8px 0;
+    font-size: 0.78rem;
+}
+
+.giw-rating {
+    white-space: nowrap;
+}
+
+.giw-note {
+    font-size: 0.8rem;
+    color: var(--ft-text-light, #64748b);
+    font-style: italic;
+    margin: 4px 0 8px;
+}
+
+.giw-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--ft-border, #e2e8f0);
+}
+
+.giw-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.giw-link--map {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.giw-link--map:hover {
+    background: #dbeafe;
+}
+
+.giw-link--klook {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.giw-link--klook:hover {
+    background: #ffedd5;
+}
+
+/* 테이블 행에 좌표가 있으면 커서 변경 */
+.guide-table tr[data-lat] {
+    cursor: pointer;
+}
+
+.guide-table tr[data-lat]:hover {
+    background: #eef2ff;
+}
+
 /* ── 탭 네비게이션 ── */
 .guide-tabs {
     display: flex;
@@ -228,8 +374,8 @@
 
 .guide-card__image {
     position: relative;
-    aspect-ratio: 16/10;
     overflow: hidden;
+    height: 200px;
 }
 
 .guide-card__image img {
@@ -264,6 +410,7 @@
     font-weight: 700;
     margin-bottom: 8px;
     line-height: 1.3;
+    color: var(--ft-text, #1e293b);
 }
 
 .guide-card__counts {
@@ -286,6 +433,24 @@
 
 /* ── 반응형: 768px 이하 ── */
 @media (max-width: 768px) {
+    .guide-map-container {
+        height: 350px;
+        border-radius: 8px;
+    }
+
+    .guide-map-legend {
+        gap: 10px;
+        font-size: 0.78rem;
+    }
+
+    .guide-info-window {
+        max-width: 260px;
+    }
+
+    .guide-card__image {
+        height: 160px;
+    }
+
     .guide-header .guide-title {
         font-size: 1.5rem;
     }

@@ -38,6 +38,47 @@ add_action('wp_enqueue_scripts', function () {
     }
     if (is_singular('destination_guide')) {
         wp_enqueue_script('ft-guide', FT_URI . '/assets/js/guide.js', [], FT_VERSION, true);
+
+        // 구글맵 + 가이드 맵 JS
+        $google_key = get_theme_mod('ft_google_map_key');
+        if ($google_key) {
+            wp_enqueue_script('google-maps-guide', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr($google_key), [], null, true);
+        }
+        wp_enqueue_script('ft-guide-map', FT_URI . '/assets/js/guide-map.js', ['ft-guide'], FT_VERSION, true);
+
+        // 가이드 데이터를 JS에 전달
+        $guide_data = get_post_meta(get_the_ID(), '_ft_guide_data', true);
+        $map_items = [];
+        if (!empty($guide_data)) {
+            foreach (['places', 'restaurants', 'hotels'] as $type) {
+                if (!empty($guide_data[$type])) {
+                    foreach ($guide_data[$type] as $item) {
+                        if (!empty($item['lat']) && !empty($item['lng'])) {
+                            $item['_type'] = $type;
+                            $map_items[] = $item;
+                        }
+                    }
+                }
+            }
+        }
+
+        $lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
+        wp_localize_script('ft-guide-map', 'ftGuideMap', [
+            'items'    => $map_items,
+            'klookAid' => get_theme_mod('ft_klook_aid', ''),
+            'labels'   => [
+                'must_do'      => __('꼭 해볼 것', 'flavor-trip'),
+                'popular_menu' => __('인기 메뉴', 'flavor-trip'),
+                'detail'       => __('상세 정보', 'flavor-trip'),
+                'view_on_map'  => __('구글맵에서 보기', 'flavor-trip'),
+                'book_ticket'  => __('예약/입장권 보기', 'flavor-trip'),
+                'family'       => __('가족', 'flavor-trip'),
+                'couple'       => __('커플', 'flavor-trip'),
+                'solo'         => __('솔로', 'flavor-trip'),
+                'friends'      => __('친구', 'flavor-trip'),
+                'filial'       => __('효도', 'flavor-trip'),
+            ],
+        ]);
     }
 
     // 여행 일정 상세 페이지 전용
@@ -86,7 +127,7 @@ add_action('wp_enqueue_scripts', function () {
 // 스크립트에 defer 속성 추가 (성능 최적화)
 add_filter('script_loader_tag', function ($tag, $handle) {
     // 외부 스크립트에는 적용하지 않음
-    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map', 'ft-guide'];
+    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map', 'ft-guide', 'ft-guide-map'];
     if (in_array($handle, $defer_handles, true)) {
         return str_replace(' src', ' defer src', $tag);
     }

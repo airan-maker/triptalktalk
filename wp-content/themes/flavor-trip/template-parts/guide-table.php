@@ -50,8 +50,10 @@ $rating_labels = [
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($items as $idx => $item) : ?>
-                <tr>
+            <?php foreach ($items as $idx => $item) :
+                $has_coords = !empty($item['lat']) && !empty($item['lng']);
+            ?>
+                <tr<?php if ($has_coords) : ?> data-lat="<?php echo esc_attr($item['lat']); ?>" data-lng="<?php echo esc_attr($item['lng']); ?>"<?php endif; ?>>
                     <td class="col-num"><?php echo esc_html($idx + 1); ?></td>
                     <td class="col-name"><?php echo esc_html($item['name'] ?? ''); ?></td>
                     <td class="col-area" data-value="<?php echo esc_attr($item['area'] ?? ''); ?>"><?php echo esc_html($item['area'] ?? ''); ?></td>
