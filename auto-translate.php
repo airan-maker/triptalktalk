@@ -19,8 +19,6 @@ $LANG_MAP = array(
     'de'    => 'de',
 );
 
-$SEPARATOR = ' ||| ';
-$BATCH_SIZE = 10;
 $DELAY_MS = 500000; // 0.5s between API calls
 
 // ── Translation function ──
@@ -57,44 +55,15 @@ function gt_translate($text, $target, $source = 'ko') {
     return $translated ?: $text;
 }
 
-// Batch translate multiple strings
+// Translate multiple strings individually (avoids batch separator mangling)
 function gt_translate_batch($strings, $target, $source = 'ko') {
-    global $SEPARATOR, $DELAY_MS;
+    global $DELAY_MS;
 
-    $filtered = array();
-    $indices = array();
+    $results = $strings;
     foreach ($strings as $i => $s) {
         if (!empty(trim($s))) {
-            $filtered[] = $s;
-            $indices[] = $i;
-        }
-    }
-
-    if (empty($filtered)) return $strings;
-
-    // Batch into groups to avoid URL length limits
-    $results = $strings; // start with originals
-    $batch = array();
-    $batch_indices = array();
-
-    foreach ($filtered as $k => $text) {
-        $batch[] = $text;
-        $batch_indices[] = $indices[$k];
-
-        if (count($batch) >= 5 || $k === count($filtered) - 1) {
-            $combined = implode($SEPARATOR, $batch);
             usleep($DELAY_MS);
-            $translated = gt_translate($combined, $target, $source);
-            $parts = explode('|||', $translated);
-
-            foreach ($parts as $j => $part) {
-                if (isset($batch_indices[$j])) {
-                    $results[$batch_indices[$j]] = trim($part);
-                }
-            }
-
-            $batch = array();
-            $batch_indices = array();
+            $results[$i] = gt_translate($s, $target, $source);
         }
     }
 
@@ -170,8 +139,8 @@ function translate_days($days, $gt_lang) {
                     $spot['tip'] ?? '',
                     $spot['menu'] ?? '',
                     $spot['wait_tip'] ?? '',
+                    $spot['cuisine'] ?? '',
                 );
-                usleep($DELAY_MS);
                 $spot_translated = gt_translate_batch($spot_strings, $gt_lang);
 
                 $new_spot = $spot;
@@ -180,8 +149,9 @@ function translate_days($days, $gt_lang) {
                 $new_spot['tip']         = $spot_translated[2];
                 if (!empty($spot['menu']))     $new_spot['menu']     = $spot_translated[3];
                 if (!empty($spot['wait_tip'])) $new_spot['wait_tip'] = $spot_translated[4];
+                if (!empty($spot['cuisine'])) $new_spot['cuisine']  = $spot_translated[5];
 
-                // Don't translate: type, time, duration, lat, lng, link, price, cuisine
+                // Don't translate: type, time, duration, lat, lng, link, price
                 $new_spots[] = $new_spot;
             }
             $new_day['spots'] = $new_spots;
@@ -219,10 +189,11 @@ function translate_and_link_terms($post_id, $new_post_id, $taxonomy, $pll_slug, 
             if (!is_wp_error($new_term)) {
                 $new_term_id = $new_term['term_id'];
                 pll_set_term_language($new_term_id, $pll_slug);
-                PLL()->model->post->save_translations($term->term_id, array(
-                    'ko'      => $term->term_id,
-                    $pll_slug => $new_term_id,
-                ));
+                // 기존 번역 그룹 가져와서 병합
+                $existing = PLL()->model->term->get_translations($term->term_id);
+                $existing['ko'] = $term->term_id;
+                $existing[$pll_slug] = $new_term_id;
+                PLL()->model->term->save_translations($term->term_id, $existing);
                 wp_set_post_terms($new_post_id, array($new_term_id), $taxonomy, true);
             }
         }

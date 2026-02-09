@@ -61,7 +61,7 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
                     <?php if ($is_restaurant) : ?>
                         <div class="spot-restaurant-meta">
                             <?php if (!empty($spot['menu'])) : ?>
-                                <span class="spot-menu">추천: <?php echo esc_html($spot['menu']); ?></span>
+                                <span class="spot-menu"><?php echo esc_html__('추천:', 'flavor-trip') . ' ' . esc_html($spot['menu']); ?></span>
                             <?php endif; ?>
                             <?php if (!empty($spot['price'])) : ?>
                                 <span class="spot-price"><?php echo esc_html($spot['price']); ?></span>
@@ -79,7 +79,7 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
                     <?php endif; ?>
                     <?php if (!empty($spot['link'])) : ?>
                         <a href="<?php echo esc_url($spot['link']); ?>" class="spot-link" target="_blank" rel="noopener">
-                            <?php echo $is_restaurant ? '예약하기 →' : '자세히 보기 →'; ?>
+                            <?php echo $is_restaurant ? esc_html__('예약하기 →', 'flavor-trip') : esc_html__('자세히 보기 →', 'flavor-trip'); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -90,7 +90,7 @@ if (!empty($day['spots']) && is_array($day['spots'])) :
     <?php if (!empty($day['tip'])) : ?>
         <div class="day-tip-box">
             <div class="day-tip-content">
-                <strong>이 날의 핵심 팁</strong>
+                <strong><?php esc_html_e('이 날의 핵심 팁', 'flavor-trip'); ?></strong>
                 <p><?php echo wp_kses_post($day['tip']); ?></p>
             </div>
         </div>

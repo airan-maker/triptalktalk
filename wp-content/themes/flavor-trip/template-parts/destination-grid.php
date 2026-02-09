@@ -67,21 +67,11 @@ if (is_wp_error($destinations) || empty($destinations)) {
                 $image_id = get_term_meta($dest->term_id, 'ft_destination_image', true);
                 $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'ft-card') : '';
 
-                // 없으면 Unsplash 기본 이미지 사용
+                // 없으면 Unsplash 기본 이미지 사용 (번역 슬러그 → 원본 슬러그 자동 변환)
                 if (!$image_url) {
-                    $slug = $dest->slug;
-                    // Polylang: 번역된 슬러그 → 한국어 원본 슬러그
-                    if (!isset($destination_images[$slug]) && function_exists('pll_get_term')) {
-                        $ko_term_id = pll_get_term($dest->term_id, 'ko');
-                        if ($ko_term_id && $ko_term_id !== $dest->term_id) {
-                            $ko_term = get_term($ko_term_id);
-                            if ($ko_term && !is_wp_error($ko_term)) {
-                                $slug = $ko_term->slug;
-                            }
-                        }
-                    }
-                    $image_url = isset($destination_images[$slug])
-                        ? $destination_images[$slug]
+                    $resolved_slug = ft_resolve_destination_slug($dest->slug, $destination_images);
+                    $image_url = isset($destination_images[$resolved_slug])
+                        ? $destination_images[$resolved_slug]
                         : $destination_images['default'];
                 }
             ?>

@@ -73,27 +73,6 @@ $destination_images = [
     'default'        => 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
 ];
 
-// 여행지 슬러그로 이미지 찾기 (Polylang 번역 슬러그 → 한국어 원본 슬러그 변환)
-if (!function_exists('ft_resolve_destination_slug')) :
-function ft_resolve_destination_slug($term, $destination_images) {
-    $slug = $term->slug;
-    if (isset($destination_images[$slug])) {
-        return $slug;
-    }
-    // Polylang: 번역된 택소노미의 한국어 원본 슬러그로 폴백
-    if (function_exists('pll_get_term')) {
-        $ko_term_id = pll_get_term($term->term_id, 'ko');
-        if ($ko_term_id && $ko_term_id !== $term->term_id) {
-            $ko_term = get_term($ko_term_id);
-            if ($ko_term && !is_wp_error($ko_term) && isset($destination_images[$ko_term->slug])) {
-                return $ko_term->slug;
-            }
-        }
-    }
-    return $slug;
-}
-endif;
-
 // 이미지 URL 가져오기 (자식 여행지 우선)
 $image_url = $destination_images['default'];
 if (has_post_thumbnail($post_id)) {
@@ -101,11 +80,10 @@ if (has_post_thumbnail($post_id)) {
 } else {
     $destinations = get_the_terms($post_id, 'destination');
     if ($destinations && !is_wp_error($destinations)) {
-        // 자식(도시) 우선, 부모(지역) 나중에 체크
         $child_image = '';
         $parent_image = '';
         foreach ($destinations as $dest) {
-            $resolved_slug = ft_resolve_destination_slug($dest, $destination_images);
+            $resolved_slug = ft_resolve_destination_slug($dest->slug, $destination_images);
             if (isset($destination_images[$resolved_slug])) {
                 if ($dest->parent > 0) {
                     $child_image = $destination_images[$resolved_slug];
@@ -114,7 +92,6 @@ if (has_post_thumbnail($post_id)) {
                 }
             }
         }
-        // 자식 이미지 우선 사용
         $image_url = $child_image ?: $parent_image ?: $destination_images['default'];
     }
 }

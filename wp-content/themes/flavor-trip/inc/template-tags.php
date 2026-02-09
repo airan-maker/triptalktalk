@@ -72,6 +72,50 @@ function ft_get_difficulty_label($difficulty) {
 }
 
 /**
+ * 번역된 택소노미 슬러그에서 원본(한국어) 슬러그 추출
+ *
+ * auto-translate.php가 생성하는 번역 슬러그 패턴: {원본}-{lang}
+ * 예: tokyo-en, bangkok-ja, busan-zh-cn, new-york-en-au
+ *
+ * @param string $slug            택소노미 슬러그
+ * @param array  $known_slugs     알려진 원본 슬러그 목록 (키)
+ * @return string 매칭된 원본 슬러그 또는 원본 그대로
+ */
+function ft_resolve_destination_slug($slug, $known_slugs) {
+    // 1) 정확히 매칭되면 바로 반환
+    if (isset($known_slugs[$slug])) {
+        return $slug;
+    }
+
+    // 2) 언어 접미사 제거 시도 (긴 것부터)
+    $lang_suffixes = ['-en-au', '-zh-cn', '-zh-hk', '-zh-tw', '-en', '-ja', '-fr', '-de'];
+    foreach ($lang_suffixes as $suffix) {
+        if (str_ends_with($slug, $suffix)) {
+            $base = substr($slug, 0, -strlen($suffix));
+            if (isset($known_slugs[$base])) {
+                return $base;
+            }
+        }
+    }
+
+    // 3) Polylang 폴백 (제대로 링크된 경우)
+    if (function_exists('pll_get_term')) {
+        $term = get_term_by('slug', $slug, 'destination');
+        if ($term && !is_wp_error($term)) {
+            $ko_term_id = pll_get_term($term->term_id, 'ko');
+            if ($ko_term_id && $ko_term_id !== $term->term_id) {
+                $ko_term = get_term($ko_term_id);
+                if ($ko_term && !is_wp_error($ko_term) && isset($known_slugs[$ko_term->slug])) {
+                    return $ko_term->slug;
+                }
+            }
+        }
+    }
+
+    return $slug;
+}
+
+/**
  * 여행지 기반 폴백 이미지 URL
  *
  * @param int $post_id 게시물 ID
@@ -118,22 +162,12 @@ function ft_get_destination_image($post_id = null) {
     $child_image = '';
     $parent_image = '';
     foreach ($destinations as $dest) {
-        $slug = $dest->slug;
-        // Polylang: 번역된 슬러그 → 한국어 원본 슬러그
-        if (!isset($destination_images[$slug]) && function_exists('pll_get_term')) {
-            $ko_term_id = pll_get_term($dest->term_id, 'ko');
-            if ($ko_term_id && $ko_term_id !== $dest->term_id) {
-                $ko_term = get_term($ko_term_id);
-                if ($ko_term && !is_wp_error($ko_term)) {
-                    $slug = $ko_term->slug;
-                }
-            }
-        }
-        if (isset($destination_images[$slug])) {
+        $resolved = ft_resolve_destination_slug($dest->slug, $destination_images);
+        if (isset($destination_images[$resolved])) {
             if ($dest->parent > 0) {
-                $child_image = $destination_images[$slug];
+                $child_image = $destination_images[$resolved];
             } else {
-                $parent_image = $destination_images[$slug];
+                $parent_image = $destination_images[$resolved];
             }
         }
     }
