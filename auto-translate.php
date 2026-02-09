@@ -161,43 +161,96 @@ function translate_days($days, $gt_lang) {
     return $translated_days;
 }
 
-// ── Translate taxonomy terms ──
+// ── 수동 번역 오버라이드 (Google Translate 오역 방지) ──
+function ft_get_term_overrides() {
+    return [
+        '세부'     => ['en' => 'Cebu',         'zh-CN' => '宿务',         'ja' => 'セブ',             'fr' => 'Cebu',              'de' => 'Cebu'],
+        '맛집'     => ['en' => 'Food Spots',    'zh-CN' => '美食店',       'ja' => 'グルメスポット',   'fr' => 'Bonnes adresses',   'de' => 'Gourmet-Spots'],
+        '맛집투어' => ['en' => 'Food Tour',     'zh-CN' => '美食之旅',     'ja' => 'グルメツアー',     'fr' => 'Tour gastronomique','de' => 'Gourmet-Tour'],
+        '발리'     => ['en' => 'Bali',          'zh-CN' => '巴厘岛',       'ja' => 'バリ',             'fr' => 'Bali',              'de' => 'Bali'],
+        '가성비여행' => ['en' => 'Budget Travel','zh-CN' => '高性价比旅行', 'ja' => 'コスパ旅行',       'fr' => 'Voyage économique', 'de' => 'Budget-Reise'],
+        '미식여행' => ['en' => 'Gourmet Travel', 'zh-CN' => '美食旅行',     'ja' => 'グルメ旅行',       'fr' => 'Voyage gastronomique','de' => 'Gourmet-Reise'],
+        '힐링여행' => ['en' => 'Healing Travel', 'zh-CN' => '治愈之旅',     'ja' => '癒し旅',           'fr' => 'Voyage bien-être',  'de' => 'Wellness-Reise'],
+        '문화탐방' => ['en' => 'Cultural Tour',  'zh-CN' => '文化之旅',     'ja' => '文化探訪',         'fr' => 'Tour culturel',     'de' => 'Kulturtour'],
+        '문화체험' => ['en' => 'Cultural Experience','zh-CN' => '文化体验',  'ja' => '文化体験',         'fr' => 'Expérience culturelle','de' => 'Kulturerlebnis'],
+    ];
+}
+
+function ft_translate_term_name($name, $gt_lang) {
+    $overrides = ft_get_term_overrides();
+    if (isset($overrides[$name][$gt_lang])) {
+        return $overrides[$name][$gt_lang];
+    }
+    usleep(300000);
+    return gt_translate($name, $gt_lang);
+}
+
+// ── Translate taxonomy terms (계층 구조 보존) ──
 function translate_and_link_terms($post_id, $new_post_id, $taxonomy, $pll_slug, $gt_lang) {
     $terms = wp_get_post_terms($post_id, $taxonomy);
     if (empty($terms) || is_wp_error($terms)) return;
 
     foreach ($terms as $term) {
-        $term_lang = pll_get_term_language($term->term_id);
-
-        // Check if this term already has a translation
-        $translated_term_id = pll_get_term($term->term_id, $pll_slug);
-
+        $translated_term_id = get_or_create_translated_term($term, $taxonomy, $pll_slug, $gt_lang);
         if ($translated_term_id) {
             wp_set_post_terms($new_post_id, array($translated_term_id), $taxonomy, true);
-        } else {
-            // Create translated term
-            $translated_name = gt_translate($term->name, $gt_lang);
-            usleep(300000);
-            $translated_slug = sanitize_title($translated_name . '-' . $pll_slug);
-
-            $new_term = wp_insert_term($translated_name, $taxonomy, array(
-                'slug' => $translated_slug,
-            ));
-
-            if (!is_wp_error($new_term)) {
-                $new_term_id = $new_term['term_id'];
-                pll_set_term_language($new_term_id, $pll_slug);
-                // 기존 번역 그룹 가져와서 병합
-                $existing = PLL()->model->term->get_translations($term->term_id);
-                $existing['ko'] = $term->term_id;
-                $existing[$pll_slug] = $new_term_id;
-                PLL()->model->term->save_translations($term->term_id, $existing);
-                wp_set_post_terms($new_post_id, array($new_term_id), $taxonomy, true);
-                // 한국어 원본 슬러그 저장 (CJK 이미지 매핑용)
-                update_term_meta($new_term_id, '_ft_ko_slug', $term->slug);
-            }
         }
     }
+}
+
+/**
+ * 번역된 term을 찾거나 생성 (재귀적으로 부모 먼저 처리)
+ */
+function get_or_create_translated_term($term, $taxonomy, $pll_slug, $gt_lang) {
+    // 이미 번역이 있는지 확인
+    $existing_id = pll_get_term($term->term_id, $pll_slug);
+    if ($existing_id) return $existing_id;
+
+    // 부모가 있으면 부모 먼저 번역 (재귀)
+    $translated_parent = 0;
+    if ($term->parent > 0) {
+        $parent_term = get_term($term->parent, $taxonomy);
+        if ($parent_term && !is_wp_error($parent_term)) {
+            $translated_parent = get_or_create_translated_term($parent_term, $taxonomy, $pll_slug, $gt_lang);
+        }
+    }
+
+    // 이름 번역 (수동 오버라이드 포함)
+    $translated_name = ft_translate_term_name($term->name, $gt_lang);
+    $translated_slug = sanitize_title($translated_name . '-' . $pll_slug);
+
+    // term 생성 (부모 포함)
+    $new_term = wp_insert_term($translated_name, $taxonomy, [
+        'slug'   => $translated_slug,
+        'parent' => $translated_parent ?: 0,
+    ]);
+
+    if (is_wp_error($new_term)) {
+        // 같은 slug로 이미 존재할 수 있음
+        $existing = get_term_by('slug', $translated_slug, $taxonomy);
+        if ($existing) {
+            // 부모 수정
+            if ($translated_parent && $existing->parent != $translated_parent) {
+                wp_update_term($existing->term_id, $taxonomy, ['parent' => $translated_parent]);
+            }
+            return $existing->term_id;
+        }
+        return 0;
+    }
+
+    $new_term_id = $new_term['term_id'];
+    pll_set_term_language($new_term_id, $pll_slug);
+
+    // Polylang 번역 그룹 링크
+    $existing_group = PLL()->model->term->get_translations($term->term_id);
+    $existing_group['ko'] = $term->term_id;
+    $existing_group[$pll_slug] = $new_term_id;
+    PLL()->model->term->save_translations($term->term_id, $existing_group);
+
+    // 한국어 원본 슬러그 저장 (이미지 매핑용)
+    update_term_meta($new_term_id, '_ft_ko_slug', $term->slug);
+
+    return $new_term_id;
 }
 
 // ── Translate a single post (any post type) ──
