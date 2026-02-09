@@ -385,6 +385,41 @@ a:hover {
     gap: 16px;
 }
 
+/* CTA 버튼 - 나만의 여행 일정 만들기 */
+.btn-cta-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-family: inherit;
+    text-decoration: none;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    letter-spacing: -0.01em;
+}
+
+.btn-cta-hero:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.55);
+    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 50%, #db2777 100%);
+    color: #fff;
+}
+
+.btn-cta-hero:active {
+    transform: translateY(0) scale(1);
+}
+
+.btn-cta-hero svg {
+    flex-shrink: 0;
+}
+
 .hero-actions .search-form {
     display: flex;
     max-width: 560px;
@@ -1876,5 +1911,12 @@ a:hover {
 @media (max-width: 480px) {
     .hero-actions {
         padding: 0 16px;
+    }
+
+    .btn-cta-hero {
+        padding: 14px 28px;
+        font-size: 0.95rem;
+        width: 100%;
+        justify-content: center;
     }
 }

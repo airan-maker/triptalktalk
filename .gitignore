@@ -24,3 +24,6 @@ desktop.ini
 # Logs
 *.log
 debug.log
+
+# Backups (DB 덤프 파일)
+backups/

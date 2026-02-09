@@ -194,3 +194,7 @@ msgstr "The Beginning of a Delicious Journey"
 #: template-parts/hero-section.php
 msgid "특별한 여행 일정을 만나보세요. 전문가가 설계한 코스로 잊지 못할 여행을 떠나세요."
 msgstr "Discover special travel itineraries. Embark on an unforgettable journey with expertly designed courses."
+
+#: template-parts/hero-section.php
+msgid "나만의 여행 일정 만들기"
+msgstr "Create My Travel Itinerary"
