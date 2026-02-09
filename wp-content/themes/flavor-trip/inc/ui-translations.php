@@ -170,10 +170,9 @@ add_filter('gettext', function ($translated, $text, $domain) {
     $strings = ft_get_ui_translations();
     if (!isset($strings[$text])) return $translated;
 
-    // en-au → en, zh-hk → zh-tw 폴백
+    // en-au → en 폴백
     $lang_fallback = [
         'en-au' => 'en',
-        'zh-hk' => 'zh-tw',
     ];
     $lookup = $lang_fallback[$lang] ?? $lang;
 
