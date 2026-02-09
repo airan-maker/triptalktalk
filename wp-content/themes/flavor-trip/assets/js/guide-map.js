@@ -238,3 +238,6 @@ function initFtGuideMap() {
     });
 
 }
+
+// Google Maps API 로드 후 자동 실행
+initFtGuideMap();
