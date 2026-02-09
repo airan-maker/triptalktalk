@@ -67,13 +67,13 @@ add_action('wp_enqueue_scripts', function () {
         $lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
         wp_localize_script('ft-guide-map', 'ftGuideMap', [
             'items'    => $map_items,
-            'klookAid' => get_theme_mod('ft_klook_aid', ''),
+            'klookAid' => get_theme_mod('ft_klook_aid', '6yjZP2Ac'),
             'labels'   => [
                 'must_do'      => __('꼭 해볼 것', 'flavor-trip'),
                 'popular_menu' => __('인기 메뉴', 'flavor-trip'),
                 'detail'       => __('상세 정보', 'flavor-trip'),
                 'view_on_map'  => __('구글맵에서 보기', 'flavor-trip'),
-                'book_ticket'  => __('예약/입장권 보기', 'flavor-trip'),
+                'book_ticket'  => __('Klook에서 검색', 'flavor-trip'),
                 'family'       => __('가족', 'flavor-trip'),
                 'couple'       => __('커플', 'flavor-trip'),
                 'solo'         => __('솔로', 'flavor-trip'),

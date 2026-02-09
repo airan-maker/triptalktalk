@@ -194,7 +194,7 @@ while (have_posts()) : the_post();
                         <a href="<?php echo $place_url; ?>" target="_blank" rel="noopener noreferrer nofollow sponsored" class="guide-activity-card guide-activity-card--place">
                             <span class="activity-card__name"><?php echo esc_html($item['name']); ?></span>
                             <span class="activity-card__meta"><?php echo esc_html(($item['area'] ?? '') . (!empty($item['category']) ? ' · ' . $item['category'] : '')); ?></span>
-                            <span class="activity-card__cta">Klook에서 보기 →</span>
+                            <span class="activity-card__cta"><?php esc_html_e('Klook에서 검색 →', 'flavor-trip'); ?></span>
                         </a>
                     <?php endforeach; ?>
                 </div>
