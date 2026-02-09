@@ -7,11 +7,13 @@
 
 defined('ABSPATH') || exit;
 
+$current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
 $guides = new WP_Query([
     'post_type'      => 'destination_guide',
     'posts_per_page' => 6,
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'lang'           => $current_lang,
 ]);
 
 if (!$guides->have_posts()) return;
