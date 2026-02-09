@@ -73,7 +73,7 @@ add_action('wp_enqueue_scripts', function () {
                 'popular_menu' => __('인기 메뉴', 'flavor-trip'),
                 'detail'       => __('상세 정보', 'flavor-trip'),
                 'view_on_map'  => __('구글맵에서 보기', 'flavor-trip'),
-                'book_ticket'  => __('Klook에서 검색', 'flavor-trip'),
+                'book_ticket'  => __('예약/입장권 보기', 'flavor-trip'),
                 'family'       => __('가족', 'flavor-trip'),
                 'couple'       => __('커플', 'flavor-trip'),
                 'solo'         => __('솔로', 'flavor-trip'),

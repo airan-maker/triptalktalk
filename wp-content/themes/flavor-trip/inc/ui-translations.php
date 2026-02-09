@@ -171,7 +171,7 @@ function ft_get_ui_translations() {
         '인기 메뉴' => ['en' => 'Popular Menu', 'ja' => '人気メニュー', 'zh-cn' => '人气菜单', 'fr' => 'Menu populaire', 'de' => 'Beliebtes Menü'],
         '상세 정보' => ['en' => 'Details', 'ja' => '詳細情報', 'zh-cn' => '详细信息', 'fr' => 'Détails', 'de' => 'Details'],
         '구글맵에서 보기' => ['en' => 'View on Google Maps', 'ja' => 'Googleマップで見る', 'zh-cn' => '在谷歌地图查看', 'fr' => 'Voir sur Google Maps', 'de' => 'Auf Google Maps ansehen'],
-        '예약/입장권 보기' => ['en' => 'Search on Klook', 'ja' => 'Klookで検索', 'zh-cn' => '在Klook搜索', 'fr' => 'Rechercher sur Klook', 'de' => 'Auf Klook suchen'],
+        '예약/입장권 보기' => ['en' => 'Book/Get Tickets', 'ja' => '予約・チケット', 'zh-cn' => '预订/购票', 'fr' => 'Réserver/Billets', 'de' => 'Buchen/Tickets'],
         'Klook에서 검색' => ['en' => 'Search on Klook', 'ja' => 'Klookで検索', 'zh-cn' => '在Klook搜索', 'fr' => 'Rechercher sur Klook', 'de' => 'Auf Klook suchen'],
         'Klook에서 검색 →' => ['en' => 'Search on Klook →', 'ja' => 'Klookで検索 →', 'zh-cn' => '在Klook搜索 →', 'fr' => 'Rechercher sur Klook →', 'de' => 'Auf Klook suchen →'],
         '모든 가이드 보기 →' => ['en' => 'View All Guides →', 'ja' => 'すべてのガイドを見る →', 'zh-cn' => '查看所有指南 →', 'fr' => 'Voir tous les guides →', 'de' => 'Alle Guides ansehen →'],
