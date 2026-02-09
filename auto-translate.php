@@ -91,7 +91,7 @@ function translate_itinerary_meta($post_id, $gt_lang) {
     }
 
     // Non-translated meta (copy as-is)
-    foreach (array('_ft_price_range', '_ft_difficulty', '_ft_map_lat', '_ft_map_lng', '_ft_map_zoom') as $key) {
+    foreach (array('_ft_price_range', '_ft_difficulty', '_ft_map_lat', '_ft_map_lng', '_ft_map_zoom', '_thumbnail_id', '_ft_gallery') as $key) {
         $val = get_post_meta($post_id, $key, true);
         if ($val !== '' && $val !== false) {
             $meta[$key] = $val;

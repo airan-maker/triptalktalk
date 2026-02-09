@@ -90,11 +90,19 @@ defined('ABSPATH') || exit;
             <div class="footer-lang-selector">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <ul class="footer-lang-list">
-                    <?php pll_the_languages([
-                        'show_flags' => 0,
-                        'show_names' => 1,
-                        'hide_current' => 0,
-                    ]); ?>
+                    <?php
+                    $ft_allowed_langs = ['ko', 'en', 'zh-cn', 'ja', 'fr', 'de'];
+                    $ft_langs = pll_the_languages(['raw' => 1]);
+                    if ($ft_langs) :
+                        foreach ($ft_langs as $lang) :
+                            if (!in_array($lang['slug'], $ft_allowed_langs, true)) continue;
+                            $css = $lang['current_lang'] ? ' class="current-lang"' : '';
+                    ?>
+                        <li<?php echo $css; ?>><a href="<?php echo esc_url($lang['url']); ?>" hreflang="<?php echo esc_attr($lang['slug']); ?>"><?php echo esc_html($lang['name']); ?></a></li>
+                    <?php
+                        endforeach;
+                    endif;
+                    ?>
                 </ul>
             </div>
         </div>
