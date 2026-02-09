@@ -122,7 +122,7 @@ function initFtGuideMap() {
 
         // 링크
         html += '<div class="giw-links">';
-        html += '<a href="https://www.google.com/maps?q=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer" class="giw-link giw-link--map">📍 ' + esc(labels.view_on_map || '구글맵에서 보기') + '</a>';
+        html += '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.name + (item.area ? ' ' + item.area : '')) + '" target="_blank" rel="noopener noreferrer" class="giw-link giw-link--map">📍 ' + esc(labels.view_on_map || '구글맵에서 보기') + '</a>';
 
         if (item.klook_url) {
             var kUrl = item.klook_url;
