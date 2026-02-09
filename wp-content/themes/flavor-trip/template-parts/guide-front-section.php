@@ -8,13 +8,26 @@
 defined('ABSPATH') || exit;
 
 $current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
-$guides = new WP_Query([
+
+// Polylang lang 파라미터 + language taxonomy 직접 필터 (이중 보장)
+$query_args = [
     'post_type'      => 'destination_guide',
-    'posts_per_page' => 6,
+    'posts_per_page' => 7,
     'orderby'        => 'date',
     'order'          => 'DESC',
     'lang'           => $current_lang,
-]);
+];
+
+// Polylang의 language taxonomy로 직접 필터
+if (taxonomy_exists('language')) {
+    $query_args['tax_query'] = [[
+        'taxonomy' => 'language',
+        'field'    => 'slug',
+        'terms'    => $current_lang,
+    ]];
+}
+
+$guides = new WP_Query($query_args);
 
 if (!$guides->have_posts()) return;
 ?>
