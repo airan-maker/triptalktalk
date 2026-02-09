@@ -7,10 +7,7 @@
 $languages = array(
     array('name' => '한국어',       'locale' => 'ko_KR', 'slug' => 'ko',    'flag' => 'kr'),
     array('name' => 'English',      'locale' => 'en_US', 'slug' => 'en',    'flag' => 'us'),
-    array('name' => 'English (AU)', 'locale' => 'en_AU', 'slug' => 'en-au', 'flag' => 'au'),
     array('name' => '中文 (中国)',   'locale' => 'zh_CN', 'slug' => 'zh-cn', 'flag' => 'cn'),
-    array('name' => '中文 (香港)',   'locale' => 'zh_HK', 'slug' => 'zh-hk', 'flag' => 'hk'),
-    array('name' => '中文 (台灣)',   'locale' => 'zh_TW', 'slug' => 'zh-tw', 'flag' => 'tw'),
     array('name' => '日本語',       'locale' => 'ja',    'slug' => 'ja',    'flag' => 'jp'),
     array('name' => 'Français',     'locale' => 'fr_FR', 'slug' => 'fr',    'flag' => 'fr'),
     array('name' => 'Deutsch',      'locale' => 'de_DE', 'slug' => 'de',    'flag' => 'de'),

@@ -10,7 +10,6 @@
 // ── Config ──
 $LANG_MAP = array(
     'en'    => 'en',
-    'en-au' => 'en',
     'zh-cn' => 'zh-CN',
     'ja'    => 'ja',
     'fr'    => 'fr',

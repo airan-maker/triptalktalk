@@ -111,7 +111,6 @@ function ft_output_hreflang_tags() {
             // 특수 locale 매핑
             $hreflang_map = [
                 'zh-cn' => 'zh-Hans',
-                'en-au' => 'en-AU',
             ];
             $hreflang = $hreflang_map[$hreflang] ?? $hreflang;
             echo '<link rel="alternate" hreflang="' . esc_attr($hreflang) . '" href="' . esc_url($lang['url']) . '">' . "\n";

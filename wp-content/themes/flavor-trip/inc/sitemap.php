@@ -122,7 +122,7 @@ function ft_sitemap_posts($post_type) {
             $translations = pll_get_post_translations($post->ID);
             if (count($translations) > 1) {
                 $hreflang_map = [
-                    'zh-cn' => 'zh-Hans', 'en-au' => 'en-AU',
+                    'zh-cn' => 'zh-Hans',
                 ];
                 foreach ($translations as $lang => $trans_id) {
                     $trans_url = get_permalink($trans_id);
