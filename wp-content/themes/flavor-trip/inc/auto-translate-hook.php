@@ -241,13 +241,13 @@ function ft_translate_guide_meta($post_id, $gt_lang) {
             foreach ($data[$section] as $item) {
                 $new_item = $item;
                 // Translate text fields
-                foreach (['name', 'area', 'note', 'cuisine', 'category'] as $f) {
+                foreach (['name', 'area', 'note', 'cuisine', 'category', 'detail', 'must_do', 'popular_menu'] as $f) {
                     if (!empty($item[$f])) {
                         usleep(300000);
                         $new_item[$f] = ft_gt_translate($item[$f], $gt_lang);
                     }
                 }
-                // grade/price/ratings are copied as-is
+                // grade/price/ratings/lat/lng/klook_url are copied as-is
                 $translated_items[] = $new_item;
             }
             $translated_data[$section] = $translated_items;

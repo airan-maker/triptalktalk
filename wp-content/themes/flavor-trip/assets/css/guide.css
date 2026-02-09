@@ -375,7 +375,7 @@
 .guide-card__image {
     position: relative;
     overflow: hidden;
-    height: 200px;
+    aspect-ratio: 4 / 3;
 }
 
 .guide-card__image img {
@@ -448,7 +448,7 @@
     }
 
     .guide-card__image {
-        height: 160px;
+        aspect-ratio: 4 / 3;
     }
 
     .guide-header .guide-title {
