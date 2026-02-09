@@ -7,7 +7,7 @@
 
 defined('ABSPATH') || exit;
 
-define('FT_VERSION', '2.8.0');
+define('FT_VERSION', '2.9.0');
 define('FT_DIR', get_template_directory());
 define('FT_URI', get_template_directory_uri());
 
@@ -26,6 +26,7 @@ $ft_includes = [
     'inc/widgets.php',
     'inc/sitemap.php',
     'inc/llms-txt.php',
+    'inc/ui-translations.php',
 ];
 
 foreach ($ft_includes as $file) {

@@ -76,6 +76,7 @@ function translate_itinerary_meta($post_id, $gt_lang) {
         '_ft_destination_name',
         '_ft_best_season',
         '_ft_highlights',
+        '_ft_duration',
     );
 
     // Simple meta fields
@@ -93,7 +94,7 @@ function translate_itinerary_meta($post_id, $gt_lang) {
     }
 
     // Non-translated meta (copy as-is)
-    foreach (array('_ft_duration', '_ft_price_range', '_ft_difficulty', '_ft_map_lat', '_ft_map_lng', '_ft_map_zoom') as $key) {
+    foreach (array('_ft_price_range', '_ft_difficulty', '_ft_map_lat', '_ft_map_lng', '_ft_map_zoom') as $key) {
         $val = get_post_meta($post_id, $key, true);
         if ($val !== '' && $val !== false) {
             $meta[$key] = $val;

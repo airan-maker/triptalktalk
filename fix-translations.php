@@ -248,7 +248,17 @@ foreach ($ko_posts as $ko_post) {
         if ($needs_update) {
             update_post_meta($trans_post_id, '_ft_days', $trans_days);
             $fixed_posts++;
-            echo "  FIXED: [{$pll_slug}] {$ko_post->post_title} (ID:{$trans_post_id})\n";
+            echo "  FIXED days: [{$pll_slug}] {$ko_post->post_title} (ID:{$trans_post_id})\n";
+        }
+
+        // Fix _ft_duration (was copied as-is, not translated)
+        $ko_duration = get_post_meta($ko_post->ID, '_ft_duration', true);
+        $trans_duration = get_post_meta($trans_post_id, '_ft_duration', true);
+        if ($ko_duration && $trans_duration === $ko_duration) {
+            usleep($DELAY_MS);
+            $new_duration = gt_translate_fix($ko_duration, $gt_lang);
+            update_post_meta($trans_post_id, '_ft_duration', $new_duration);
+            echo "  FIXED duration: [{$pll_slug}] \"{$ko_duration}\" → \"{$new_duration}\"\n";
         }
     }
 }

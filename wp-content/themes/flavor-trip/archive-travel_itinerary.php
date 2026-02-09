@@ -36,7 +36,7 @@ $current_style = get_query_var('travel_style');
             <div class="filter-section">
                 <span class="filter-section-label"><?php esc_html_e('여행지', 'flavor-trip'); ?></span>
                 <a href="<?php echo esc_url(get_post_type_archive_link('travel_itinerary')); ?>" class="filter-pill <?php echo !$current_dest ? 'active' : ''; ?>">
-                    전체
+                    <?php esc_html_e('전체', 'flavor-trip'); ?>
                 </a>
                 <?php foreach ($destinations as $dest) : ?>
                     <a href="<?php echo esc_url(get_term_link($dest)); ?>" class="filter-pill <?php echo $current_dest === $dest->slug ? 'active' : ''; ?>">
