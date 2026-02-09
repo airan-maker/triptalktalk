@@ -188,43 +188,6 @@ a:hover {
     font-size: 0.875rem;
 }
 
-/* Language Switcher */
-.language-switcher {
-    margin-left: 16px;
-    padding-left: 0;
-}
-
-.language-switcher .lang-list {
-    display: flex;
-    list-style: none;
-    gap: 4px;
-    margin: 0;
-    padding: 0;
-}
-
-.language-switcher .lang-list li {
-    display: inline-block;
-}
-
-.language-switcher .lang-list a {
-    display: block;
-    padding: 6px 10px;
-    font-size: 0.813rem;
-    color: var(--ft-text-light);
-    border-radius: var(--ft-radius);
-    transition: all var(--ft-transition);
-    text-transform: uppercase;
-}
-
-.language-switcher .lang-list a:hover {
-    background: var(--ft-bg-alt);
-    color: var(--ft-primary);
-}
-
-.language-switcher .lang-list .current-lang a {
-    background: var(--ft-primary);
-    color: #fff;
-}
 
 /* Hamburger */
 .menu-toggle {
@@ -426,54 +389,6 @@ a:hover {
     flex-shrink: 0;
 }
 
-.hero-actions .search-form {
-    display: flex;
-    max-width: 560px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 100px;
-    padding: 6px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.hero-actions .search-field {
-    flex: 1;
-    min-width: 0;
-    padding: 14px 24px;
-    background: transparent;
-    border: none;
-    font-size: 1rem;
-    font-family: inherit;
-    outline: none;
-    color: #fff;
-}
-
-.hero-actions .search-field::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.hero-actions .search-submit {
-    padding: 14px 28px;
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-    color: white;
-    border: none;
-    border-radius: 100px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.hero-actions .search-submit:hover {
-    background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
-    transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-}
 
 /* ==========================================================================
    Site Main — Footer Spacing
@@ -1521,6 +1436,59 @@ a:hover {
     color: white;
 }
 
+/* Footer Language Selector */
+.footer-language {
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-lang-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.footer-lang-selector svg {
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.footer-lang-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-lang-list li {
+    display: inline-block;
+}
+
+.footer-lang-list a {
+    display: block;
+    padding: 5px 14px;
+    font-size: 0.813rem;
+    color: #94a3b8;
+    border-radius: 100px;
+    transition: all var(--ft-transition);
+    border: 1px solid transparent;
+}
+
+.footer-lang-list a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.footer-lang-list .current-lang a {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+}
+
 .footer-bottom {
     padding: 20px 0;
     font-size: 0.813rem;
@@ -1853,42 +1821,6 @@ a:hover {
     .hero-subtitle {
         font-size: 1rem;
         margin-bottom: 32px;
-    }
-
-    /* 모바일 검색바 - 글래스모피즘 + 그라데이션 버튼 */
-    .hero-actions .search-form {
-        padding: 4px 4px 4px 16px;
-        border-radius: 50px;
-    }
-
-    .hero-actions .search-field {
-        flex: 1;
-        min-width: 0;
-        padding: 8px 8px;
-        font-size: 0.875rem;
-    }
-
-    .hero-actions .search-submit {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        border-radius: 50%;
-        font-size: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-    }
-
-    .hero-actions .search-submit svg {
-        width: 16px;
-        height: 16px;
-        stroke: white;
-    }
-
-    .hero-actions .search-submit:hover {
-        background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
     }
 
     .archive-layout,

@@ -53,13 +53,6 @@ defined('ABSPATH') || exit;
             <div class="nav-search">
                 <?php get_search_form(); ?>
             </div>
-            <?php if (function_exists('pll_the_languages')) : ?>
-            <div class="language-switcher">
-                <ul class="lang-list">
-                    <?php pll_the_languages(['show_flags' => 0, 'show_names' => 1, 'hide_current' => 0]); ?>
-                </ul>
-            </div>
-            <?php endif; ?>
         </nav>
     </div>
 </header>

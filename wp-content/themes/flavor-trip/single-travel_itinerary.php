@@ -57,7 +57,14 @@ while (have_posts()) : the_post();
                 <div class="itinerary-featured-image">
                     <?php the_post_thumbnail('ft-hero', ['loading' => 'eager']); ?>
                 </div>
-            <?php endif; ?>
+            <?php else :
+                // 여행지 기반 폴백 이미지
+                $fallback_url = ft_get_destination_image(get_the_ID());
+                if ($fallback_url) : ?>
+                <div class="itinerary-featured-image">
+                    <img src="<?php echo esc_url($fallback_url); ?>" alt="<?php the_title_attribute(); ?>" loading="eager">
+                </div>
+            <?php endif; endif; ?>
 
             <div class="itinerary-description entry-content">
                 <?php the_content(); ?>

@@ -21,9 +21,9 @@ $destination_images = [
     'north-america'  => 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=800&q=80',
     'oceania'        => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
     // 한국
-    'jeju'           => 'https://images.unsplash.com/photo-1579169326371-16b10fc39a99?w=800&q=80',
+    'jeju'           => 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80',
     'seoul'          => 'https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80',
-    'busan'          => 'https://images.unsplash.com/photo-1552751753-d82a5e9a0c98?w=800&q=80',
+    'busan'          => 'https://images.unsplash.com/photo-1701172189149-450eecf09863?w=800&q=80',
     // 일본
     'tokyo'          => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80',
     'osaka'          => 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80',
@@ -73,6 +73,27 @@ $destination_images = [
     'default'        => 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
 ];
 
+// 여행지 슬러그로 이미지 찾기 (Polylang 번역 슬러그 → 한국어 원본 슬러그 변환)
+if (!function_exists('ft_resolve_destination_slug')) :
+function ft_resolve_destination_slug($term, $destination_images) {
+    $slug = $term->slug;
+    if (isset($destination_images[$slug])) {
+        return $slug;
+    }
+    // Polylang: 번역된 택소노미의 한국어 원본 슬러그로 폴백
+    if (function_exists('pll_get_term')) {
+        $ko_term_id = pll_get_term($term->term_id, 'ko');
+        if ($ko_term_id && $ko_term_id !== $term->term_id) {
+            $ko_term = get_term($ko_term_id);
+            if ($ko_term && !is_wp_error($ko_term) && isset($destination_images[$ko_term->slug])) {
+                return $ko_term->slug;
+            }
+        }
+    }
+    return $slug;
+}
+endif;
+
 // 이미지 URL 가져오기 (자식 여행지 우선)
 $image_url = $destination_images['default'];
 if (has_post_thumbnail($post_id)) {
@@ -84,13 +105,12 @@ if (has_post_thumbnail($post_id)) {
         $child_image = '';
         $parent_image = '';
         foreach ($destinations as $dest) {
-            if (isset($destination_images[$dest->slug])) {
+            $resolved_slug = ft_resolve_destination_slug($dest, $destination_images);
+            if (isset($destination_images[$resolved_slug])) {
                 if ($dest->parent > 0) {
-                    // 자식 여행지 (도시)
-                    $child_image = $destination_images[$dest->slug];
+                    $child_image = $destination_images[$resolved_slug];
                 } else {
-                    // 부모 여행지 (지역)
-                    $parent_image = $destination_images[$dest->slug];
+                    $parent_image = $destination_images[$resolved_slug];
                 }
             }
         }

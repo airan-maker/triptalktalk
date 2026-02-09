@@ -7,7 +7,7 @@
 
 defined('ABSPATH') || exit;
 
-define('FT_VERSION', '2.6.0');
+define('FT_VERSION', '2.7.0');
 define('FT_DIR', get_template_directory());
 define('FT_URI', get_template_directory_uri());
 
@@ -24,6 +24,8 @@ $ft_includes = [
     'inc/template-tags.php',
     'inc/customizer.php',
     'inc/widgets.php',
+    'inc/sitemap.php',
+    'inc/llms-txt.php',
 ];
 
 foreach ($ft_includes as $file) {

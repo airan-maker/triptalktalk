@@ -1,6 +1,6 @@
 <?php
 /**
- * SEO: Open Graph, Twitter Card, 메타 설명, 캐노니컬, robots
+ * SEO: Open Graph, Twitter Card, 메타 설명, 캐노니컬, robots, hreflang
  *
  * @package Flavor_Trip
  */
@@ -38,7 +38,22 @@ function ft_seo_meta_tags() {
     echo '<meta property="og:title" content="' . esc_attr($og_title) . '">' . "\n";
     echo '<meta property="og:url" content="' . esc_url($canonical ?: get_permalink()) . '">' . "\n";
     echo '<meta property="og:site_name" content="' . esc_attr($site_name) . '">' . "\n";
-    echo '<meta property="og:locale" content="ko_KR">' . "\n";
+
+    // og:locale - 동적 처리 (다국어 지원)
+    $locale = get_locale();
+    echo '<meta property="og:locale" content="' . esc_attr($locale) . '">' . "\n";
+
+    // og:locale:alternate - 다른 언어 버전
+    if (function_exists('pll_the_languages')) {
+        $languages = pll_the_languages(['raw' => 1]);
+        if ($languages) {
+            foreach ($languages as $lang) {
+                if (!$lang['current_lang']) {
+                    echo '<meta property="og:locale:alternate" content="' . esc_attr($lang['locale']) . '">' . "\n";
+                }
+            }
+        }
+    }
 
     if ($description) {
         echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
@@ -66,6 +81,9 @@ function ft_seo_meta_tags() {
         echo '<meta name="twitter:image" content="' . esc_url($og_image) . '">' . "\n";
     }
 
+    // hreflang 태그 (다국어 SEO)
+    ft_output_hreflang_tags();
+
     // 사이트 인증 메타
     $naver_verify = get_theme_mod('ft_naver_verify');
     $google_verify = get_theme_mod('ft_google_verify');
@@ -75,6 +93,39 @@ function ft_seo_meta_tags() {
     }
     if ($google_verify) {
         echo '<meta name="google-site-verification" content="' . esc_attr($google_verify) . '">' . "\n";
+    }
+}
+
+/**
+ * hreflang 태그 출력
+ */
+function ft_output_hreflang_tags() {
+    if (!function_exists('pll_the_languages')) return;
+
+    $languages = pll_the_languages(['raw' => 1]);
+    if (empty($languages)) return;
+
+    foreach ($languages as $lang) {
+        if (!empty($lang['url'])) {
+            $hreflang = $lang['slug'];
+            // 특수 locale 매핑
+            $hreflang_map = [
+                'zh-cn' => 'zh-Hans',
+                'zh-tw' => 'zh-Hant',
+                'zh-hk' => 'zh-Hant-HK',
+                'en-au' => 'en-AU',
+            ];
+            $hreflang = $hreflang_map[$hreflang] ?? $hreflang;
+            echo '<link rel="alternate" hreflang="' . esc_attr($hreflang) . '" href="' . esc_url($lang['url']) . '">' . "\n";
+        }
+    }
+
+    // x-default (기본 언어 = 한국어)
+    foreach ($languages as $lang) {
+        if ($lang['slug'] === 'ko' && !empty($lang['url'])) {
+            echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($lang['url']) . '">' . "\n";
+            break;
+        }
     }
 }
 
@@ -161,6 +212,12 @@ function ft_get_og_image() {
     if (is_singular() && has_post_thumbnail()) {
         $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'ft-hero');
         if ($img) return $img[0];
+    }
+
+    // 여행 일정: 여행지 기반 폴백 이미지
+    if (is_singular('travel_itinerary') && function_exists('ft_get_destination_image')) {
+        $fallback = ft_get_destination_image(get_the_ID());
+        if ($fallback) return $fallback;
     }
 
     // 기본 OG 이미지 (커스터마이저)

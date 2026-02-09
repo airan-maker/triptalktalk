@@ -1,11 +1,22 @@
 <?php
 /**
- * CSS/JS 로드 (조건부)
+ * CSS/JS 로드 (조건부) + 성능 최적화
  *
  * @package Flavor_Trip
  */
 
 defined('ABSPATH') || exit;
+
+// 리소스 힌트: preconnect, dns-prefetch
+add_action('wp_head', function () {
+    // Google Fonts
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    // Unsplash (이미지 CDN)
+    echo '<link rel="dns-prefetch" href="https://images.unsplash.com">' . "\n";
+    // Klook (제휴 링크)
+    echo '<link rel="dns-prefetch" href="https://www.klook.com">' . "\n";
+}, 1);
 
 add_action('wp_enqueue_scripts', function () {
     // 메인 스타일
@@ -63,3 +74,13 @@ add_action('wp_enqueue_scripts', function () {
         }
     }
 });
+
+// 스크립트에 defer 속성 추가 (성능 최적화)
+add_filter('script_loader_tag', function ($tag, $handle) {
+    // 외부 스크립트에는 적용하지 않음
+    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map'];
+    if (in_array($handle, $defer_handles, true)) {
+        return str_replace(' src', ' defer src', $tag);
+    }
+    return $tag;
+}, 10, 2);

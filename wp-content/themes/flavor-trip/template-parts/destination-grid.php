@@ -18,9 +18,9 @@ $destination_images = [
     'north-america'  => 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=800&q=80',
     'oceania'        => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
     // 도시
-    'jeju'           => 'https://images.unsplash.com/photo-1579169326371-16b10fc39a99?w=800&q=80',
+    'jeju'           => 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80',
     'seoul'          => 'https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80',
-    'busan'          => 'https://images.unsplash.com/photo-1552751753-d82a5e9a0c98?w=800&q=80',
+    'busan'          => 'https://images.unsplash.com/photo-1701172189149-450eecf09863?w=800&q=80',
     'tokyo'          => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80',
     'osaka'          => 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80',
     'kyoto'          => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80',
@@ -69,8 +69,19 @@ if (is_wp_error($destinations) || empty($destinations)) {
 
                 // 없으면 Unsplash 기본 이미지 사용
                 if (!$image_url) {
-                    $image_url = isset($destination_images[$dest->slug])
-                        ? $destination_images[$dest->slug]
+                    $slug = $dest->slug;
+                    // Polylang: 번역된 슬러그 → 한국어 원본 슬러그
+                    if (!isset($destination_images[$slug]) && function_exists('pll_get_term')) {
+                        $ko_term_id = pll_get_term($dest->term_id, 'ko');
+                        if ($ko_term_id && $ko_term_id !== $dest->term_id) {
+                            $ko_term = get_term($ko_term_id);
+                            if ($ko_term && !is_wp_error($ko_term)) {
+                                $slug = $ko_term->slug;
+                            }
+                        }
+                    }
+                    $image_url = isset($destination_images[$slug])
+                        ? $destination_images[$slug]
                         : $destination_images['default'];
                 }
             ?>

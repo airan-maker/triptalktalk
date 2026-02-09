@@ -85,6 +85,21 @@ defined('ABSPATH') || exit;
             </div>
         </div>
 
+        <?php if (function_exists('pll_the_languages')) : ?>
+        <div class="footer-language">
+            <div class="footer-lang-selector">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <ul class="footer-lang-list">
+                    <?php pll_the_languages([
+                        'show_flags' => 0,
+                        'show_names' => 1,
+                        'hide_current' => 0,
+                    ]); ?>
+                </ul>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <div class="footer-bottom">
             <p>&copy; <?php echo esc_html(date('Y')); ?> <?php bloginfo('name'); ?>. <?php esc_html_e('All rights reserved.', 'flavor-trip'); ?></p>
         </div>
