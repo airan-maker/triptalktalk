@@ -214,3 +214,29 @@ foreach (['ft_hero_title', 'ft_hero_subtitle'] as $mod_key) {
         return $ft_hero_translations[$value][$lang] ?? $value;
     });
 }
+
+/**
+ * bloginfo() 값 번역 (사이트 설명, 사이트명)
+ * bloginfo('description') / bloginfo('name') 은 gettext 필터를 거치지 않으므로
+ * option_blogdescription / option_blogname 필터로 직접 처리
+ */
+$ft_bloginfo_translations = [
+    'blogdescription' => [
+        '소중한 사람들과 행복한 추억을 만들 수 있는 여행을 해보세요.' => [
+            'en' => 'Travel with your loved ones and create unforgettable memories.',
+            'ja' => '大切な人と幸せな思い出を作る旅に出かけましょう。',
+            'zh-cn' => '与珍爱的人一起旅行，创造美好回忆。',
+            'fr' => 'Voyagez avec vos proches et créez des souvenirs inoubliables.',
+            'de' => 'Reisen Sie mit Ihren Liebsten und schaffen Sie unvergessliche Erinnerungen.',
+        ],
+    ],
+];
+
+foreach ($ft_bloginfo_translations as $option_name => $translations) {
+    add_filter("option_{$option_name}", function ($value) use ($translations) {
+        $lang = ft_get_current_lang();
+        if ($lang === 'ko' || !isset($translations[$value])) return $value;
+
+        return $translations[$value][$lang] ?? $value;
+    });
+}
