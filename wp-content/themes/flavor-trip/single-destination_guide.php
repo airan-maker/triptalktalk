@@ -91,6 +91,10 @@ while (have_posts()) : the_post();
                     <?php esc_html_e('호텔', 'flavor-trip'); ?>
                     <span class="tab-count">(<?php echo count($hotels); ?>)</span>
                 </button>
+                <button class="guide-tab" data-tab="activities" role="tab" aria-selected="false">
+                    <?php esc_html_e('액티비티', 'flavor-trip'); ?>
+                    <span class="tab-count">🎫</span>
+                </button>
             </div>
 
             <?php
@@ -135,6 +139,48 @@ while (have_posts()) : the_post();
                 ]);
                 get_template_part('template-parts/guide-table');
                 ?>
+            </div>
+
+            <?php
+            // ── 액티비티 탭 ──
+            $klook_aid = get_theme_mod('ft_klook_aid', '6yjZP2Ac');
+            ?>
+            <div id="panel-activities" class="guide-table-panel" role="tabpanel">
+                <p class="guide-activity-intro">
+                    <?php printf(
+                        esc_html__('%s에서 즐길 수 있는 액티비티, 투어, 입장권을 Klook에서 검색해보세요.', 'flavor-trip'),
+                        esc_html($city)
+                    ); ?>
+                </p>
+
+                <?php
+                // 도시 전체 검색 링크
+                $city_search_url = 'https://www.klook.com/ko/search/result/?query=' . urlencode($city);
+                if ($klook_aid) $city_search_url .= '&aid=' . urlencode($klook_aid);
+                ?>
+                <a href="<?php echo esc_url($city_search_url); ?>" target="_blank" rel="noopener noreferrer nofollow sponsored" class="guide-activity-city-link">
+                    🔍 <?php printf(esc_html__('%s 전체 액티비티 검색', 'flavor-trip'), esc_html($city)); ?>
+                </a>
+
+                <div class="guide-activity-grid">
+                    <?php
+                    // 관광지 중 주요 장소들을 액티비티 카드로 표시
+                    $activity_items = array_merge($places, $restaurants);
+                    foreach ($activity_items as $item) :
+                        $search_url = 'https://www.klook.com/ko/search/result/?query=' . urlencode($item['name']);
+                        if ($klook_aid) $search_url .= '&aid=' . urlencode($klook_aid);
+                    ?>
+                        <a href="<?php echo esc_url($search_url); ?>" target="_blank" rel="noopener noreferrer nofollow sponsored" class="guide-activity-card">
+                            <span class="activity-card__name"><?php echo esc_html($item['name']); ?></span>
+                            <span class="activity-card__meta">
+                                <?php echo esc_html($item['area'] ?? ''); ?>
+                                <?php if (!empty($item['category'])) echo ' · ' . esc_html($item['category']); ?>
+                                <?php if (!empty($item['cuisine'])) echo ' · ' . esc_html($item['cuisine']); ?>
+                            </span>
+                            <span class="activity-card__cta">Klook에서 보기 →</span>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endif; ?>
 

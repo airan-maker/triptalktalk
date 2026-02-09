@@ -173,6 +173,9 @@ function ft_get_ui_translations() {
         '구글맵에서 보기' => ['en' => 'View on Google Maps', 'ja' => 'Googleマップで見る', 'zh-cn' => '在谷歌地图查看', 'fr' => 'Voir sur Google Maps', 'de' => 'Auf Google Maps ansehen'],
         '예약/입장권 보기' => ['en' => 'Book/Get Tickets', 'ja' => '予約・チケット', 'zh-cn' => '预订/购票', 'fr' => 'Réserver/Billets', 'de' => 'Buchen/Tickets'],
         '모든 가이드 보기 →' => ['en' => 'View All Guides →', 'ja' => 'すべてのガイドを見る →', 'zh-cn' => '查看所有指南 →', 'fr' => 'Voir tous les guides →', 'de' => 'Alle Guides ansehen →'],
+        '액티비티' => ['en' => 'Activities', 'ja' => 'アクティビティ', 'zh-cn' => '活动', 'fr' => 'Activités', 'de' => 'Aktivitäten'],
+        '%s에서 즐길 수 있는 액티비티, 투어, 입장권을 Klook에서 검색해보세요.' => ['en' => 'Search for activities, tours, and tickets in %s on Klook.', 'ja' => '%sで楽しめるアクティビティ、ツアー、チケットをKlookで検索してみましょう。', 'zh-cn' => '在Klook上搜索%s的活动、旅游和门票。', 'fr' => 'Recherchez des activités, visites et billets à %s sur Klook.', 'de' => 'Suchen Sie auf Klook nach Aktivitäten, Touren und Tickets in %s.'],
+        '%s 전체 액티비티 검색' => ['en' => 'Search all %s activities', 'ja' => '%s の全アクティビティを検索', 'zh-cn' => '搜索%s全部活动', 'fr' => 'Rechercher toutes les activités à %s', 'de' => 'Alle Aktivitäten in %s suchen'],
         '%d곳' => ['en' => '%d', 'ja' => '%d件', 'zh-cn' => '%d个', 'fr' => '%d', 'de' => '%d'],
     ];
 

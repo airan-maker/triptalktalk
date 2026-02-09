@@ -124,13 +124,9 @@ function initFtGuideMap() {
         html += '<div class="giw-links">';
         html += '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.name + (item.area ? ' ' + item.area : '')) + '" target="_blank" rel="noopener noreferrer" class="giw-link giw-link--map">📍 ' + esc(labels.view_on_map || '구글맵에서 보기') + '</a>';
 
-        if (item.klook_url) {
-            var kUrl = item.klook_url;
-            if (klookAid) {
-                kUrl += (kUrl.indexOf('?') === -1 ? '?' : '&') + 'aid=' + klookAid;
-            }
-            html += '<a href="' + esc(kUrl) + '" target="_blank" rel="noopener noreferrer nofollow sponsored" class="giw-link giw-link--klook">🎫 ' + esc(labels.book_ticket || '예약/입장권 보기') + '</a>';
-        }
+        var kUrl = 'https://www.klook.com/ko/search/result/?query=' + encodeURIComponent(item.name);
+        if (klookAid) kUrl += '&aid=' + klookAid;
+        html += '<a href="' + kUrl + '" target="_blank" rel="noopener noreferrer nofollow sponsored" class="giw-link giw-link--klook">🎫 ' + esc(labels.book_ticket || 'Klook에서 액티비티 보기') + '</a>';
         html += '</div>';
 
         html += '</div>';
@@ -197,10 +193,15 @@ function initFtGuideMap() {
     function onTabChange(tab) {
         activeTab = tab;
         infoWindow.close();
+        var showAll = (tab === 'activities');
         markers.forEach(function (m) {
-            m.setVisible(m._type === tab);
+            m.setVisible(showAll || m._type === tab);
         });
-        fitBoundsForTab(tab);
+        if (showAll) {
+            map.fitBounds(bounds);
+        } else {
+            fitBoundsForTab(tab);
+        }
     }
 
     // 탭 버튼 이벤트 감시
