@@ -1,6 +1,6 @@
 <?php
 /**
- * 도시 가이드 — 아카이브 카드
+ * 도시 가이드 — 카드 (추천 여행 일정과 동일 스타일)
  *
  * @package Flavor_Trip
  */
@@ -9,6 +9,7 @@ defined('ABSPATH') || exit;
 
 $city    = get_post_meta(get_the_ID(), '_ft_guide_city', true);
 $country = get_post_meta(get_the_ID(), '_ft_guide_country', true);
+$intro   = get_post_meta(get_the_ID(), '_ft_guide_intro', true);
 $data    = get_post_meta(get_the_ID(), '_ft_guide_data', true);
 
 $places_count      = !empty($data['places']) ? count($data['places']) : 0;
@@ -25,25 +26,39 @@ if (!$image_url) {
 }
 ?>
 
-<a href="<?php the_permalink(); ?>" class="guide-card">
-    <div class="guide-card__image">
+<article id="post-<?php the_ID(); ?>" <?php post_class('card card-guide'); ?>>
+    <a href="<?php the_permalink(); ?>" class="card-image">
         <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
         <?php if ($country) : ?>
-            <span class="guide-card__country"><?php echo esc_html($country); ?></span>
+            <span class="card-badge"><?php echo esc_html($country); ?></span>
         <?php endif; ?>
-    </div>
-    <div class="guide-card__body">
-        <h3 class="guide-card__title"><?php the_title(); ?></h3>
-        <div class="guide-card__counts">
+    </a>
+
+    <div class="card-body">
+        <?php if ($city) : ?>
+            <div class="card-tags">
+                <span class="tag tag-sm"><?php echo esc_html($city); ?></span>
+            </div>
+        <?php endif; ?>
+
+        <h3 class="card-title">
+            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+        </h3>
+
+        <?php if ($intro) : ?>
+            <p class="card-excerpt"><?php echo esc_html(wp_trim_words($intro, 20)); ?></p>
+        <?php endif; ?>
+
+        <div class="card-footer">
             <?php if ($places_count) : ?>
-                <span><?php printf(esc_html__('%d곳', 'flavor-trip'), $places_count); ?> <?php esc_html_e('관광지', 'flavor-trip'); ?></span>
+                <span class="card-meta-item"><?php esc_html_e('관광지', 'flavor-trip'); ?> <?php echo $places_count; ?></span>
             <?php endif; ?>
             <?php if ($restaurants_count) : ?>
-                <span><?php printf(esc_html__('%d곳', 'flavor-trip'), $restaurants_count); ?> <?php esc_html_e('식당', 'flavor-trip'); ?></span>
+                <span class="card-meta-item"><?php esc_html_e('식당', 'flavor-trip'); ?> <?php echo $restaurants_count; ?></span>
             <?php endif; ?>
             <?php if ($hotels_count) : ?>
-                <span><?php printf(esc_html__('%d곳', 'flavor-trip'), $hotels_count); ?> <?php esc_html_e('호텔', 'flavor-trip'); ?></span>
+                <span class="card-meta-item"><?php esc_html_e('호텔', 'flavor-trip'); ?> <?php echo $hotels_count; ?></span>
             <?php endif; ?>
         </div>
     </div>
-</a>
+</article>
