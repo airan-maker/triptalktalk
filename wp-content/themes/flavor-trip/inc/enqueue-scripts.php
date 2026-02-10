@@ -84,7 +84,7 @@ add_action('wp_enqueue_scripts', function () {
     }
 
     // 브이로그 큐레이션
-    if (is_singular('vlog_curation') || is_post_type_archive('vlog_curation') || is_tax('vlog_category')) {
+    if (is_singular('vlog_curation') || is_post_type_archive('vlog_curation')) {
         wp_enqueue_style('ft-vlog', FT_URI . '/assets/css/vlog.css', ['ft-main'], FT_VERSION);
     }
     if (is_singular('vlog_curation')) {

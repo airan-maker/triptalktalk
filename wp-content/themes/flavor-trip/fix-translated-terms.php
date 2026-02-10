@@ -23,7 +23,7 @@ if (!function_exists('PLL') || !PLL()) {
     WP_CLI::error('Polylang is not active.');
 }
 
-$taxonomies = ['destination', 'travel_style', 'vlog_category'];
+$taxonomies = ['destination', 'travel_style'];
 $languages = ['en', 'zh-cn', 'ja', 'fr', 'de'];
 
 $stats = [

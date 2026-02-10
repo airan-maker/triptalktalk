@@ -18,26 +18,38 @@ get_header();
 
 <div class="container">
     <?php
-    // 카테고리 필터
-    $vlog_cats = get_terms([
-        'taxonomy'   => 'vlog_category',
-        'hide_empty' => true,
-    ]);
-    if ($vlog_cats && !is_wp_error($vlog_cats)) : ?>
-        <div class="vlog-category-filter">
-            <a href="<?php echo esc_url(get_post_type_archive_link('vlog_curation')); ?>"
-               class="<?php echo !is_tax('vlog_category') ? 'active' : ''; ?>">
-                <?php esc_html_e('전체', 'flavor-trip'); ?>
-            </a>
-            <?php foreach ($vlog_cats as $cat) :
-                $is_active = is_tax('vlog_category', $cat->slug) ? 'active' : '';
-            ?>
-                <a href="<?php echo esc_url(get_term_link($cat)); ?>" class="<?php echo $is_active; ?>">
-                    <?php echo esc_html($cat->name); ?>
+    $destinations = ft_get_terms_current_lang(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0]);
+    $styles = ft_get_terms_current_lang(['taxonomy' => 'travel_style', 'hide_empty' => true]);
+    $current_dest = get_query_var('destination');
+    $current_style = get_query_var('travel_style');
+    ?>
+
+    <div class="bento-filters">
+        <?php if (!is_wp_error($destinations) && $destinations) : ?>
+            <div class="filter-section">
+                <span class="filter-section-label"><?php esc_html_e('여행지', 'flavor-trip'); ?></span>
+                <a href="<?php echo esc_url(get_post_type_archive_link('vlog_curation')); ?>" class="filter-pill <?php echo !$current_dest && !$current_style ? 'active' : ''; ?>">
+                    <?php esc_html_e('전체', 'flavor-trip'); ?>
                 </a>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php foreach ($destinations as $dest) : ?>
+                    <a href="<?php echo esc_url(get_term_link($dest)); ?>" class="filter-pill <?php echo $current_dest === $dest->slug ? 'active' : ''; ?>">
+                        <?php echo esc_html($dest->name); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!is_wp_error($styles) && $styles) : ?>
+            <div class="filter-section">
+                <span class="filter-section-label"><?php esc_html_e('스타일', 'flavor-trip'); ?></span>
+                <?php foreach ($styles as $style) : ?>
+                    <a href="<?php echo esc_url(get_term_link($style)); ?>" class="filter-pill <?php echo $current_style === $style->slug ? 'active' : ''; ?>">
+                        <?php echo esc_html($style->name); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 
     <?php if (have_posts()) : ?>
         <div class="posts-grid posts-grid--3">

@@ -50,7 +50,7 @@ add_action('init', function () {
         'menu_position'      => 7,
         'supports'           => ['title', 'editor', 'thumbnail', 'excerpt'],
         'show_in_rest'       => true,
-        'taxonomies'         => ['destination'],
+        'taxonomies'         => ['destination', 'travel_style'],
     ]);
 
     // 브이로그 카테고리 택소노미 (비계층형, 태그 형태)

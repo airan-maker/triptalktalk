@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
 
 add_action('init', function () {
     // 여행지 (계층형 - 카테고리 형태)
-    register_taxonomy('destination', ['travel_itinerary'], [
+    register_taxonomy('destination', ['travel_itinerary', 'vlog_curation'], [
         'labels' => [
             'name'              => __('여행지', 'flavor-trip'),
             'singular_name'     => __('여행지', 'flavor-trip'),
@@ -31,7 +31,7 @@ add_action('init', function () {
     ]);
 
     // 여행 스타일 (비계층형 - 태그 형태)
-    register_taxonomy('travel_style', ['travel_itinerary'], [
+    register_taxonomy('travel_style', ['travel_itinerary', 'vlog_curation'], [
         'labels' => [
             'name'                       => __('여행 스타일', 'flavor-trip'),
             'singular_name'              => __('여행 스타일', 'flavor-trip'),

@@ -107,13 +107,13 @@ while (have_posts()) : the_post();
             </div>
         <?php endif; ?>
 
-        <!-- 카테고리 태그 -->
+        <!-- 여행 스타일 태그 -->
         <?php
-        $vlog_cats = get_the_terms(get_the_ID(), 'vlog_category');
-        if ($vlog_cats && !is_wp_error($vlog_cats)) : ?>
+        $travel_styles = get_the_terms(get_the_ID(), 'travel_style');
+        if ($travel_styles && !is_wp_error($travel_styles)) : ?>
             <div class="vlog-tags">
-                <?php foreach ($vlog_cats as $cat) : ?>
-                    <a href="<?php echo esc_url(get_term_link($cat)); ?>" class="tag tag-sm"><?php echo esc_html($cat->name); ?></a>
+                <?php foreach ($travel_styles as $style) : ?>
+                    <a href="<?php echo esc_url(get_term_link($style)); ?>" class="tag tag-sm"><?php echo esc_html($style->name); ?></a>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

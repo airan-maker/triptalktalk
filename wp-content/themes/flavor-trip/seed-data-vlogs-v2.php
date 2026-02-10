@@ -47,22 +47,7 @@ if (!function_exists('ft_vlog_ensure_destination')) {
     }
 }
 
-// ── 브이로그 카테고리 확인 ──
-$vlog_categories = [
-    '혼자여행'  => 'solo-travel',
-    '커플여행'  => 'couple-travel',
-    '먹방'      => 'mukbang',
-    '한달살기'  => 'long-stay',
-    '감성'      => 'aesthetic',
-    '가성비'    => 'budget',
-];
-
-foreach ($vlog_categories as $name => $slug) {
-    if (!term_exists($name, 'vlog_category')) {
-        wp_insert_term($name, 'vlog_category', ['slug' => $slug]);
-        echo "✅ 카테고리 생성: {$name}\n";
-    }
-}
+// ── travel_style 택소노미 사용 (itinerary와 동일) ──
 
 // ── 브이로그 데이터 ──
 $vlogs = [
@@ -84,7 +69,7 @@ $vlogs = [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
             ['name' => '히로시마', 'slug' => 'hiroshima', 'parent' => 'japan'],
         ],
-        'vlog_cats'    => ['감성', '혼자여행'],
+        'travel_styles' => ['힐링여행', '문화탐방'],
         'timeline'     => [
             ['time' => '0:00', 'title' => '오노미치역 도착', 'description' => '레트로 상점가와 언덕 마을 첫인상'],
             ['time' => '2:00', 'title' => '센코지 로프웨이', 'description' => '산 정상에서 세토 내해 조망'],
@@ -123,7 +108,7 @@ $vlogs = [
         'destinations' => [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
         ],
-        'vlog_cats'    => ['감성'],
+        'travel_styles' => ['힐링여행'],
         'timeline'     => [
             ['time' => '0:00', 'title' => '인트로: 일본 소도시 선택법', 'description' => '취향별 5가지 카테고리 소개'],
             ['time' => '2:00', 'title' => '감성 & 미식: 다카마쓰', 'description' => '우동 본고장, 나오시마 예술섬, 리쓰린 공원'],
@@ -164,7 +149,7 @@ $vlogs = [
             ['name' => '한국', 'slug' => 'korea', 'parent' => ''],
             ['name' => '영월', 'slug' => 'yeongwol', 'parent' => 'korea'],
         ],
-        'vlog_cats'    => ['감성'],
+        'travel_styles' => ['힐링여행'],
         'timeline'     => [
             ['time' => '0:00', 'title' => '영월 도착 & 숙소', 'description' => '더 한옥 헤리티지 하우스, 선돌 뷰 수영장'],
             ['time' => '3:00', 'title' => '임금님 수라상', 'description' => '호텔 12첩 반상, 서리태 콩물 아침'],
@@ -203,7 +188,7 @@ $vlogs = [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
             ['name' => '도쿄', 'slug' => 'tokyo', 'parent' => 'japan'],
         ],
-        'vlog_cats'    => ['감성', '혼자여행'],
+        'travel_styles' => ['힐링여행', '문화탐방'],
         'timeline'     => [
             ['time' => '0:00', 'title' => 'Day1: 도쿄역 도착', 'description' => '마루노우치 붉은 벽돌 역사, 유럽풍 돔 천장'],
             ['time' => '3:00', 'title' => '진보초 고서점 거리', 'description' => '보헤미안스 길드, 공유 서점'],
@@ -245,7 +230,7 @@ $vlogs = [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
             ['name' => '교토', 'slug' => 'kyoto', 'parent' => 'japan'],
         ],
-        'vlog_cats'    => ['감성', '혼자여행'],
+        'travel_styles' => ['힐링여행', '문화탐방'],
         'timeline'     => [
             ['time' => '0:00', 'title' => 'Day1: 오하라 도착', 'description' => '교토역에서 버스 1시간, 가을 산골 마을'],
             ['time' => '3:00', 'title' => '산젠인', 'description' => '1,200년 사찰, 이끼 정원, 지장보살 석상'],
@@ -282,7 +267,7 @@ $vlogs = [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
             ['name' => '히로시마', 'slug' => 'hiroshima', 'parent' => 'japan'],
         ],
-        'vlog_cats'    => ['커플여행', '감성'],
+        'travel_styles' => ['커플여행', '힐링여행'],
         'timeline'     => [
             ['time' => '0:00', 'title' => 'Day1: 히로시마 도착 & 호캉스', 'description' => '그랜드 프린스 호텔, G7 클럽 플로어 오션뷰'],
             ['time' => '3:00', 'title' => '클럽 라운지', 'description' => 'G7 테이블 전시, 칵테일, 굴 요리 뷔페'],
@@ -321,7 +306,7 @@ $vlogs = [
             ['name' => '일본', 'slug' => 'japan', 'parent' => ''],
             ['name' => '도야마', 'slug' => 'toyama', 'parent' => 'japan'],
         ],
-        'vlog_cats'    => ['감성', '혼자여행'],
+        'travel_styles' => ['힐링여행', '문화탐방'],
         'timeline'     => [
             ['time' => '0:00', 'title' => 'Day1: 아마하라시 해안', 'description' => '비가 멎는 역, 다테야마 연봉 조망, 도라에몽 굿즈'],
             ['time' => '3:00', 'title' => '히미 어항 점심', 'description' => '1층 어시장, 2층 식당 갓 경매 해산물'],
@@ -389,16 +374,18 @@ foreach ($vlogs as $vlog) {
         }
     }
 
-    // 브이로그 카테고리
-    $cat_ids = [];
-    foreach ($vlog['vlog_cats'] as $cat_name) {
-        $term = get_term_by('name', $cat_name, 'vlog_category');
-        if ($term) {
-            $cat_ids[] = $term->term_id;
+    // 여행 스타일 택소노미 (itinerary와 공유)
+    if (!empty($vlog['travel_styles'])) {
+        $style_ids = [];
+        foreach ($vlog['travel_styles'] as $style_name) {
+            $term = get_term_by('name', $style_name, 'travel_style');
+            if ($term) {
+                $style_ids[] = $term->term_id;
+            }
         }
-    }
-    if ($cat_ids) {
-        wp_set_post_terms($post_id, $cat_ids, 'vlog_category');
+        if ($style_ids) {
+            wp_set_post_terms($post_id, $style_ids, 'travel_style');
+        }
     }
 
     // Polylang 한국어 설정

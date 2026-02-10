@@ -388,7 +388,7 @@ function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
         foreach ($vlog_meta as $key => $value) {
             update_post_meta($new_post_id, $key, $value);
         }
-        foreach (['destination', 'vlog_category'] as $tax) {
+        foreach (['destination', 'travel_style'] as $tax) {
             $terms = wp_get_post_terms($post->ID, $tax);
             if ($terms && !is_wp_error($terms)) {
                 foreach ($terms as $term) {
