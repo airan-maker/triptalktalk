@@ -10,15 +10,13 @@ defined('ABSPATH') || exit;
 // 지역별 대표 이미지 (중앙 관리)
 $destination_images = ft_get_destination_images('card');
 
-$current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
-$destinations = get_terms([
+$destinations = ft_get_terms_current_lang([
     'taxonomy'   => 'destination',
     'hide_empty' => true,
     'parent'     => 0,
     'number'     => 6,
     'orderby'    => 'count',
     'order'      => 'DESC',
-    'lang'       => $current_lang,
 ]);
 
 if (is_wp_error($destinations) || empty($destinations)) {

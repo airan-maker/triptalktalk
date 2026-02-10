@@ -72,6 +72,34 @@ function ft_get_difficulty_label($difficulty) {
 }
 
 /**
+ * 현재 언어에 맞는 term만 반환 (Polylang 이중 필터)
+ *
+ * get_terms() + lang 파라미터 + pll_get_term_language() 수동 필터
+ *
+ * @param array $args get_terms() 인자
+ * @return WP_Term[]|WP_Error
+ */
+function ft_get_terms_current_lang($args = []) {
+    $current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
+    $args['lang'] = $current_lang;
+
+    $terms = get_terms($args);
+
+    if (is_wp_error($terms) || empty($terms)) {
+        return $terms;
+    }
+
+    // pll_get_term_language()로 이중 필터
+    if (function_exists('pll_get_term_language')) {
+        $terms = array_values(array_filter($terms, function ($t) use ($current_lang) {
+            return pll_get_term_language($t->term_id) === $current_lang;
+        }));
+    }
+
+    return $terms;
+}
+
+/**
  * 번역된 택소노미 슬러그에서 원본(한국어) 슬러그 추출
  *
  * auto-translate.php가 생성하는 번역 슬러그 패턴: {원본}-{lang}

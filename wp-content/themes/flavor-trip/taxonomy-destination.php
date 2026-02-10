@@ -8,10 +8,9 @@
 get_header();
 
 $term = get_queried_object();
-$current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
-$all_destinations = get_terms(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0, 'lang' => $current_lang]);
-$styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true, 'lang' => $current_lang]);
-$children = get_terms(['taxonomy' => 'destination', 'parent' => $term->term_id, 'hide_empty' => true, 'lang' => $current_lang]);
+$all_destinations = ft_get_terms_current_lang(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0]);
+$styles = ft_get_terms_current_lang(['taxonomy' => 'travel_style', 'hide_empty' => true]);
+$children = ft_get_terms_current_lang(['taxonomy' => 'destination', 'parent' => $term->term_id, 'hide_empty' => true]);
 ?>
 
 <div class="archive-hero">

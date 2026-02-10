@@ -7,9 +7,8 @@
 
 get_header();
 
-$current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
-$destinations = get_terms(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0, 'lang' => $current_lang]);
-$styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true, 'lang' => $current_lang]);
+$destinations = ft_get_terms_current_lang(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0]);
+$styles = ft_get_terms_current_lang(['taxonomy' => 'travel_style', 'hide_empty' => true]);
 $current_dest = get_query_var('destination');
 $current_style = get_query_var('travel_style');
 ?>
