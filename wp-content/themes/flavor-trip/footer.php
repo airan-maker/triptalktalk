@@ -49,12 +49,14 @@ defined('ABSPATH') || exit;
             <div class="footer-destinations">
                 <h3 class="footer-title"><?php esc_html_e('인기 여행지', 'flavor-trip'); ?></h3>
                 <?php
+                $current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
                 $destinations = get_terms([
                     'taxonomy'   => 'destination',
                     'number'     => 6,
                     'orderby'    => 'count',
                     'order'      => 'DESC',
                     'hide_empty' => true,
+                    'lang'       => $current_lang,
                 ]);
                 if (!is_wp_error($destinations) && $destinations) : ?>
                     <ul class="footer-destinations-list">
@@ -68,12 +70,14 @@ defined('ABSPATH') || exit;
             <div class="footer-styles">
                 <h3 class="footer-title"><?php esc_html_e('여행 스타일', 'flavor-trip'); ?></h3>
                 <?php
+                $current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
                 $styles = get_terms([
                     'taxonomy'   => 'travel_style',
                     'number'     => 6,
                     'orderby'    => 'count',
                     'order'      => 'DESC',
                     'hide_empty' => true,
+                    'lang'       => $current_lang,
                 ]);
                 if (!is_wp_error($styles) && $styles) : ?>
                     <ul class="footer-styles-list">

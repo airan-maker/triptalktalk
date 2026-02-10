@@ -8,9 +8,10 @@
 get_header();
 
 $term = get_queried_object();
-$all_destinations = get_terms(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0]);
-$styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true]);
-$children = get_terms(['taxonomy' => 'destination', 'parent' => $term->term_id, 'hide_empty' => true]);
+$current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
+$all_destinations = get_terms(['taxonomy' => 'destination', 'hide_empty' => true, 'parent' => 0, 'lang' => $current_lang]);
+$styles = get_terms(['taxonomy' => 'travel_style', 'hide_empty' => true, 'lang' => $current_lang]);
+$children = get_terms(['taxonomy' => 'destination', 'parent' => $term->term_id, 'hide_empty' => true, 'lang' => $current_lang]);
 ?>
 
 <div class="archive-hero">

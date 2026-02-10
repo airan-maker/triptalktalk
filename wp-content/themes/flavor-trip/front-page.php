@@ -17,12 +17,22 @@ get_header();
 
         <div class="posts-grid posts-grid--3">
             <?php
-            $itineraries = new WP_Query([
+            $current_lang = function_exists('pll_current_language') ? pll_current_language() : 'ko';
+            $query_args = [
                 'post_type'      => 'travel_itinerary',
                 'posts_per_page' => 6,
                 'orderby'        => 'date',
                 'order'          => 'DESC',
-            ]);
+                'lang'           => $current_lang,
+            ];
+            if (taxonomy_exists('language')) {
+                $query_args['tax_query'] = [[
+                    'taxonomy' => 'language',
+                    'field'    => 'slug',
+                    'terms'    => $current_lang,
+                ]];
+            }
+            $itineraries = new WP_Query($query_args);
             if ($itineraries->have_posts()) :
                 while ($itineraries->have_posts()) : $itineraries->the_post();
                     get_template_part('template-parts/content', 'itinerary');
