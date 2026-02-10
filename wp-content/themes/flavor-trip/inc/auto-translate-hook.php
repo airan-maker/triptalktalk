@@ -258,6 +258,61 @@ function ft_translate_guide_meta($post_id, $gt_lang) {
     return $meta;
 }
 
+// ── Translate vlog meta ──
+function ft_translate_vlog_meta($post_id, $gt_lang) {
+    $meta = [];
+
+    // Copy as-is meta (youtube ID, channel URL, duration)
+    foreach (['_ft_vlog_youtube_id', '_ft_vlog_channel_url', '_ft_vlog_duration', '_thumbnail_id'] as $key) {
+        $val = get_post_meta($post_id, $key, true);
+        if ($val !== '' && $val !== false) {
+            $meta[$key] = $val;
+        }
+    }
+
+    // Translate channel name
+    $channel = get_post_meta($post_id, '_ft_vlog_channel_name', true);
+    if ($channel) {
+        $meta['_ft_vlog_channel_name'] = $channel; // Keep original channel name
+    }
+
+    // Translate timeline
+    $timeline = get_post_meta($post_id, '_ft_vlog_timeline', true);
+    if (!empty($timeline) && is_array($timeline)) {
+        $translated_timeline = [];
+        foreach ($timeline as $item) {
+            $new_item = $item;
+            foreach (['title', 'description'] as $f) {
+                if (!empty($item[$f])) {
+                    usleep(300000);
+                    $new_item[$f] = ft_gt_translate($item[$f], $gt_lang);
+                }
+            }
+            $translated_timeline[] = $new_item;
+        }
+        $meta['_ft_vlog_timeline'] = $translated_timeline;
+    }
+
+    // Translate spots (name, description)
+    $spots = get_post_meta($post_id, '_ft_vlog_spots', true);
+    if (!empty($spots) && is_array($spots)) {
+        $translated_spots = [];
+        foreach ($spots as $spot) {
+            $new_spot = $spot;
+            foreach (['name', 'description'] as $f) {
+                if (!empty($spot[$f])) {
+                    usleep(300000);
+                    $new_spot[$f] = ft_gt_translate($spot[$f], $gt_lang);
+                }
+            }
+            $translated_spots[] = $new_spot;
+        }
+        $meta['_ft_vlog_spots'] = $translated_spots;
+    }
+
+    return $meta;
+}
+
 // ── Main: translate a single post to one language ──
 function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
     // Title
@@ -304,7 +359,23 @@ function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
     }
 
     // Post-type specific
-    if ($post->post_type === 'travel_itinerary') {
+    if ($post->post_type === 'vlog_curation') {
+        $vlog_meta = ft_translate_vlog_meta($post->ID, $gt_lang);
+        foreach ($vlog_meta as $key => $value) {
+            update_post_meta($new_post_id, $key, $value);
+        }
+        foreach (['destination', 'vlog_category'] as $tax) {
+            $terms = wp_get_post_terms($post->ID, $tax);
+            if ($terms && !is_wp_error($terms)) {
+                foreach ($terms as $term) {
+                    $trans_tid = ft_get_or_create_term($term, $tax, $pll_slug, $gt_lang);
+                    if ($trans_tid) {
+                        wp_set_post_terms($new_post_id, [$trans_tid], $tax, true);
+                    }
+                }
+            }
+        }
+    } elseif ($post->post_type === 'travel_itinerary') {
         $meta = ft_translate_itinerary_meta($post->ID, $gt_lang);
         foreach ($meta as $key => $value) {
             update_post_meta($new_post_id, $key, $value);
@@ -357,7 +428,7 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
     if ($new_status !== 'publish') return;
 
     // Only for supported post types
-    if (!in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
+    if (!in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide', 'vlog_curation'], true)) return;
 
     // Only if Polylang is active
     if (!function_exists('pll_get_post_language') || !function_exists('pll_set_post_language')) return;
@@ -418,7 +489,7 @@ add_action('admin_notices', function () {
     if (!$screen || $screen->base !== 'post') return;
 
     global $post;
-    if (!$post || !in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
+    if (!$post || !in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide', 'vlog_curation'], true)) return;
 
     $lang = function_exists('pll_get_post_language') ? pll_get_post_language($post->ID) : '';
     if ($lang !== 'ko') return;
@@ -447,7 +518,7 @@ function ft_sync_thumbnail_to_translations($meta_id, $post_id, $meta_key, $meta_
     if (!function_exists('PLL')) return;
 
     $post_type = get_post_type($post_id);
-    if (!in_array($post_type, ['travel_itinerary', 'post', 'destination_guide'], true)) return;
+    if (!in_array($post_type, ['travel_itinerary', 'post', 'destination_guide', 'vlog_curation'], true)) return;
 
     $lang = pll_get_post_language($post_id);
     if ($lang !== 'ko') return;

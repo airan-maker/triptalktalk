@@ -189,6 +189,22 @@ function ft_get_ui_translations() {
         '테마파크' => ['en' => 'Theme Parks', 'ja' => 'テーマパーク', 'zh-cn' => '主题公园', 'fr' => 'Parcs à thème', 'de' => 'Freizeitparks'],
         '스파 & 웰니스' => ['en' => 'Spa & Wellness', 'ja' => 'スパ＆ウェルネス', 'zh-cn' => '水疗和健康', 'fr' => 'Spa & bien-être', 'de' => 'Spa & Wellness'],
         '%d곳' => ['en' => '%d', 'ja' => '%d件', 'zh-cn' => '%d个', 'fr' => '%d', 'de' => '%d'],
+
+        // ── 브이로그 큐레이션 ──
+        '브이로그' => ['en' => 'Vlogs', 'ja' => 'ブイログ', 'zh-cn' => 'Vlog', 'fr' => 'Vlogs', 'de' => 'Vlogs'],
+        '추천 브이로그' => ['en' => 'Featured Vlogs', 'ja' => 'おすすめブイログ', 'zh-cn' => '推荐Vlog', 'fr' => 'Vlogs recommandés', 'de' => 'Empfohlene Vlogs'],
+        '여행 크리에이터의 생생한 브이로그를 큐레이션합니다' => [
+            'en' => 'Curated travel vlogs from creators',
+            'ja' => '旅行クリエイターのリアルなブイログをキュレーション',
+            'zh-cn' => '精选旅行创作者的Vlog',
+            'fr' => 'Vlogs de voyage sélectionnés par des créateurs',
+            'de' => 'Kuratierte Reise-Vlogs von Creatorn',
+        ],
+        '모든 브이로그 보기 →' => ['en' => 'View All Vlogs →', 'ja' => 'すべてのブイログを見る →', 'zh-cn' => '查看所有Vlog →', 'fr' => 'Voir tous les vlogs →', 'de' => 'Alle Vlogs ansehen →'],
+        '타임라인' => ['en' => 'Timeline', 'ja' => 'タイムライン', 'zh-cn' => '时间线', 'fr' => 'Chronologie', 'de' => 'Zeitleiste'],
+        '영상 속 장소' => ['en' => 'Places in Video', 'ja' => '動画のスポット', 'zh-cn' => '视频中的地点', 'fr' => 'Lieux dans la vidéo', 'de' => 'Orte im Video'],
+        '채널' => ['en' => 'Channel', 'ja' => 'チャンネル', 'zh-cn' => '频道', 'fr' => 'Chaîne', 'de' => 'Kanal'],
+        '영상 재생' => ['en' => 'Play Video', 'ja' => '動画を再生', 'zh-cn' => '播放视频', 'fr' => 'Lire la vidéo', 'de' => 'Video abspielen'],
     ];
 
     return $cache;

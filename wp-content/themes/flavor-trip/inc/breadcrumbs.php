@@ -54,6 +54,13 @@ function ft_breadcrumbs() {
         $items[] = ['name' => __('도시 가이드', 'flavor-trip'), 'url' => get_post_type_archive_link('destination_guide')];
         $items[] = ['name' => get_the_title()];
 
+    } elseif (is_singular('vlog_curation')) {
+        $items[] = ['name' => __('브이로그', 'flavor-trip'), 'url' => get_post_type_archive_link('vlog_curation')];
+        $items[] = ['name' => get_the_title()];
+
+    } elseif (is_post_type_archive('vlog_curation')) {
+        $items[] = ['name' => __('브이로그', 'flavor-trip')];
+
     } elseif (is_post_type_archive('destination_guide')) {
         $items[] = ['name' => __('도시 가이드', 'flavor-trip')];
 

@@ -15,7 +15,7 @@ function ft_seo_meta_tags() {
     $canonical   = ft_get_canonical_url();
     $og_image    = ft_get_og_image();
     $og_title    = ft_get_og_title();
-    $og_type     = is_single() || is_singular('travel_itinerary') ? 'article' : 'website';
+    $og_type     = is_singular('vlog_curation') ? 'video.other' : (is_single() || is_singular('travel_itinerary') ? 'article' : 'website');
     $site_name   = get_bloginfo('name');
 
     // 메타 설명
@@ -65,7 +65,15 @@ function ft_seo_meta_tags() {
         echo '<meta property="og:image:height" content="630">' . "\n";
     }
 
-    if (is_single() || is_singular('travel_itinerary')) {
+    if (is_singular('vlog_curation')) {
+        $vlog_yt_id = get_post_meta(get_the_ID(), '_ft_vlog_youtube_id', true);
+        if ($vlog_yt_id) {
+            echo '<meta property="og:video" content="https://www.youtube.com/embed/' . esc_attr($vlog_yt_id) . '">' . "\n";
+            echo '<meta property="og:video:type" content="text/html">' . "\n";
+            echo '<meta property="og:video:width" content="1280">' . "\n";
+            echo '<meta property="og:video:height" content="720">' . "\n";
+        }
+    } elseif (is_single() || is_singular('travel_itinerary')) {
         echo '<meta property="article:published_time" content="' . esc_attr(get_the_date('c')) . '">' . "\n";
         echo '<meta property="article:modified_time" content="' . esc_attr(get_the_modified_date('c')) . '">' . "\n";
     }
@@ -153,6 +161,10 @@ function ft_get_meta_description() {
         return __('다양한 여행 일정과 코스를 탐색하고 나만의 여행을 계획해보세요.', 'flavor-trip');
     }
 
+    if (is_post_type_archive('vlog_curation')) {
+        return __('여행 크리에이터의 생생한 브이로그를 큐레이션합니다.', 'flavor-trip');
+    }
+
     return '';
 }
 
@@ -209,6 +221,12 @@ function ft_get_og_image() {
     if (is_singular() && has_post_thumbnail()) {
         $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'ft-hero');
         if ($img) return $img[0];
+    }
+
+    // 브이로그: 유튜브 썸네일 폴백
+    if (is_singular('vlog_curation')) {
+        $yt_id = get_post_meta(get_the_ID(), '_ft_vlog_youtube_id', true);
+        if ($yt_id) return 'https://img.youtube.com/vi/' . $yt_id . '/maxresdefault.jpg';
     }
 
     // 여행 일정: 여행지 기반 폴백 이미지

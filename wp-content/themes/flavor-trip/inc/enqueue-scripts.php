@@ -83,6 +83,38 @@ add_action('wp_enqueue_scripts', function () {
         ]);
     }
 
+    // 브이로그 큐레이션
+    if (is_singular('vlog_curation') || is_post_type_archive('vlog_curation') || is_tax('vlog_category')) {
+        wp_enqueue_style('ft-vlog', FT_URI . '/assets/css/vlog.css', ['ft-main'], FT_VERSION);
+    }
+    if (is_singular('vlog_curation')) {
+        wp_enqueue_script('ft-vlog', FT_URI . '/assets/js/vlog.js', [], FT_VERSION, true);
+
+        $vlog_spots = get_post_meta(get_the_ID(), '_ft_vlog_spots', true) ?: [];
+        $has_vlog_coords = false;
+        foreach ($vlog_spots as $s) {
+            if (!empty($s['lat']) && !empty($s['lng'])) {
+                $has_vlog_coords = true;
+                break;
+            }
+        }
+
+        if ($has_vlog_coords) {
+            $google_key = get_theme_mod('ft_google_map_key');
+            if ($google_key) {
+                wp_enqueue_script('google-maps-vlog', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr($google_key), [], null, true);
+            }
+        }
+
+        wp_localize_script('ft-vlog', 'ftVlogData', [
+            'youtubeId' => get_post_meta(get_the_ID(), '_ft_vlog_youtube_id', true),
+            'spots'     => $vlog_spots,
+            'labels'    => [
+                'view_on_map' => __('구글맵에서 보기', 'flavor-trip'),
+            ],
+        ]);
+    }
+
     // 여행 일정 상세 페이지 전용
     if (is_singular('travel_itinerary')) {
         wp_enqueue_style('ft-itinerary', FT_URI . '/assets/css/itinerary.css', ['ft-main'], FT_VERSION);
@@ -129,7 +161,7 @@ add_action('wp_enqueue_scripts', function () {
 // 스크립트에 defer 속성 추가 (성능 최적화)
 add_filter('script_loader_tag', function ($tag, $handle) {
     // 외부 스크립트에는 적용하지 않음
-    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map', 'ft-guide', 'ft-guide-map'];
+    $defer_handles = ['ft-main', 'ft-gallery', 'ft-map', 'ft-guide', 'ft-guide-map', 'ft-vlog'];
     if (in_array($handle, $defer_handles, true)) {
         return str_replace(' src', ' defer src', $tag);
     }

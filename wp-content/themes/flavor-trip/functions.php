@@ -7,7 +7,7 @@
 
 defined('ABSPATH') || exit;
 
-define('FT_VERSION', '2.10.2');
+define('FT_VERSION', '2.11.0');
 define('FT_DIR', get_template_directory());
 define('FT_URI', get_template_directory_uri());
 
@@ -30,6 +30,8 @@ $ft_includes = [
     'inc/auto-translate-hook.php',
     'inc/destination-guide-cpt.php',
     'inc/destination-guide-meta.php',
+    'inc/vlog-curation-cpt.php',
+    'inc/vlog-curation-meta.php',
 ];
 
 foreach ($ft_includes as $file) {

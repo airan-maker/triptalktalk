@@ -45,6 +45,8 @@ get_header();
 
 <?php get_template_part('template-parts/guide-front-section'); ?>
 
+<?php get_template_part('template-parts/vlog-front-section'); ?>
+
 <section class="section section-blog">
     <div class="container">
         <h2 class="section-title"><?php esc_html_e('여행 이야기', 'flavor-trip'); ?></h2>

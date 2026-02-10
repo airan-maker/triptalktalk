@@ -29,6 +29,8 @@ function ft_output_schema_markup() {
         $schemas[] = ft_schema_tourist_trip();
         $faq = ft_schema_faq();
         if ($faq) $schemas[] = $faq;
+    } elseif (is_singular('vlog_curation')) {
+        $schemas[] = ft_schema_video_object();
     } elseif (is_singular('post')) {
         $schemas[] = ft_schema_article();
     }
@@ -370,6 +372,54 @@ function ft_schema_article() {
         '@type'    => 'SpeakableSpecification',
         'cssSelector' => ['.entry-title', '.entry-content'],
     ];
+
+    return $schema;
+}
+
+/**
+ * VideoObject 스키마 (브이로그 큐레이션)
+ */
+function ft_schema_video_object() {
+    $post_id    = get_the_ID();
+    $youtube_id = get_post_meta($post_id, '_ft_vlog_youtube_id', true);
+    $duration   = get_post_meta($post_id, '_ft_vlog_duration', true);
+    $channel    = get_post_meta($post_id, '_ft_vlog_channel_name', true);
+
+    if (!$youtube_id) return null;
+
+    $schema = [
+        '@context'      => 'https://schema.org',
+        '@type'         => 'VideoObject',
+        'name'          => get_the_title(),
+        'description'   => wp_strip_all_tags(get_the_excerpt() ?: wp_trim_words(get_the_content(), 50, '')),
+        'thumbnailUrl'  => 'https://img.youtube.com/vi/' . $youtube_id . '/maxresdefault.jpg',
+        'uploadDate'    => get_the_date('c'),
+        'embedUrl'      => 'https://www.youtube.com/embed/' . $youtube_id,
+        'contentUrl'    => 'https://www.youtube.com/watch?v=' . $youtube_id,
+        'url'           => get_permalink(),
+        'publisher'     => ['@id' => home_url('/#organization')],
+    ];
+
+    // ISO 8601 duration 변환 (15:30 → PT15M30S)
+    if ($duration) {
+        $parts = explode(':', $duration);
+        if (count($parts) === 2) {
+            $schema['duration'] = sprintf('PT%dM%dS', intval($parts[0]), intval($parts[1]));
+        } elseif (count($parts) === 3) {
+            $schema['duration'] = sprintf('PT%dH%dM%dS', intval($parts[0]), intval($parts[1]), intval($parts[2]));
+        }
+    }
+
+    if ($channel) {
+        $channel_url = get_post_meta($post_id, '_ft_vlog_channel_url', true);
+        $schema['creator'] = [
+            '@type' => 'Person',
+            'name'  => $channel,
+        ];
+        if ($channel_url) {
+            $schema['creator']['url'] = $channel_url;
+        }
+    }
 
     return $schema;
 }

@@ -1,0 +1,350 @@
+/* ==========================================================================
+   Vlog Curation — 브이로그 큐레이션 스타일
+   ========================================================================== */
+
+/* ── 유튜브 플레이어 (Lazy Embed) ── */
+.vlog-player {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+.vlog-player img,
+.vlog-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.vlog-player img {
+    object-fit: cover;
+}
+
+.vlog-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 0, 0, 0.85);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    z-index: 2;
+    padding-left: 4px;
+}
+
+.vlog-play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 0, 0, 1);
+}
+
+.vlog-player.is-playing .vlog-play-btn,
+.vlog-player.is-playing > img {
+    display: none;
+}
+
+/* ── 카드 오버레이 (재생 아이콘 + 길이 배지) ── */
+.card-vlog .card-image {
+    position: relative;
+}
+
+.card-vlog .vlog-card-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 0, 0, 0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    pointer-events: none;
+    z-index: 2;
+    padding-left: 2px;
+    transition: transform 0.2s;
+}
+
+.card-vlog:hover .vlog-card-play {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.card-vlog .vlog-duration-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* ── 싱글 헤더 ── */
+.vlog-single .container {
+    max-width: 800px;
+}
+
+.vlog-header {
+    margin-bottom: 1.5rem;
+}
+
+.vlog-header .vlog-title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+}
+
+/* ── 채널 정보 ── */
+.vlog-channel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--ft-text-light, #64748b);
+}
+
+.vlog-channel-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--ft-primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.vlog-channel a {
+    color: var(--ft-text);
+    font-weight: 600;
+}
+
+.vlog-channel a:hover {
+    color: var(--ft-primary);
+}
+
+/* ── 타임라인 ── */
+.vlog-timeline {
+    background: var(--ft-bg-alt, #f8fafc);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.vlog-timeline h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.vlog-timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vlog-timeline-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ft-border, #e2e8f0);
+    align-items: flex-start;
+}
+
+.vlog-timeline-item:last-child {
+    border-bottom: none;
+}
+
+.vlog-timestamp {
+    flex-shrink: 0;
+    display: inline-block;
+    background: var(--ft-primary);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-variant-numeric: tabular-nums;
+    min-width: 52px;
+    text-align: center;
+}
+
+.vlog-timestamp:hover {
+    background: var(--ft-primary-dark, #e65100);
+}
+
+.vlog-timeline-content {
+    flex: 1;
+}
+
+.vlog-timeline-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.vlog-timeline-desc {
+    font-size: 0.85rem;
+    color: var(--ft-text-light, #64748b);
+    line-height: 1.5;
+}
+
+/* ── 본문 콘텐츠 ── */
+.vlog-content {
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.vlog-content p {
+    margin-bottom: 1rem;
+}
+
+/* ── 영상 속 장소 지도 ── */
+.vlog-spots-section {
+    margin-bottom: 2rem;
+}
+
+.vlog-spots-section h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.vlog-spots-map {
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--ft-border, #e2e8f0);
+    margin-bottom: 1rem;
+}
+
+/* ── 태그 섹션 ── */
+.vlog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+/* ── 아카이브 히어로 ── */
+.vlog-archive-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.vlog-archive-hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.vlog-archive-hero p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+.vlog-archive-hero .breadcrumbs {
+    margin-bottom: 1rem;
+}
+
+.vlog-archive-hero .breadcrumbs,
+.vlog-archive-hero .breadcrumbs a,
+.vlog-archive-hero .breadcrumbs .separator {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.vlog-archive-hero .breadcrumbs a:hover {
+    color: #fff;
+}
+
+/* ── 카테고리 필터 ── */
+.vlog-category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.vlog-category-filter a {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--ft-bg-alt, #f1f5f9);
+    color: var(--ft-text);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.vlog-category-filter a:hover,
+.vlog-category-filter a.active {
+    background: var(--ft-primary);
+    color: #fff;
+}
+
+/* ── 카드 푸터 채널 ── */
+.card-vlog .card-channel {
+    font-size: 0.8rem;
+    color: var(--ft-text-light, #64748b);
+}
+
+/* ── 반응형 ── */
+@media (max-width: 768px) {
+    .vlog-header .vlog-title {
+        font-size: 1.5rem;
+    }
+
+    .vlog-play-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+    }
+
+    .vlog-spots-map {
+        height: 300px;
+    }
+
+    .vlog-timeline {
+        padding: 1rem;
+    }
+
+    .vlog-archive-hero {
+        padding: 2rem 0;
+    }
+
+    .vlog-archive-hero h1 {
+        font-size: 1.5rem;
+    }
+}
