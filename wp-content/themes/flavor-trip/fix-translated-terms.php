@@ -298,6 +298,20 @@ foreach ($taxonomies as $taxonomy) {
 // ═══════════════════════════════════════════════════════
 // Summary
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// 6. 캐시 정리
+// ═══════════════════════════════════════════════════════
+WP_CLI::log('');
+WP_CLI::log('═══ Step 6: Flush caches ═══');
+wp_cache_flush();
+if (function_exists('PLL')) {
+    PLL()->model->clean_languages_cache();
+}
+clean_term_cache([], '');
+WP_CLI::log('  WordPress object cache flushed');
+WP_CLI::log('  Polylang language cache cleared');
+WP_CLI::log('  Term cache cleared');
+
 WP_CLI::log('');
 WP_CLI::success('Fix completed!');
 WP_CLI::log("  Duplicates merged:     {$stats['duplicates_merged']}");

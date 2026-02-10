@@ -116,6 +116,30 @@ function ft_get_or_create_term($term, $taxonomy, $pll_slug, $gt_lang) {
     usleep(300000);
     $translated_slug = sanitize_title($translated_name . '-' . $pll_slug);
 
+    // 같은 이름+언어의 기존 term이 있으면 재사용 (Google Translate 결과 편차로 인한 중복 방지)
+    $same_lang_terms = get_terms([
+        'taxonomy'   => $taxonomy,
+        'name'       => $translated_name,
+        'hide_empty' => false,
+        'lang'       => $pll_slug,
+    ]);
+    if (!is_wp_error($same_lang_terms)) {
+        foreach ($same_lang_terms as $slt) {
+            if (pll_get_term_language($slt->term_id) === $pll_slug) {
+                if ($translated_parent && $slt->parent != $translated_parent) {
+                    wp_update_term($slt->term_id, $taxonomy, ['parent' => $translated_parent]);
+                }
+                pll_set_term_language($slt->term_id, $pll_slug);
+                $group = PLL()->model->term->get_translations($term->term_id);
+                $group['ko'] = $term->term_id;
+                $group[$pll_slug] = $slt->term_id;
+                PLL()->model->term->save_translations($term->term_id, $group);
+                update_term_meta($slt->term_id, '_ft_ko_slug', $term->slug);
+                return $slt->term_id;
+            }
+        }
+    }
+
     $new_term = wp_insert_term($translated_name, $taxonomy, [
         'slug'   => $translated_slug,
         'parent' => $translated_parent ?: 0,
