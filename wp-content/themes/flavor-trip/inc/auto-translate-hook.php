@@ -446,66 +446,44 @@ function ft_translate_post_to_lang($post, $pll_slug, $gt_lang) {
     return $new_post_id;
 }
 
-// ── WordPress Hook: auto-translate on publish ──
+// ── 자동 번역 비활성화 (v2.12.0) ──
+// 글 발행 시 자동 번역을 하지 않습니다.
+// 수동 번역: wp eval-file wp-content/themes/flavor-trip/translate-posts.php --allow-root
+//
+// 자동 번역을 다시 켜려면 아래 주석을 해제하세요.
+/*
 add_action('transition_post_status', function ($new_status, $old_status, $post) {
-    // Only trigger on publish
     if ($new_status !== 'publish') return;
-
-    // Only for supported post types
     if (!in_array($post->post_type, ['travel_itinerary', 'post', 'destination_guide', 'vlog_curation'], true)) return;
-
-    // Only if Polylang is active
     if (!function_exists('pll_get_post_language') || !function_exists('pll_set_post_language')) return;
-
-    // Only for Korean posts
     $lang = pll_get_post_language($post->ID);
     if ($lang && $lang !== 'ko') return;
-
-    // Set as Korean if not set
-    if (!$lang) {
-        pll_set_post_language($post->ID, 'ko');
-    }
-
-    // Check if translations already exist
+    if (!$lang) pll_set_post_language($post->ID, 'ko');
     $existing = PLL()->model->post->get_translations($post->ID);
     $needs_translation = false;
     foreach (FT_TRANSLATE_LANGS as $pll_slug => $gt_lang) {
-        if (empty($existing[$pll_slug])) {
-            $needs_translation = true;
-            break;
-        }
+        if (empty($existing[$pll_slug])) { $needs_translation = true; break; }
     }
-
     if (!$needs_translation) return;
-
-    // Schedule async translation (wp-cron)
     if (!wp_next_scheduled('ft_async_translate_post', [$post->ID])) {
         wp_schedule_single_event(time() + 5, 'ft_async_translate_post', [$post->ID]);
     }
 }, 10, 3);
 
-// ── Async translation via WP-Cron ──
 add_action('ft_async_translate_post', function ($post_id) {
     $post = get_post($post_id);
     if (!$post || $post->post_status !== 'publish') return;
-
     $lang = pll_get_post_language($post->ID);
     if ($lang && $lang !== 'ko') return;
-
     $existing = PLL()->model->post->get_translations($post->ID);
-
     foreach (FT_TRANSLATE_LANGS as $pll_slug => $gt_lang) {
         if (!empty($existing[$pll_slug])) continue;
-
         $new_id = ft_translate_post_to_lang($post, $pll_slug, $gt_lang);
-
-        if ($new_id) {
-            error_log("[FlavorTrip] Translated '{$post->post_title}' to {$pll_slug} (ID:{$new_id})");
-        } else {
-            error_log("[FlavorTrip] Failed to translate '{$post->post_title}' to {$pll_slug}");
-        }
+        if ($new_id) error_log("[FlavorTrip] Translated '{$post->post_title}' to {$pll_slug} (ID:{$new_id})");
+        else error_log("[FlavorTrip] Failed to translate '{$post->post_title}' to {$pll_slug}");
     }
 });
+*/
 
 // ── Admin notice for translation status ──
 add_action('admin_notices', function () {
@@ -529,7 +507,7 @@ add_action('admin_notices', function () {
     if (empty($missing)) {
         echo '<div class="notice notice-success"><p>✅ 이 글은 ' . count(FT_TRANSLATE_LANGS) . '개 언어로 번역 완료되었습니다.</p></div>';
     } elseif ($post->post_status === 'publish') {
-        echo '<div class="notice notice-info"><p>🔄 번역 대기 중: ' . implode(', ', $missing) . ' — 잠시 후 자동 생성됩니다.</p></div>';
+        echo '<div class="notice notice-warning"><p>🌐 미번역: ' . implode(', ', $missing) . ' — 서버에서 <code>wp eval-file .../translate-posts.php</code>로 수동 번역하세요.</p></div>';
     }
 });
 
