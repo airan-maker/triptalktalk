@@ -7,6 +7,25 @@
 
 defined('ABSPATH') || exit;
 
+// 아카이브 페이지에서 현재 언어만 표시
+add_action('pre_get_posts', function ($query) {
+    if (is_admin() || !$query->is_main_query()) return;
+    if (!$query->is_post_type_archive('destination_guide')) return;
+
+    if (function_exists('pll_current_language')) {
+        $lang = pll_current_language();
+        $query->set('lang', $lang);
+
+        if (taxonomy_exists('language')) {
+            $query->set('tax_query', [[
+                'taxonomy' => 'language',
+                'field'    => 'slug',
+                'terms'    => $lang,
+            ]]);
+        }
+    }
+});
+
 add_action('init', function () {
     register_post_type('destination_guide', [
         'labels' => [

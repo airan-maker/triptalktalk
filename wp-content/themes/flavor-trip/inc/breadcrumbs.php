@@ -50,6 +50,13 @@ function ft_breadcrumbs() {
         }
         $items[] = ['name' => get_the_title()];
 
+    } elseif (is_singular('destination_guide')) {
+        $items[] = ['name' => __('도시 가이드', 'flavor-trip'), 'url' => get_post_type_archive_link('destination_guide')];
+        $items[] = ['name' => get_the_title()];
+
+    } elseif (is_post_type_archive('destination_guide')) {
+        $items[] = ['name' => __('도시 가이드', 'flavor-trip')];
+
     } elseif (is_post_type_archive('travel_itinerary')) {
         $items[] = ['name' => __('여행 일정', 'flavor-trip')];
 
