@@ -180,6 +180,7 @@ function ft_get_destination_images($size = 'full') {
         'jeju'           => 'photo-1602934198239-ff2e47d124f8',
         'seoul'          => 'photo-1538485399081-7191377e8241',
         'busan'          => 'photo-1701172189149-450eecf09863',
+        'yeongwol'       => 'photo-1623677758533-bdfd3eb54080',
         // 일본
         'tokyo'          => 'photo-1540959733332-eab4deabeeaf',
         'osaka'          => 'photo-1590559899731-a382839e5549',
@@ -188,6 +189,8 @@ function ft_get_destination_images($size = 'full') {
         'sapporo'        => 'photo-1519105467443-4779d0fb729d',
         'hiroshima'      => 'photo-1697605623014-c68d4b666420',
         'kanazawa'       => 'photo-1684695414445-685455eb85c5',
+        'matsuyama'      => 'photo-1578469645742-46cae010e5d6',
+        'toyama'         => 'photo-1590559899731-a382839e5549',
         'okinawa'        => 'photo-1590077428593-a55bb07c4665',
         // 동아시아
         'hongkong'       => 'photo-1536599018102-9f803c140fc1',
