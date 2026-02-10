@@ -10,30 +10,13 @@ defined('ABSPATH') || exit;
 $post_id = get_the_ID();
 $counter = get_query_var('bento_counter', 1);
 
-// 여행지별 기본 이미지 (중앙 관리)
-$destination_images = ft_get_destination_images('card');
-
-// 이미지 URL 가져오기 (자식 여행지 우선)
-$image_url = $destination_images['default'];
+// 이미지 URL 가져오기 (썸네일 → 여행지 기반 폴백 → 한국어 원본 폴백)
+$image_url = '';
 if (has_post_thumbnail($post_id)) {
     $image_url = get_the_post_thumbnail_url($post_id, 'large');
-} else {
-    $destinations = get_the_terms($post_id, 'destination');
-    if ($destinations && !is_wp_error($destinations)) {
-        $child_image = '';
-        $parent_image = '';
-        foreach ($destinations as $dest) {
-            $resolved_slug = ft_resolve_destination_slug($dest->slug, $destination_images);
-            if (isset($destination_images[$resolved_slug])) {
-                if ($dest->parent > 0) {
-                    $child_image = $destination_images[$resolved_slug];
-                } else {
-                    $parent_image = $destination_images[$resolved_slug];
-                }
-            }
-        }
-        $image_url = $child_image ?: $parent_image ?: $destination_images['default'];
-    }
+}
+if (!$image_url) {
+    $image_url = ft_get_destination_image($post_id);
 }
 
 $duration = get_post_meta($post_id, '_ft_duration', true);

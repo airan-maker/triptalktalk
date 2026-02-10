@@ -96,6 +96,15 @@ function ft_get_terms_current_lang($args = []) {
         }));
     }
 
+    // 이름 기준 중복 제거 (auto-translate 반복 실행으로 인한 동일 이름 term 제거)
+    $seen = [];
+    $terms = array_values(array_filter($terms, function ($t) use (&$seen) {
+        $key = mb_strtolower($t->name, 'UTF-8');
+        if (isset($seen[$key])) return false;
+        $seen[$key] = true;
+        return true;
+    }));
+
     return $terms;
 }
 
@@ -242,9 +251,29 @@ function ft_get_destination_image($post_id = null) {
 
     $destination_images = ft_get_destination_images('full');
 
+    // 현재 포스트의 destination terms로 이미지 조회
+    $result = ft_resolve_destination_image_from_terms($post_id, $destination_images);
+    if ($result) return $result;
+
+    // 번역 포스트인 경우, 한국어 원본 포스트의 destination terms로 재시도
+    if (function_exists('pll_get_post')) {
+        $ko_post_id = pll_get_post($post_id, 'ko');
+        if ($ko_post_id && $ko_post_id != $post_id) {
+            $result = ft_resolve_destination_image_from_terms($ko_post_id, $destination_images);
+            if ($result) return $result;
+        }
+    }
+
+    return $destination_images['default'];
+}
+
+/**
+ * 포스트의 destination terms에서 이미지 URL 조회 (내부 헬퍼)
+ */
+function ft_resolve_destination_image_from_terms($post_id, $destination_images) {
     $destinations = get_the_terms($post_id, 'destination');
     if (!$destinations || is_wp_error($destinations)) {
-        return $destination_images['default'];
+        return false;
     }
 
     $child_image = '';
@@ -260,7 +289,7 @@ function ft_get_destination_image($post_id = null) {
         }
     }
 
-    return $child_image ?: $parent_image ?: $destination_images['default'];
+    return $child_image ?: $parent_image ?: false;
 }
 
 /**
