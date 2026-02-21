@@ -57,7 +57,16 @@ jobs:
             cd "${{ secrets.WP_PATH }}"
             echo "project_dir=$(pwd)"
             ls -la
-            ls -la docker-compose.prod.yml
+            if [ -f docker-compose.prod.yml ]; then
+              COMPOSE_FILE="docker-compose.prod.yml"
+            elif [ -f docker-compose.yml ]; then
+              COMPOSE_FILE="docker-compose.yml"
+            else
+              echo "No compose file found (docker-compose.prod.yml or docker-compose.yml)."
+              exit 1
+            fi
+            echo "compose_file=${COMPOSE_FILE}"
+            ls -la "${COMPOSE_FILE}"
             echo "host_import_dir=${{ secrets.WP_IMPORT_DIR }}"
             ls -la "${{ secrets.WP_IMPORT_DIR }}" || true
 
@@ -82,12 +91,12 @@ jobs:
             fi
 
             echo "compose_cmd=${RUN_COMPOSE}"
-            $RUN_COMPOSE -f docker-compose.prod.yml ps
+            $RUN_COMPOSE -f "${COMPOSE_FILE}" ps
 
-            $RUN_COMPOSE -f docker-compose.prod.yml exec -T wordpress bash -lc \
+            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T wordpress bash -lc \
               "ls -la /var/www/html/wp-content/themes/flavor-trip/import && \
                ls -la /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk && \
                wp --info --allow-root"
 
-            $RUN_COMPOSE -f docker-compose.prod.yml exec -T wordpress bash -lc \
+            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T wordpress bash -lc \
               "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root -- --file=${IMPORT_FILE_IN_CONTAINER} --status=${{ env.POST_STATUS }} --author=${{ secrets.WP_IMPORT_AUTHOR_ID }}"
