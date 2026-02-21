@@ -51,16 +51,43 @@ jobs:
           username: ${{ secrets.WP_SSH_USER }}
           key: ${{ secrets.WP_SSH_KEY }}
           script: |
-            set -euo pipefail
+            set -euxo pipefail
+            echo "whoami=$(whoami)"
+            echo "pwd=$(pwd)"
             cd "${{ secrets.WP_PATH }}"
+            echo "project_dir=$(pwd)"
+            ls -la
+            ls -la docker-compose.prod.yml
+            echo "host_import_dir=${{ secrets.WP_IMPORT_DIR }}"
+            ls -la "${{ secrets.WP_IMPORT_DIR }}" || true
+
             IMPORT_FILE_IN_CONTAINER="/var/www/html/wp-content/themes/flavor-trip/import/vlogs.jsonl"
+            COMPOSE_NEEDS_SUDO=0
             if docker compose version >/dev/null 2>&1; then
               COMPOSE_CMD="docker compose"
             elif command -v docker-compose >/dev/null 2>&1; then
               COMPOSE_CMD="docker-compose"
+            elif sudo -n docker-compose version >/dev/null 2>&1; then
+              COMPOSE_CMD="docker-compose"
+              COMPOSE_NEEDS_SUDO=1
             else
               echo "Neither 'docker compose' nor 'docker-compose' is available."
               exit 1
             fi
-            $COMPOSE_CMD -f docker-compose.prod.yml exec -T wordpress bash -lc \
+
+            if [ "$COMPOSE_NEEDS_SUDO" -eq 1 ]; then
+              RUN_COMPOSE="sudo -n ${COMPOSE_CMD}"
+            else
+              RUN_COMPOSE="${COMPOSE_CMD}"
+            fi
+
+            echo "compose_cmd=${RUN_COMPOSE}"
+            $RUN_COMPOSE -f docker-compose.prod.yml ps
+
+            $RUN_COMPOSE -f docker-compose.prod.yml exec -T wordpress bash -lc \
+              "ls -la /var/www/html/wp-content/themes/flavor-trip/import && \
+               ls -la /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk && \
+               wp --info --allow-root"
+
+            $RUN_COMPOSE -f docker-compose.prod.yml exec -T wordpress bash -lc \
               "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root -- --file=${IMPORT_FILE_IN_CONTAINER} --status=${{ env.POST_STATUS }} --author=${{ secrets.WP_IMPORT_AUTHOR_ID }}"
