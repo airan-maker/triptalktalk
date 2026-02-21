@@ -56,6 +56,7 @@ jobs:
             echo "pwd=$(pwd)"
             cd "${{ secrets.WP_PATH }}"
             echo "project_dir=$(pwd)"
+            sudo git pull origin main
             ls -la
             if [ -f docker-compose.prod.yml ]; then
               COMPOSE_FILE="docker-compose.prod.yml"
@@ -98,9 +99,5 @@ jobs:
                ls -la /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk && \
                wp --info --allow-root"
 
-            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T \
-              -e FT_IMPORT_FILE="${IMPORT_FILE_IN_CONTAINER}" \
-              -e FT_IMPORT_STATUS="${{ env.POST_STATUS }}" \
-              -e FT_IMPORT_AUTHOR="${{ secrets.WP_IMPORT_AUTHOR_ID }}" \
-              wordpress bash -lc \
-              "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root"
+            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T wordpress bash -lc \
+              "FT_IMPORT_FILE=${IMPORT_FILE_IN_CONTAINER} FT_IMPORT_STATUS=${{ env.POST_STATUS }} FT_IMPORT_AUTHOR=${{ secrets.WP_IMPORT_AUTHOR_ID }} wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root"
