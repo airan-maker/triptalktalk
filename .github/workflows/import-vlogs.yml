@@ -16,6 +16,7 @@ on:
     paths:
       - "data/vlog-import/*.jsonl"
       - "ops/triptalktalk/import-vlogs.wpcli.php"
+      - "wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php"
       - ".github/workflows/import-vlogs.yml"
 
 jobs:
@@ -43,7 +44,7 @@ jobs:
           target: ${{ secrets.WP_IMPORT_DIR }}
           strip_components: 2
 
-      - name: Run WP-CLI import
+      - name: Run WP-CLI import (inside wordpress container)
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.WP_SSH_HOST }}
@@ -52,9 +53,6 @@ jobs:
           script: |
             set -euo pipefail
             cd "${{ secrets.WP_PATH }}"
-            IMPORT_FILE="${{ secrets.WP_IMPORT_DIR }}/vlogs.jsonl"
-            wp --info >/dev/null
-            wp eval-file "ops/triptalktalk/import-vlogs.wpcli.php" -- \
-              --file="$IMPORT_FILE" \
-              --status="${{ env.POST_STATUS }}" \
-              --author="${{ secrets.WP_IMPORT_AUTHOR_ID }}"
+            IMPORT_FILE_IN_CONTAINER="/var/www/html/wp-content/themes/flavor-trip/import/vlogs.jsonl"
+            docker compose -f docker-compose.prod.yml exec -T wordpress bash -lc \
+              "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root -- --file=${IMPORT_FILE_IN_CONTAINER} --status=${{ env.POST_STATUS }} --author=${{ secrets.WP_IMPORT_AUTHOR_ID }}"

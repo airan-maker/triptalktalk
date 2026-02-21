@@ -15,7 +15,8 @@
 - `WP_SSH_USER`: SSH 사용자
 - `WP_SSH_KEY`: SSH 개인키 (멀티라인 전체)
 - `WP_PATH`: 워드프레스 루트 경로 (예: `/var/www/triptalktalk`)
-- `WP_IMPORT_DIR`: 서버에서 import 파일을 둘 경로 (예: `/var/www/triptalktalk/shared/import`)
+- `WP_IMPORT_DIR`: 서버에서 import 파일을 둘 경로 (컨테이너에서 `/var/www/html/wp-content/themes/flavor-trip/import`로 보이게 설정)
+  - 권장 예: `/home/ubuntu/triptalktalk/wp-content/themes/flavor-trip/import`
 - `WP_IMPORT_AUTHOR_ID`: 작성자 user ID (예: `1`)
 
 ## 3) 서버 준비
@@ -23,12 +24,13 @@
 서버에서 아래 확인:
 
 ```bash
-mkdir -p /var/www/triptalktalk/shared/import
-cd /var/www/triptalktalk
-wp --info
+mkdir -p /home/ubuntu/triptalktalk/wp-content/themes/flavor-trip/import
+cd /home/ubuntu/triptalktalk
+docker compose -f docker-compose.prod.yml exec -T wordpress bash -lc "wp --info --allow-root"
 ```
 
-또한 `wp-content` 아래에 `ops/triptalktalk/import-vlogs.wpcli.php`가 존재해야 합니다.
+또한 테마 경로에 import 스크립트가 존재해야 합니다.
+- `wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php`
 
 ## 4) import 파일 준비
 
