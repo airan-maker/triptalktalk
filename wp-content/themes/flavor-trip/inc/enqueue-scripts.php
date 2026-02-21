@@ -28,7 +28,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_script('ft-main', FT_URI . '/assets/js/main.js', [], FT_VERSION, true);
 
     // 여행 일정 아카이브 (벤토 그리드)
-    if (is_post_type_archive('travel_itinerary') || is_tax('destination') || is_tax('travel_style')) {
+    if (is_post_type_archive('travel_itinerary') || is_post_type_archive('vlog_curation') || is_tax('destination') || is_tax('travel_style')) {
         wp_enqueue_style('ft-bento-grid', FT_URI . '/assets/css/bento-grid.css', ['ft-main'], FT_VERSION);
     }
 
