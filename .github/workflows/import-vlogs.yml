@@ -98,5 +98,9 @@ jobs:
                ls -la /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk && \
                wp --info --allow-root"
 
-            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T wordpress bash -lc \
-              "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root -- --file=${IMPORT_FILE_IN_CONTAINER} --status=${{ env.POST_STATUS }} --author=${{ secrets.WP_IMPORT_AUTHOR_ID }}"
+            $RUN_COMPOSE -f "${COMPOSE_FILE}" exec -T \
+              -e FT_IMPORT_FILE="${IMPORT_FILE_IN_CONTAINER}" \
+              -e FT_IMPORT_STATUS="${{ env.POST_STATUS }}" \
+              -e FT_IMPORT_AUTHOR="${{ secrets.WP_IMPORT_AUTHOR_ID }}" \
+              wordpress bash -lc \
+              "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root"

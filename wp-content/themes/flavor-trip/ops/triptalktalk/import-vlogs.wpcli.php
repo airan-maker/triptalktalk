@@ -127,9 +127,9 @@ function map_spots($row) {
 }
 
 $argv = $_SERVER['argv'] ?? [];
-$file = arg_value($argv, 'file');
-$status = arg_value($argv, 'status', 'draft');
-$author = (int) arg_value($argv, 'author', 1);
+$file = getenv('FT_IMPORT_FILE') ?: arg_value($argv, 'file');
+$status = getenv('FT_IMPORT_STATUS') ?: arg_value($argv, 'status', 'draft');
+$author = (int) (getenv('FT_IMPORT_AUTHOR') ?: arg_value($argv, 'author', 1));
 
 if (!$file) {
     fwrite(STDERR, "Missing --file argument.\n");
