@@ -1,0 +1,60 @@
+name: Import Vlogs to WordPress
+
+on:
+  workflow_dispatch:
+    inputs:
+      jsonl_path:
+        description: "Repository path to JSONL import file"
+        required: true
+        default: "data/vlog-import/vlogs.jsonl"
+      post_status:
+        description: "Post status (draft/publish/private)"
+        required: true
+        default: "draft"
+  push:
+    branches: [ "main" ]
+    paths:
+      - "data/vlog-import/*.jsonl"
+      - "ops/triptalktalk/import-vlogs.wpcli.php"
+      - ".github/workflows/import-vlogs.yml"
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    env:
+      JSONL_PATH: ${{ github.event.inputs.jsonl_path || 'data/vlog-import/vlogs.jsonl' }}
+      POST_STATUS: ${{ github.event.inputs.post_status || 'draft' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate import file exists
+        run: |
+          test -f "$JSONL_PATH" || (echo "Missing $JSONL_PATH" && exit 1)
+          echo "Using file: $JSONL_PATH"
+
+      - name: Copy JSONL to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.WP_SSH_HOST }}
+          username: ${{ secrets.WP_SSH_USER }}
+          key: ${{ secrets.WP_SSH_KEY }}
+          source: ${{ env.JSONL_PATH }}
+          target: ${{ secrets.WP_IMPORT_DIR }}
+          strip_components: 2
+
+      - name: Run WP-CLI import
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.WP_SSH_HOST }}
+          username: ${{ secrets.WP_SSH_USER }}
+          key: ${{ secrets.WP_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.WP_PATH }}"
+            IMPORT_FILE="${{ secrets.WP_IMPORT_DIR }}/vlogs.jsonl"
+            wp --info >/dev/null
+            wp eval-file "ops/triptalktalk/import-vlogs.wpcli.php" -- \
+              --file="$IMPORT_FILE" \
+              --status="${{ env.POST_STATUS }}" \
+              --author="${{ secrets.WP_IMPORT_AUTHOR_ID }}"
