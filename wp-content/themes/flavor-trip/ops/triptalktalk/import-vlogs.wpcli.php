@@ -2,11 +2,16 @@
 /**
  * WP-CLI import script for vlog_curation posts from JSONL.
  *
- * Usage:
- *   wp eval-file ops/triptalktalk/import-vlogs.wpcli.php -- \
- *     --file=/var/www/triptalktalk/shared/import/vlogs.jsonl \
- *     --status=draft \
- *     --author=1
+ * Features:
+ *   - Creates/updates vlog_curation posts from JSONL
+ *   - Assigns destination taxonomy (hierarchical: parent + child)
+ *   - Assigns travel_style taxonomy
+ *   - Sets Polylang language to 'ko'
+ *   - Defensive title/excerpt cleaning (Gemini text residue)
+ *
+ * Usage (env vars):
+ *   FT_IMPORT_FILE=/path/to/vlogs.jsonl FT_IMPORT_STATUS=draft FT_IMPORT_AUTHOR=1 \
+ *     wp eval-file /path/to/import-vlogs.wpcli.php --allow-root
  */
 
 if (!defined('ABSPATH')) {
@@ -14,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit(1);
 }
 
-function arg_value($argv, $name, $default = null) {
+function ft_import_arg_value($argv, $name, $default = null) {
     $prefix = "--{$name}=";
     foreach ($argv as $arg) {
         if (strpos($arg, $prefix) === 0) {
@@ -24,7 +29,7 @@ function arg_value($argv, $name, $default = null) {
     return $default;
 }
 
-function parse_jsonl_file($file) {
+function ft_import_parse_jsonl($file) {
     if (!file_exists($file)) {
         throw new RuntimeException("File not found: {$file}");
     }
@@ -40,7 +45,7 @@ function parse_jsonl_file($file) {
     return $rows;
 }
 
-function youtube_id_from_url($url) {
+function ft_import_youtube_id_from_url($url) {
     if (!$url) return null;
     $parts = wp_parse_url($url);
     if (!$parts || empty($parts['query'])) return null;
@@ -48,7 +53,7 @@ function youtube_id_from_url($url) {
     return !empty($q['v']) ? sanitize_text_field($q['v']) : null;
 }
 
-function find_post_by_youtube_id($youtube_id) {
+function ft_import_find_post_by_youtube_id($youtube_id) {
     if (!$youtube_id) return 0;
     $posts = get_posts([
         'post_type'      => 'vlog_curation',
@@ -61,7 +66,30 @@ function find_post_by_youtube_id($youtube_id) {
     return !empty($posts[0]) ? (int) $posts[0] : 0;
 }
 
-function map_timeline($row) {
+/**
+ * Clean title: strip Gemini residue, markdown, excessive whitespace.
+ */
+function ft_import_clean_title($title) {
+    // Remove common Gemini UI text fragments
+    $garbage = [
+        'Ask about this video',
+        'Summarize the video',
+        'Recommend related content',
+        'AI can make mistakes',
+        'Made with Gemini',
+        '자세히 설명해줘',
+    ];
+    foreach ($garbage as $g) {
+        $title = str_replace($g, '', $title);
+    }
+    // Strip markdown bold
+    $title = preg_replace('/\*\*/', '', $title);
+    // Collapse whitespace
+    $title = preg_replace('/\s+/', ' ', trim($title));
+    return $title;
+}
+
+function ft_import_map_timeline($row) {
     $timeline = [];
 
     if (!empty($row['vlogDraft']['timeline']) && is_array($row['vlogDraft']['timeline'])) {
@@ -91,7 +119,7 @@ function map_timeline($row) {
     return $timeline;
 }
 
-function map_spots($row) {
+function ft_import_map_spots($row) {
     $spots = [];
     if (!empty($row['vlogDraft']['spots']) && is_array($row['vlogDraft']['spots'])) {
         foreach ($row['vlogDraft']['spots'] as $spot) {
@@ -126,17 +154,172 @@ function map_spots($row) {
     return $spots;
 }
 
+/**
+ * Ensure a destination term exists, creating parent/child as needed.
+ * Returns the term ID.
+ */
+function ft_import_ensure_destination_term($slug, $parent_slug = '') {
+    $parent_id = 0;
+
+    // Create parent term first if needed
+    if ($parent_slug && $parent_slug !== $slug) {
+        $parent_term = get_term_by('slug', $parent_slug, 'destination');
+        if ($parent_term) {
+            $parent_id = (int) $parent_term->term_id;
+        } else {
+            $result = wp_insert_term(ucfirst($parent_slug), 'destination', ['slug' => $parent_slug]);
+            if (!is_wp_error($result)) {
+                $parent_id = (int) $result['term_id'];
+                fwrite(STDOUT, "  Created parent destination: {$parent_slug} (ID={$parent_id})\n");
+            }
+        }
+    }
+
+    $term = get_term_by('slug', $slug, 'destination');
+    if ($term) {
+        return (int) $term->term_id;
+    }
+
+    $args = ['slug' => $slug];
+    if ($parent_id > 0) {
+        $args['parent'] = $parent_id;
+    }
+    $result = wp_insert_term(ucfirst($slug), 'destination', $args);
+    if (is_wp_error($result)) {
+        if ($result->get_error_code() === 'term_exists') {
+            return (int) $result->get_error_data('term_exists');
+        }
+        fwrite(STDERR, "  Failed to create destination '{$slug}': {$result->get_error_message()}\n");
+        return 0;
+    }
+    fwrite(STDOUT, "  Created destination: {$slug} (ID={$result['term_id']})\n");
+    return (int) $result['term_id'];
+}
+
+/**
+ * Ensure a travel_style term exists.
+ * Returns the term ID.
+ */
+function ft_import_ensure_style_term($name) {
+    $term = get_term_by('name', $name, 'travel_style');
+    if ($term) {
+        return (int) $term->term_id;
+    }
+    $result = wp_insert_term($name, 'travel_style');
+    if (is_wp_error($result)) {
+        if ($result->get_error_code() === 'term_exists') {
+            return (int) $result->get_error_data('term_exists');
+        }
+        fwrite(STDERR, "  Failed to create travel_style '{$name}': {$result->get_error_message()}\n");
+        return 0;
+    }
+    fwrite(STDOUT, "  Created travel_style: {$name} (ID={$result['term_id']})\n");
+    return (int) $result['term_id'];
+}
+
+/**
+ * Map of child destination slugs to their parent country slugs.
+ * Must match CITY_MAP in raw-to-jsonl.mjs.
+ */
+function ft_import_get_dest_parent_map() {
+    return [
+        'kyoto'      => 'japan',
+        'tokyo'      => 'japan',
+        'osaka'      => 'japan',
+        'sapporo'    => 'japan',
+        'fukuoka'    => 'japan',
+        'hiroshima'  => 'japan',
+        'kanazawa'   => 'japan',
+        'nara'       => 'japan',
+        'nagoya'     => 'japan',
+        'yokohama'   => 'japan',
+        'kobe'       => 'japan',
+        'okinawa'    => 'japan',
+        'mie'        => 'japan',
+        'shizuoka'   => 'japan',
+        'kawaguchiko' => 'japan',
+        'fujisan'    => 'japan',
+        'shiga'      => 'japan',
+        'gujo'       => 'japan',
+        'seoul'      => 'korea',
+        'jeju'       => 'korea',
+        'busan'      => 'korea',
+        'bangkok'    => 'thailand',
+        'nhatrang'   => 'vietnam',
+        'danang'     => 'vietnam',
+        'hoian'      => 'vietnam',
+        'hochiminh'  => 'vietnam',
+        'paris'      => 'france',
+        'hawaii'     => 'usa',
+        'taipei'     => 'taiwan',
+        'shanghai'   => 'china',
+    ];
+}
+
+/**
+ * Assign destination terms to a post from the JSONL destination array.
+ */
+function ft_import_assign_destinations($post_id, $destinations) {
+    if (empty($destinations) || !is_array($destinations)) return;
+
+    $parent_map = ft_import_get_dest_parent_map();
+    $term_ids = [];
+
+    foreach ($destinations as $slug) {
+        $parent_slug = $parent_map[$slug] ?? '';
+        // Country-level slugs have no parent
+        $term_id = ft_import_ensure_destination_term($slug, $parent_slug);
+        if ($term_id > 0) {
+            $term_ids[] = $term_id;
+        }
+    }
+
+    if (!empty($term_ids)) {
+        wp_set_post_terms($post_id, $term_ids, 'destination');
+    }
+}
+
+/**
+ * Assign travel_style terms to a post from the JSONL travelStyle array.
+ */
+function ft_import_assign_styles($post_id, $styles) {
+    if (empty($styles) || !is_array($styles)) return;
+
+    $term_ids = [];
+    foreach ($styles as $name) {
+        $term_id = ft_import_ensure_style_term($name);
+        if ($term_id > 0) {
+            $term_ids[] = $term_id;
+        }
+    }
+
+    if (!empty($term_ids)) {
+        wp_set_post_terms($post_id, $term_ids, 'travel_style');
+    }
+}
+
+/**
+ * Set Polylang language for a post (if Polylang is active).
+ */
+function ft_import_set_language($post_id, $lang = 'ko') {
+    if (function_exists('pll_set_post_language')) {
+        pll_set_post_language($post_id, $lang);
+    }
+}
+
+// ── Main ────────────────────────────────────────────────────────────
+
 $argv = $_SERVER['argv'] ?? [];
-$file = getenv('FT_IMPORT_FILE') ?: arg_value($argv, 'file');
-$status = getenv('FT_IMPORT_STATUS') ?: arg_value($argv, 'status', 'draft');
-$author = (int) (getenv('FT_IMPORT_AUTHOR') ?: arg_value($argv, 'author', 1));
+$file = getenv('FT_IMPORT_FILE') ?: ft_import_arg_value($argv, 'file');
+$status = getenv('FT_IMPORT_STATUS') ?: ft_import_arg_value($argv, 'status', 'draft');
+$author = (int) (getenv('FT_IMPORT_AUTHOR') ?: ft_import_arg_value($argv, 'author', 1));
 
 if (!$file) {
     fwrite(STDERR, "Missing --file argument.\n");
     exit(1);
 }
 
-$rows = parse_jsonl_file($file);
+$rows = ft_import_parse_jsonl($file);
 $created = 0;
 $updated = 0;
 $skipped = 0;
@@ -144,8 +327,8 @@ $skipped = 0;
 foreach ($rows as $row) {
     $source = is_array($row['source'] ?? null) ? $row['source'] : [];
     $video_url = $source['videoUrl'] ?? null;
-    $youtube_id = $source['youtubeId'] ?? youtube_id_from_url($video_url);
-    $title = trim((string) ($row['vlogDraft']['title'] ?? $source['videoTitle'] ?? ''));
+    $youtube_id = $source['youtubeId'] ?? ft_import_youtube_id_from_url($video_url);
+    $title = ft_import_clean_title(trim((string) ($row['vlogDraft']['title'] ?? $source['videoTitle'] ?? '')));
 
     if ($youtube_id === null || $youtube_id === '') {
         $skipped++;
@@ -155,12 +338,16 @@ foreach ($rows as $row) {
         $title = "Vlog {$youtube_id}";
     }
 
-    $post_id = find_post_by_youtube_id($youtube_id);
+    $excerpt = sanitize_textarea_field($row['vlogDraft']['excerpt'] ?? ($row['summary'] ?? ''));
+    // Clean excerpt too
+    $excerpt = ft_import_clean_title($excerpt);
+
+    $post_id = ft_import_find_post_by_youtube_id($youtube_id);
     $post_data = [
         'post_type'    => 'vlog_curation',
         'post_status'  => $status,
         'post_title'   => wp_strip_all_tags($title),
-        'post_excerpt' => sanitize_textarea_field($row['vlogDraft']['excerpt'] ?? ($row['summary'] ?? '')),
+        'post_excerpt' => $excerpt,
         'post_author'  => $author,
     ];
 
@@ -182,12 +369,26 @@ foreach ($rows as $row) {
         $created++;
     }
 
+    // Meta fields
     update_post_meta($post_id, '_ft_vlog_youtube_id', sanitize_text_field($youtube_id));
     update_post_meta($post_id, '_ft_vlog_channel_name', sanitize_text_field($source['channelName'] ?? ''));
     update_post_meta($post_id, '_ft_vlog_channel_url', esc_url_raw($source['channelUrl'] ?? ''));
     update_post_meta($post_id, '_ft_vlog_duration', sanitize_text_field($source['duration'] ?? ''));
-    update_post_meta($post_id, '_ft_vlog_timeline', map_timeline($row));
-    update_post_meta($post_id, '_ft_vlog_spots', map_spots($row));
+    update_post_meta($post_id, '_ft_vlog_timeline', ft_import_map_timeline($row));
+    update_post_meta($post_id, '_ft_vlog_spots', ft_import_map_spots($row));
+
+    // Taxonomy assignments
+    $destinations = $row['vlogDraft']['destination'] ?? [];
+    $styles = $row['vlogDraft']['travelStyle'] ?? [];
+    ft_import_assign_destinations($post_id, $destinations);
+    ft_import_assign_styles($post_id, $styles);
+
+    // Polylang language
+    ft_import_set_language($post_id, 'ko');
+
+    $dest_str = implode(',', $destinations);
+    $style_str = implode(',', $styles);
+    fwrite(STDOUT, "[{$youtube_id}] post_id={$post_id} dest=[{$dest_str}] style=[{$style_str}]\n");
 }
 
-fwrite(STDOUT, "Import done: created={$created}, updated={$updated}, skipped={$skipped}\n");
+fwrite(STDOUT, "\nImport done: created={$created}, updated={$updated}, skipped={$skipped}\n");

@@ -27,3 +27,6 @@ debug.log
 
 # Backups (DB 덤프 파일)
 backups/
+
+# Vlog raw data (Gemini exports, not tracked in git)
+Vlog_Raw/

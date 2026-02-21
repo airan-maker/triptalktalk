@@ -1,3 +1,8 @@
+/**
+ * @deprecated Use raw-to-jsonl.mjs instead.
+ * This script converted Gemini travel-data.jsonl to vlog import format.
+ * The new workflow uses raw TXT files directly via raw-to-jsonl.mjs.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
 
