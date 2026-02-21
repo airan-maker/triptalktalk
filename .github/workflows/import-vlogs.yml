@@ -54,5 +54,13 @@ jobs:
             set -euo pipefail
             cd "${{ secrets.WP_PATH }}"
             IMPORT_FILE_IN_CONTAINER="/var/www/html/wp-content/themes/flavor-trip/import/vlogs.jsonl"
-            docker compose -f docker-compose.prod.yml exec -T wordpress bash -lc \
+            if docker compose version >/dev/null 2>&1; then
+              COMPOSE_CMD="docker compose"
+            elif command -v docker-compose >/dev/null 2>&1; then
+              COMPOSE_CMD="docker-compose"
+            else
+              echo "Neither 'docker compose' nor 'docker-compose' is available."
+              exit 1
+            fi
+            $COMPOSE_CMD -f docker-compose.prod.yml exec -T wordpress bash -lc \
               "wp eval-file /var/www/html/wp-content/themes/flavor-trip/ops/triptalktalk/import-vlogs.wpcli.php --allow-root -- --file=${IMPORT_FILE_IN_CONTAINER} --status=${{ env.POST_STATUS }} --author=${{ secrets.WP_IMPORT_AUTHOR_ID }}"
